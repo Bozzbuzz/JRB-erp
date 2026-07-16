@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% block title %}Daftar Pesanan - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div>
+        <h2 class="font-headline-lg text-on-surface">Daftar Pesanan</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Manage and track all bus rental orders.</p>
+    </div>
+    <a href="/orders/new" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-2 w-full sm:w-auto justify-center">
+        <span class="material-symbols-outlined text-sm">add</span>
+        Add New Order
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col md:flex-row gap-4 items-end">
+    <!-- Filters Container -->
+    <div class="flex-1 w-full relative">
+        <label class="block font-label-md text-xs text-on-surface-variant mb-1">Search Orders</label>
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+            <input type="text" id="searchOrderInput" onkeyup="applyTableFilters()" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm" placeholder="Search by ID or Customer Name..."/>
+        </div>
+    </div>
+    <div class="w-full md:w-auto min-w-[200px]">
+        <label class="block font-label-md text-xs text-on-surface-variant mb-1">Date Range</label>
+        {% include 'components/date_picker.html' %}
+    </div>
+    <div class="w-full md:w-48">
+        <label class="block font-label-md text-xs text-on-surface-variant mb-1">Status</label>
+        <div class="relative">
+            <select id="statusFilterSelect" onchange="applyTableFilters()" class="w-full pl-4 pr-9 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm cursor-pointer appearance-none">
+                <option value="All Statuses">All Statuses</option>
+                <option value="DP">DP (Down Payment)</option>
+                <option value="LUNAS">Lunas (Paid)</option>
+                <option value="CANCEL">Cancel</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">expand_more</span>
+        </div>
+    </div>
+    <div class="relative">
+        <button onclick="document.getElementById('moreFiltersPopover').classList.toggle('hidden')" class="w-full md:w-auto px-4 py-2 border border-outline-variant text-on-surface bg-surface hover:bg-surface-container-low rounded-lg font-label-md transition-colors flex items-center justify-center gap-2 h-[38px]">
+            <span class="material-symbols-outlined text-[18px]">filter_list</span>
+            More Filters
+        </button>
+        <!-- Popover -->
+        <div id="moreFiltersPopover" class="hidden absolute top-[calc(100%+0.5rem)] right-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] w-72 z-[100]">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-sm text-on-surface">Additional Filters</h4>
+                <button onclick="document.getElementById('moreFiltersPopover').classList.add('hidden')" class="text-on-surface-variant hover:text-on-surface focus:outline-none">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface-variant mb-1">Fleet / PO Bus</label>
+                    <input type="text" id="fleetFilterInput" onkeyup="applyTableFilters()" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary text-sm" placeholder="e.g. Hi-Ace, BNS">
+                </div>
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface-variant mb-1">Route</label>
+                    <input type="text" id="routeFilterInput" onkeyup="applyTableFilters()" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary text-sm" placeholder="e.g. Jakarta">
+                </div>
+            </div>
+            <div class="mt-5 flex justify-end">
+                <button onclick="clearMoreFilters()" class="text-xs text-primary font-bold hover:underline focus:outline-none">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex-1 flex flex-col">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-surface-container-low border-b border-outline-variant">
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Order ID</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Date</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Customer</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Route</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Fleet / PO Bus</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">Total Price</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">Balance</th>
+                    <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody class="font-body-md text-on-surface">
+                {% for order in orders %}
+                {% set dp_payments = order.payments | selectattr("payment_type", "equalto", "DP") | list %}
+                {% set full_payments = order.payments | selectattr("payment_type", "equalto", "FULL") | list %}
+                {% set dp_total = dp_payments | sum(attribute="amount") %}
+                {% set full_total = full_payments | sum(attribute="amount") %}
+                {% set balance = order.total_sell - (dp_total + full_total) %}
+                {% set dp_date = dp_payments[0].payment_date if dp_payments and dp_payments[0].payment_date else '-' %}
+                {% set full_date = full_payments[0].payment_date if full_payments and full_payments[0].payment_date else '-' %}
+                
+                <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors cursor-pointer">
+                    <td class="py-4 px-6 font-code text-primary font-bold">#JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}</td>
+                    <td class="py-4 px-6 text-on-surface-variant">{{ order.departure_date or order.book_date }}</td>
+                    <td class="py-4 px-6">
+                        <div class="font-bold text-on-surface">{{ order.customer.name if order.customer else '-' }}</div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">{{ order.customer.phone if order.customer and order.customer.phone else order.marketing }}</div>
+                    </td>
+                    <td class="py-4 px-6 text-on-surface-variant max-w-[200px] truncate" title="{{ order.destination }}">{{ order.destination }}</td>
+                    <td class="py-4 px-6">
+                        <div class="text-on-surface">{{ order.vehicle_type or '-' }}</div>
+                        <div class="text-xs text-on-surface-variant mt-0.5">PO. {{ order.vendor.name if order.vendor else '-' }}</div>
+                    </td>
+                    <td class="py-4 px-6 text-right font-medium">Rp {{ "{:,.0f}".format(order.total_sell) }}</td>
+                    <td class="py-4 px-6 text-right">
+                        {% if balance > 0 %}
+                            <span class="text-on-surface font-medium">Rp {{ "{:,.0f}".format(balance) }}</span>
+                        {% else %}
+                            <span class="text-on-surface-variant">Rp 0</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-4 px-6 text-center">
+                        <button type="button" onclick="openOrderDetailModal(this)"
+                            data-id="JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}"
+                            data-depart="{{ order.departure_date or '-' }}"
+                            data-return="{{ order.return_date or '-' }}"
+                            data-date="{{ order.book_date or '-' }}"
+                            data-customer="{{ order.customer.name if order.customer else '-' }}"
+                            data-phone="{{ order.customer.phone if order.customer and order.customer.phone else order.marketing }}"
+                            data-route="{{ order.destination }}"
+                            data-fleet="{{ order.vehicle_type or '-' }}"
+                            data-vendor="PO. {{ order.vendor.name if order.vendor else '-' }}"
+                            data-agent="{{ order.marketing or '-' }}"
+                            data-buy-price="Rp {{ '{:,.0f}'.format(order.total_buy) }}"
+                            data-profit="Rp {{ '{:,.0f}'.format(order.total_sell - order.total_buy) }}"
+                            data-dp-date="{{ dp_date }}"
+                            data-dp-val="Rp {{ '{:,.0f}'.format(dp_total) }}"
+                            data-full-date="{{ full_date }}"
+                            data-full-val="Rp {{ '{:,.0f}'.format(full_total) }}"
+                            data-total="Rp {{ '{:,.0f}'.format(order.total_sell) }}"
+                            data-balance="{% if balance > 0 %}Rp {{ '{:,.0f}'.format(balance) }}{% else %}Rp 0{% endif %}"
+                            data-status="{% if order.status == 'COMPLETE' or balance <= 0 %}LUNAS{% elif order.status == 'CANCEL' %}CANCEL{% else %}DP{% endif %}"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold hover:scale-105 hover:shadow-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50
+                            {% if order.status == 'COMPLETE' or balance <= 0 %}bg-primary text-on-primary
+                            {% elif order.status == 'CANCEL' %}bg-error-container text-error
+                            {% else %}bg-secondary-container text-on-secondary-container{% endif %}" title="View Order Details">
+                            {% if order.status == 'COMPLETE' or balance <= 0 %}
+                                LUNAS
+                            {% elif order.status == 'CANCEL' %}
+                                CANCEL
+                            {% else %}
+                                DP
+                            {% endif %}
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="border-t border-outline-variant p-4 flex items-center justify-between text-sm bg-surface">
+        <div id="paginationInfo" class="text-on-surface-variant font-body-md">Showing <span class="font-bold text-on-surface">0</span> to <span class="font-bold text-on-surface">0</span> of <span class="font-bold text-on-surface">0</span> results</div>
+        <div id="paginationControls" class="flex items-center gap-1">
+            <!-- Dynamically injected by JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let allRows = [];
+    let filteredRows = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        allRows = Array.from(document.querySelectorAll('tbody.font-body-md tr'));
+        applyTableFilters(); // Initial filter and pagination setup
+    });
+
+    function applyTableFilters() {
+        const searchText = document.getElementById('searchOrderInput').value.toLowerCase();
+        const statusVal = document.getElementById('statusFilterSelect').value;
+        const fleetVal = document.getElementById('fleetFilterInput').value.toLowerCase();
+        const routeVal = document.getElementById('routeFilterInput').value.toLowerCase();
+
+        filteredRows = [];
+
+        allRows.forEach(row => {
+            const btn = row.querySelector('button[title="View Order Details"]');
+            if (!btn) return;
+
+            const id = (btn.getAttribute('data-id') || '').toLowerCase();
+            const customer = (btn.getAttribute('data-customer') || '').toLowerCase();
+            const phone = (btn.getAttribute('data-phone') || '').toLowerCase();
+            const status = btn.getAttribute('data-status') || '';
+            const fleet = (btn.getAttribute('data-fleet') || '').toLowerCase();
+            const vendor = (btn.getAttribute('data-vendor') || '').toLowerCase();
+            const route = (btn.getAttribute('data-route') || '').toLowerCase();
+
+            // Check search (ID, Customer Name, Phone)
+            const matchSearch = searchText === '' || id.includes(searchText) || customer.includes(searchText) || phone.includes(searchText);
+            
+            // Check status (LUNAS, DP, CANCEL, or All)
+            const matchStatus = (statusVal === 'All Statuses' || statusVal === '') || status === statusVal;
+
+            // Check fleet (Combine fleet type and vendor/PO)
+            const fleetCombine = fleet + ' ' + vendor;
+            const matchFleet = fleetVal === '' || fleetCombine.includes(fleetVal);
+
+            // Check route
+            const matchRoute = routeVal === '' || route.includes(routeVal);
+
+            // Combinatorial AND Logic
+            if (matchSearch && matchStatus && matchFleet && matchRoute) {
+                filteredRows.push(row);
+            }
+            row.style.display = 'none'; // hide all initially, renderPagination will show the correct slice
+        });
+
+        // Reset pagination when filters change
+        currentPage = 1;
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const totalItems = filteredRows.length;
+        const totalPages = Math.ceil(totalItems / rowsPerPage) || 1;
+        
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const startIdx = (currentPage - 1) * rowsPerPage;
+        const endIdx = Math.min(startIdx + rowsPerPage, totalItems);
+
+        // Hide all rows in filtered array first
+        filteredRows.forEach(row => row.style.display = 'none');
+
+        // Show only the slice for current page
+        for (let i = startIdx; i < endIdx; i++) {
+            filteredRows[i].style.display = '';
+        }
+
+        // Update Info text
+        const infoEl = document.getElementById('paginationInfo');
+        if (totalItems === 0) {
+            infoEl.innerHTML = `Showing <span class="font-bold text-on-surface">0</span> to <span class="font-bold text-on-surface">0</span> of <span class="font-bold text-on-surface">0</span> results`;
+        } else {
+            infoEl.innerHTML = `Showing <span class="font-bold text-on-surface">${startIdx + 1}</span> to <span class="font-bold text-on-surface">${endIdx}</span> of <span class="font-bold text-on-surface">${totalItems}</span> results`;
+        }
+
+        // Update Controls HTML
+        const controlsEl = document.getElementById('paginationControls');
+        let pageHTML = '';
+        let lastAdded = 0;
+
+        for(let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                if (lastAdded !== 0 && i - lastAdded > 1) {
+                    pageHTML += `<span class="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</span>`;
+                }
+                if (i === currentPage) {
+                    pageHTML += `<button class="w-8 h-8 rounded bg-primary text-on-primary font-bold focus:outline-none">${i}</button>`;
+                } else {
+                    pageHTML += `<button onclick="goToPage(${i})" class="w-8 h-8 rounded text-on-surface hover:bg-surface-container-low transition-colors focus:outline-none">${i}</button>`;
+                }
+                lastAdded = i;
+            }
+        }
+        
+        controlsEl.innerHTML = 
+            `<button onclick="goToPage(${currentPage - 1})" class="w-8 h-8 flex items-center justify-center rounded ${currentPage === 1 ? 'text-outline-variant cursor-not-allowed' : 'text-on-surface hover:bg-surface-container-low transition-colors'} focus:outline-none" ${currentPage === 1 ? 'disabled' : ''}><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>` 
+            + pageHTML 
+            + `<button onclick="goToPage(${currentPage + 1})" class="w-8 h-8 flex items-center justify-center rounded ${currentPage === totalPages ? 'text-outline-variant cursor-not-allowed' : 'text-on-surface hover:bg-surface-container-low transition-colors'} focus:outline-none" ${currentPage === totalPages ? 'disabled' : ''}><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>`;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderPagination();
+    }
+
+    function clearMoreFilters() {
+        document.getElementById('fleetFilterInput').value = '';
+        document.getElementById('routeFilterInput').value = '';
+        applyTableFilters();
+    }
+    
+    // Close popover when clicking outside
+    document.addEventListener('click', (e) => {
+        const popoverContainer = document.getElementById('moreFiltersPopover').parentElement;
+        if (!popoverContainer.contains(e.target)) {
+            document.getElementById('moreFiltersPopover').classList.add('hidden');
+        }
+    });
+</script>
+
+{% include 'components/order_modal.html' %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "erp-system/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "erp-system/app.py"
+    }
+  ]
+}

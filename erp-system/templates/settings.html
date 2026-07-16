@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block title %}Settings - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div class="flex-1 w-full max-w-lg">
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+            <input type="text" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm" placeholder="Search settings..."/>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="w-full pb-10">
+    <div class="mb-6 mt-2">
+        <h2 class="font-headline-lg text-on-surface">Manajemen Sistem</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Kelola akun karyawan, role, dan hak akses operasional.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left Column: Manajemen Akun Karyawan (2/3 width on large screens) -->
+        <div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+            <div class="p-5 flex items-center justify-between border-b border-outline-variant/50">
+                <h3 class="font-headline-md text-on-surface text-[16px] font-bold">Manajemen Akun Karyawan</h3>
+                <button class="px-4 py-1.5 bg-primary text-on-primary rounded-lg font-label-md text-xs hover:bg-primary-container transition-colors font-bold shadow-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">person_add</span> Tambah
+                </button>
+            </div>
+            
+            <div class="w-full overflow-x-auto flex-1">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-low border-b border-outline-variant">
+                            <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Nama & Email</th>
+                            <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Role</th>
+                            <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+                            <th class="py-3 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-body-md text-on-surface">
+                        <!-- Employee 1 -->
+                        <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs">BD</div>
+                                    <div>
+                                        <div class="font-bold text-on-surface text-sm">Budi Darmawan</div>
+                                        <div class="text-[11px] text-on-surface-variant mt-0.5">budi.d@jakartarentbus.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-block px-2.5 py-1 bg-primary-fixed/40 text-primary font-bold text-[11px] rounded">Admin Sistem</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="text-[10px] font-bold text-[#137333] uppercase tracking-wide">AKTIF</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <button class="text-outline-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            </td>
+                        </tr>
+                        <!-- Employee 2 -->
+                        <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-bold text-xs">SA</div>
+                                    <div>
+                                        <div class="font-bold text-on-surface text-sm">Siti Aminah</div>
+                                        <div class="text-[11px] text-on-surface-variant mt-0.5">siti.a@jakartarentbus.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-block px-2.5 py-1 bg-primary-fixed/40 text-primary font-bold text-[11px] rounded">Dispatcher</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="text-[10px] font-bold text-[#137333] uppercase tracking-wide">AKTIF</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <button class="text-outline-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            </td>
+                        </tr>
+                        <!-- Employee 3 -->
+                        <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs">AR</div>
+                                    <div>
+                                        <div class="font-bold text-on-surface text-sm">Agus Riyanto</div>
+                                        <div class="text-[11px] text-on-surface-variant mt-0.5">agus.r@jakartarentbus.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="inline-block px-2.5 py-1 bg-primary-fixed/40 text-primary font-bold text-[11px] rounded">Marketing</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="text-[10px] font-bold text-error uppercase tracking-wide">NONAKTIF</span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <button class="text-outline-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 flex items-center justify-center bg-surface hover:bg-surface-container-low transition-colors cursor-pointer border-t border-outline-variant/50">
+                <span class="font-label-md font-bold text-sm text-on-surface">Lihat Semua Karyawan</span>
+            </div>
+        </div>
+
+        <!-- Right Column: Role & Hak Akses (1/3 width on large screens) -->
+        <div class="lg:col-span-1 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col h-fit">
+            <div class="p-5 border-b border-outline-variant/50">
+                <h3 class="font-headline-md text-on-surface text-[16px] font-bold">Role & Hak Akses</h3>
+                <p class="text-xs text-on-surface-variant mt-1">Pilih role untuk melihat detail akses.</p>
+            </div>
+            <div class="p-5 flex flex-col gap-6">
+                <!-- Dropdown -->
+                <div class="relative">
+                    <select class="w-full px-4 py-2.5 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm cursor-pointer appearance-none">
+                        <option>Admin Sistem</option>
+                        <option selected>Dispatcher</option>
+                        <option>Marketing</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">expand_more</span>
+                </div>
+                
+                <!-- Toggles -->
+                <div class="flex flex-col gap-4">
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="font-label-md text-sm font-bold text-on-surface">Kelola Jadwal Fleet</div>
+                            <div class="text-[11px] text-on-surface-variant mt-0.5">Tambah, ubah, dan hapus jadwal.</div>
+                        </div>
+                        <!-- Toggle ON -->
+                        <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer shadow-inner">
+                            <div class="absolute right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-on-primary rounded-full shadow-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="font-label-md text-sm font-bold text-on-surface">Akses Laporan Keuangan</div>
+                            <div class="text-[11px] text-on-surface-variant mt-0.5">Lihat data pendapatan harian.</div>
+                        </div>
+                        <!-- Toggle OFF -->
+                        <div class="w-10 h-5 bg-surface-container-highest rounded-full relative cursor-pointer shadow-inner border border-outline-variant">
+                            <div class="absolute left-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-outline rounded-full shadow-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="font-label-md text-sm font-bold text-on-surface">Manajemen Klien (CRM)</div>
+                            <div class="text-[11px] text-on-surface-variant mt-0.5">Akses data kontak pelanggan.</div>
+                        </div>
+                        <!-- Toggle ON -->
+                        <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer shadow-inner">
+                            <div class="absolute right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-on-primary rounded-full shadow-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="font-label-md text-sm font-bold text-on-surface">Ubah Status Armada</div>
+                            <div class="text-[11px] text-on-surface-variant mt-0.5">Set bus ke perbaikan/aktif.</div>
+                        </div>
+                        <!-- Toggle ON -->
+                        <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer shadow-inner">
+                            <div class="absolute right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-on-primary rounded-full shadow-sm"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="w-full mt-2 py-2.5 border border-outline-variant text-on-surface rounded-lg font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold flex items-center justify-center">
+                    Simpan Perubahan Role
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

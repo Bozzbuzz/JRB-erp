@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% block title %}Mitra Analysis - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div class="flex-1 w-full max-w-lg">
+        <h2 class="font-headline-md font-bold text-on-surface">Mitra & PO Bus Analysis</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Analyze partner performance and transactions.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="w-full pb-10 space-y-6">
+    <!-- Filter Bar -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+        <form id="filterForm" class="w-full flex flex-wrap gap-4 items-end" method="GET" action="{{ url_for('analytics') }}">
+            <input type="hidden" name="start_date" id="hidden_start_date" value="{{ filters.start_date }}">
+            <input type="hidden" name="end_date" id="hidden_end_date" value="{{ filters.end_date }}">
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-label-md text-on-surface-variant uppercase mb-1">Date Range</label>
+                {% include 'components/date_picker.html' %}
+            </div>
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-label-md text-on-surface-variant uppercase mb-1">Purchase (Customer)</label>
+                <select name="customer" class="w-full p-2 border border-outline-variant rounded-lg bg-surface text-sm focus:outline-none focus:border-primary">
+                    <option value="">All Customers</option>
+                    {% for c in customers %}
+                    <option value="{{ c }}" {% if filters.customer == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-label-md text-on-surface-variant uppercase mb-1">Marketing</label>
+                <select name="marketing" class="w-full p-2 border border-outline-variant rounded-lg bg-surface text-sm focus:outline-none focus:border-primary">
+                    <option value="">All Marketing</option>
+                    {% for m in marketings %}
+                    <option value="{{ m }}" {% if filters.marketing == m %}selected{% endif %}>{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-label-md text-on-surface-variant uppercase mb-1">Mitra (PO Bus)</label>
+                <select name="vendor" class="w-full p-2 border border-outline-variant rounded-lg bg-surface text-sm focus:outline-none focus:border-primary">
+                    <option value="">All Mitra</option>
+                    {% for v in vendors %}
+                    <option value="{{ v }}" {% if filters.vendor == v %}selected{% endif %}>{{ v }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex flex-shrink-0 gap-2">
+                <a href="{{ url_for('analytics') }}" class="px-4 py-2 border border-outline-variant rounded-lg bg-surface text-on-surface font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold shadow-sm flex items-center justify-center">Reset</a>
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg font-label-md text-sm hover:bg-primary-container hover:shadow-md transition-all font-bold flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">filter_list</span> Apply
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Metric Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-sm font-label-md text-on-surface-variant uppercase tracking-wider mb-2">QTY SELL (Unit)</p>
+                <h4 class="text-3xl font-display font-bold text-accent">{{ "{:,.0f}".format(total_qty_sell) }}</h4>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                <span class="material-symbols-outlined text-2xl">directions_bus</span>
+            </div>
+        </div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-sm font-label-md text-on-surface-variant uppercase tracking-wider mb-2">TOTAL SELL</p>
+                <h4 class="text-3xl font-display font-bold text-primary">Rp {{ "{:,.0f}".format(total_sell) }}</h4>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-2xl">payments</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column -->
+        <div class="lg:col-span-4 space-y-6">
+            <!-- Purchase Summary -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col max-h-[400px]">
+                <div class="p-4 border-b border-outline-variant bg-surface flex justify-between items-center">
+                    <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wider">Purchase Summary</h3>
+                </div>
+                <div class="overflow-y-auto flex-1 p-0">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 z-10">
+                            <tr class="bg-primary text-white">
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Name</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider text-center">Unit</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider text-right">Total Sell</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-body-md text-sm text-on-surface">
+                            {% for name, data in purchase_summary.items() %}
+                            <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                                <td class="py-3 px-4 font-medium">{{ name }}</td>
+                                <td class="py-3 px-4 text-center font-bold text-accent">{{ "{:,.0f}".format(data.unit) }}</td>
+                                <td class="py-3 px-4 text-right">Rp {{ "{:,.0f}".format(data.sell) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Marketing Performance -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col max-h-[400px]">
+                <div class="p-4 border-b border-outline-variant bg-surface flex justify-between items-center">
+                    <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wider">Marketing Perf.</h3>
+                </div>
+                <div class="overflow-y-auto flex-1 p-0">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 z-10">
+                            <tr class="bg-primary text-white">
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Name</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider text-right">Grand Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-body-md text-sm text-on-surface">
+                            {% for name, data in marketing_performance.items() %}
+                            <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded bg-primary-container text-white text-[10px] font-bold flex items-center justify-center">{{ data.title }}</div>
+                                        <span class="font-medium">{{ name }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-right font-bold text-primary">Rp {{ "{:,.0f}".format(data.total) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="lg:col-span-8">
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
+                <div class="p-4 border-b border-outline-variant bg-surface flex justify-between items-center">
+                    <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wider">Mitra Transactions</h3>
+                </div>
+                <div class="overflow-x-auto overflow-y-auto flex-1" style="max-height: 700px;">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead class="sticky top-0 z-10">
+                            <tr class="bg-primary text-white">
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Name (Buyer)</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Mitra</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Type</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider text-center">Qty</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Depart</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider">Dest</th>
+                                <th class="py-3 px-4 font-label-md text-[10px] uppercase tracking-wider text-right">Total Sell</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mitra-table-body" class="font-body-md text-sm text-on-surface">
+                            {% for order in orders_page.items %}
+                            <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors mitra-row">
+                                <td class="py-3 px-4 font-medium">{{ order.customer.name if order.customer else '-' }}</td>
+                                <td class="py-3 px-4 font-bold text-primary">{{ order.vendor.name if order.vendor else '-' }}</td>
+                                <td class="py-3 px-4 text-on-surface-variant">{{ order.vehicle_type or '-' }}</td>
+                                <td class="py-3 px-4 text-center text-accent font-bold">{{ "{:,.0f}".format(order.qty_sell or 0) }}</td>
+                                <td class="py-3 px-4">{{ order.departure_date or '-' }}</td>
+                                <td class="py-3 px-4">{{ order.destination or '-' }}</td>
+                                <td class="py-3 px-4 text-right font-medium text-primary">Rp {{ "{:,.0f}".format(order.total_sell or 0) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="border-t border-outline-variant p-4 flex items-center justify-between text-sm bg-surface mt-auto">
+                    <div class="text-on-surface-variant font-body-md">Showing <span class="font-bold text-on-surface">{{ (orders_page.page - 1) * orders_page.per_page + 1 if orders_page.total > 0 else 0 }}</span> to <span class="font-bold text-on-surface">{{ (orders_page.page - 1) * orders_page.per_page + orders_page.items|length }}</span> of <span class="font-bold text-on-surface">{{ orders_page.total }}</span> entries</div>
+                    <div class="flex items-center gap-1">
+                        {% set url_args = request.args.to_dict() %}
+                        
+                        {% if orders_page.has_prev %}
+                            {% set _ = url_args.update({'page': orders_page.prev_num}) %}
+                            <a href="{{ url_for('analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&lt;</a>
+                        {% else %}
+                            <button disabled class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-outline-variant opacity-50 cursor-not-allowed font-bold">&lt;</button>
+                        {% endif %}
+                        
+                        {% if orders_page.has_next %}
+                            {% set _ = url_args.update({'page': orders_page.next_num}) %}
+                            <a href="{{ url_for('analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&gt;</a>
+                        {% else %}
+                            <button disabled class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-outline-variant opacity-50 cursor-not-allowed font-bold">&gt;</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Analysis -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Destination Count -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-outline-variant bg-surface">
+                <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wider">Destination / Record Count</h3>
+            </div>
+            <div class="p-4 overflow-y-auto max-h-[300px]">
+                <div class="flex flex-wrap gap-3">
+                    {% for dest, count in destination_summary.items() %}
+                    <div class="px-3 py-2 border border-outline-variant rounded-lg bg-surface flex items-center gap-2">
+                        <span class="font-medium text-sm">{{ dest }}</span>
+                        <span class="w-6 h-6 rounded-full bg-accent/10 text-accent text-xs font-bold flex items-center justify-center">{{ count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Mitra QTY Sell by Date -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-outline-variant bg-surface">
+                <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wider">Mitra / Qty Sell by Date</h3>
+            </div>
+            <div class="overflow-x-auto overflow-y-auto max-h-[300px] p-0">
+                <table class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead class="sticky top-0 z-10">
+                        <tr class="bg-primary text-white">
+                            <th class="py-2 px-4 font-label-md text-[10px] uppercase tracking-wider">Mitra</th>
+                            {% set dates = [] %}
+                            {% for v, dates_dict in mitra_date_summary.items() %}
+                                {% for d in dates_dict.keys() %}
+                                    {% if d not in dates %}{% set _ = dates.append(d) %}{% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            {% for d in dates|sort %}
+                            <th class="py-2 px-4 font-label-md text-[10px] uppercase tracking-wider text-center">{{ d }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody class="font-body-md text-sm text-on-surface">
+                        {% for v, dates_dict in mitra_date_summary.items() %}
+                        <tr class="border-b border-outline-variant/50 hover:bg-surface-bright">
+                            <td class="py-2 px-4 font-bold text-primary">{{ v }}</td>
+                            {% for d in dates|sort %}
+                            <td class="py-2 px-4 text-center">
+                                {% if d in dates_dict %}
+                                <span class="font-bold text-accent">{{ "{:,.0f}".format(dates_dict[d]) }}</span>
+                                {% else %}
+                                <span class="text-outline-variant">-</span>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Sales & Operations Kanban - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding pt-6 pb-2 flex justify-between items-center">
+    <div>
+        <h1 class="font-headline-lg text-headline-lg font-bold text-primary mb-1">Sales & Operations Kanban</h1>
+        <p class="text-body-md text-on-surface-variant">Track lead progress and operational status for all rentals.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('new_order') }}" class="bg-primary text-on-primary hover:bg-primary-container px-4 py-2 rounded-lg font-label-md transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined filled text-[18px]">add</span>
+            New Lead
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<div class="flex-1 overflow-x-auto overflow-y-hidden pb-4 -mx-container-padding px-container-padding">
+    <div class="flex gap-4 h-[calc(100vh-180px)] min-w-max items-start">
+        {% set columns = [
+            {'id': 'NEW', 'title': 'NEW', 'bg': 'bg-surface-container'},
+            {'id': 'FOLLOW UP', 'title': 'FOLLOW UP', 'bg': 'bg-surface-container-low'},
+            {'id': 'QUOTATION', 'title': 'QUOTATION', 'bg': 'bg-surface-container-low'},
+            {'id': 'OPERATION', 'title': 'OPERATION', 'bg': 'bg-surface-container-low'},
+            {'id': 'WON', 'title': 'WON', 'bg': 'bg-secondary-container'},
+            {'id': 'LOST', 'title': 'LOST', 'bg': 'bg-error-container'}
+        ] %}
+
+        {% for col in columns %}
+        <div class="w-[320px] {{ col.bg }} rounded-xl flex flex-col h-full border border-outline-variant flex-shrink-0">
+            <div class="p-4 border-b border-outline-variant flex justify-between items-center bg-white/50 rounded-t-xl">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full {% if col.id == 'NEW' %}bg-primary{% elif col.id == 'WON' %}bg-secondary{% elif col.id == 'LOST' %}bg-error{% else %}bg-outline{% endif %}"></div>
+                    <h3 class="font-label-md font-bold text-primary">{{ col.title }}</h3>
+                    <span class="bg-white text-on-surface-variant text-xs font-bold px-2 py-0.5 rounded-full border border-outline-variant shadow-sm">{{ orders_by_status[col.id]|length }}</span>
+                </div>
+                <button class="text-outline hover:text-primary"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+            </div>
+            
+            <div class="p-3 flex-1 overflow-y-auto kanban-column space-y-3 min-h-[150px]" data-status="{{ col.id }}">
+                {% for order in orders_by_status[col.id] %}
+                {% set dp_payments = order.payments | selectattr("payment_type", "equalto", "DP") | list %}
+                {% set full_payments = order.payments | selectattr("payment_type", "equalto", "FULL") | list %}
+                {% set dp_total = dp_payments | sum(attribute="amount") %}
+                {% set full_total = full_payments | sum(attribute="amount") %}
+                {% set balance = order.total_sell - (dp_total + full_total) %}
+                {% set dp_date = dp_payments[0].payment_date if dp_payments and dp_payments[0].payment_date else '-' %}
+                {% set full_date = full_payments[0].payment_date if full_payments and full_payments[0].payment_date else '-' %}
+                <div class="bg-surface-container-lowest p-4 rounded-lg shadow-sm border border-outline-variant cursor-grab active:cursor-grabbing hover:border-primary transition-colors group relative" data-id="{{ order.id }}">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-primary-fixed-dim bg-primary/10 px-1.5 py-0.5 rounded tracking-wider">{{ order.vehicle_type or 'STANDARD'|upper }}</span>
+                        <!-- Quick Detail Access: area that can be clicked -->
+                        <a href="{{ url_for('crm_detail', customer_id=order.customer.id if order.customer else 0) }}" class="text-outline/50 hover:text-primary absolute top-4 right-4 z-10 transition-colors" title="View CRM">
+                            <span class="material-symbols-outlined text-[16px]">person</span>
+                        </a>
+                    </div>
+                    <!-- Strategic Info Cards: Customer Name, Order Value, Trip Destination -->
+                    <h4 class="font-body-md font-bold text-on-surface mb-1 truncate pr-6">{{ order.customer.company if order.customer and order.customer.company else (order.customer.name if order.customer else 'Unknown Customer') }}</h4>
+                    <div class="flex items-center gap-1 text-xs text-on-surface-variant mb-4">
+                        <span class="material-symbols-outlined text-[14px]">directions_bus</span>
+                        <span class="truncate">{{ order.destination or 'No Destination' }}</span>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-outline-variant pt-3">
+                        <div>
+                            <div class="flex items-center gap-1 text-[11px] text-on-surface-variant font-medium mb-1">
+                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                <span>{{ order.book_date.strftime('%b %d') if order.book_date else 'N/A' }}</span>
+                            </div>
+                            <span class="font-body-md font-bold text-primary">Rp {{ "{:,.0f}".format(order.total_sell).replace(',', '.') }}</span>
+                        </div>
+                        <button type="button" onclick="openOrderDetailModal(this)"
+                                class="text-xs font-bold text-primary bg-primary/10 hover:bg-primary hover:text-white px-3 py-1.5 rounded-md transition-colors"
+                                data-id="JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}"
+                                data-depart="{{ order.departure_date or '-' }}"
+                                data-return="{{ order.return_date or '-' }}"
+                                data-date="{{ order.book_date or '-' }}"
+                                data-customer="{{ order.customer.name if order.customer else '-' }}"
+                                data-phone="{{ order.customer.phone if order.customer and order.customer.phone else order.marketing }}"
+                                data-route="{{ order.destination }}"
+                                data-fleet="{{ order.vehicle_type or '-' }}"
+                                data-vendor="PO. {{ order.vendor.name if order.vendor else '-' }}"
+                                data-agent="{{ order.marketing or '-' }}"
+                                data-buy-price="Rp {{ '{:,.0f}'.format(order.total_buy) }}"
+                                data-profit="Rp {{ '{:,.0f}'.format(order.total_sell - order.total_buy) }}"
+                                data-dp-date="{{ dp_date }}"
+                                data-dp-val="Rp {{ '{:,.0f}'.format(dp_total) }}"
+                                data-full-date="{{ full_date }}"
+                                data-full-val="Rp {{ '{:,.0f}'.format(full_total) }}"
+                                data-total="Rp {{ '{:,.0f}'.format(order.total_sell) }}"
+                                data-balance="{% if balance > 0 %}Rp {{ '{:,.0f}'.format(balance) }}{% else %}Rp 0{% endif %}"
+                                data-status="{% if order.status == 'COMPLETE' or balance <= 0 %}LUNAS{% elif order.status == 'CANCEL' %}CANCEL{% else %}DP{% endif %}"
+                                title="View Details">
+                            Detail
+                        </button>
+                    </div>
+                </div>
+                {% else %}
+                <div class="h-24 rounded-lg border-2 border-dashed border-outline-variant/40 flex items-center justify-center pointer-events-none empty-state">
+                    <span class="text-sm font-medium text-on-surface-variant/50">Tarik & letakkan kartu di sini</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* Styling for the ghost element when dragging */
+    .sortable-ghost {
+        opacity: 0.4;
+        background-color: #d8e2ff;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const columns = document.querySelectorAll('.kanban-column');
+        
+        columns.forEach(column => {
+            new Sortable(column, {
+                group: 'kanban',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                dragClass: 'cursor-grabbing',
+                onEnd: function (evt) {
+                    const itemEl = evt.item;
+                    const toColumn = evt.to;
+                    const newStatus = toColumn.getAttribute('data-status');
+                    const orderId = itemEl.getAttribute('data-id');
+                    const fromColumn = evt.from;
+                    
+                    if (evt.to === evt.from) return; 
+                    
+                    // Update header counts
+                    const toHeaderCount = toColumn.previousElementSibling.querySelector('span.rounded-full');
+                    const fromHeaderCount = fromColumn.previousElementSibling.querySelector('span.rounded-full');
+                    
+                    if (toHeaderCount) toHeaderCount.textContent = parseInt(toHeaderCount.textContent) + 1;
+                    if (fromHeaderCount) fromHeaderCount.textContent = parseInt(fromHeaderCount.textContent) - 1;
+                    
+                    // Handle empty state visibility
+                    const toEmptyState = toColumn.querySelector('.empty-state');
+                    if (toEmptyState) toEmptyState.style.display = 'none';
+                    
+                    const fromEmptyState = fromColumn.querySelector('.empty-state');
+                    if (fromEmptyState && fromColumn.children.length === 1) {
+                        fromEmptyState.style.display = 'flex';
+                    }
+
+                    // API call to update status
+                    fetch(`/api/orders/${orderId}/status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status: newStatus }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(!data.success) {
+                            console.error('Failed to update status');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                },
+            });
+        });
+    });
+</script>
+
+{% include 'components/order_modal.html' %}
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Finance - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div>
+        <h2 class="font-headline-lg text-on-surface">Finance & Receivables</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Real-time overview of outstanding balances and cash flow.</p>
+    </div>
+    <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button class="bg-surface border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-md hover:bg-surface-container-low transition-colors">
+            This Month (Oct 2023)
+        </button>
+        <button class="bg-surface border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-md hover:bg-surface-container-low transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">download</span> Export CSV
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-12 gap-card-gap w-full">
+    
+    <!-- Card 1: Total Receivables -->
+    <div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Total Receivables (Piutang)</p>
+            <div class="w-8 h-8 rounded-lg bg-error-container/50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-error text-[18px]">account_balance_wallet</span>
+            </div>
+        </div>
+        <h3 class="font-display text-error relative z-10 font-bold mb-2">Rp {{ "{:,.0f}".format(total_receivables) }}</h3>
+        <p class="text-xs text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-error">trending_up</span> +12% from last month</p>
+    </div>
+
+    <!-- Card 2: Total DP Received -->
+    <div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Total DP Received</p>
+            <div class="w-8 h-8 rounded-lg bg-secondary-container/50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary text-[18px]">payments</span>
+            </div>
+        </div>
+        <h3 class="font-display text-on-surface relative z-10 font-bold mb-2">Rp {{ "{:,.0f}".format(total_dp) }}</h3>
+        <p class="text-xs text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> Pending full payment</p>
+    </div>
+
+    <!-- Card 3: Total Full Payments -->
+    <div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Total Full Payments</p>
+            <div class="w-8 h-8 rounded-lg bg-secondary-container/80 flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-secondary-container text-[18px]">check_circle</span>
+            </div>
+        </div>
+        <h3 class="font-display text-secondary relative z-10 font-bold mb-2">Rp {{ "{:,.0f}".format(total_full) }}</h3>
+        <p class="text-xs text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">trending_up</span> +5% from last month</p>
+    </div>
+
+    <!-- Table Section -->
+    <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden mt-4">
+        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant">
+            <h3 class="font-headline-md text-on-surface font-bold">Laporan Piutang / Saldo Minus</h3>
+            <div class="flex items-center gap-3">
+                <div class="relative w-64">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+                    <input type="text" class="w-full pl-9 pr-4 py-1.5 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm" placeholder="Search customer or ID..."/>
+                </div>
+                <select class="px-4 py-1.5 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm cursor-pointer">
+                    <option>All Balances</option>
+                    <option>Outstanding Only</option>
+                    <option>Completed</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Date</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Customer / Order ID</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">Total Amount</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">Amount DP</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">Amount Full</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Balance</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-body-md text-on-surface">
+                    {% for item in finance_orders %}
+                    <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                        <td class="py-4 px-6 text-on-surface-variant">{{ item.order.departure_date or item.order.book_date }}</td>
+                        <td class="py-4 px-6">
+                            <div class="font-bold text-on-surface">{{ item.order.customer.name if item.order.customer else '-' }}</div>
+                            <div class="text-xs text-on-surface-variant font-code mt-0.5">JRB-{{ (item.order.id_bitrix or item.order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}</div>
+                        </td>
+                        <td class="py-4 px-6 text-right font-medium">Rp {{ "{:,.0f}".format(item.order.total_sell) }}</td>
+                        <td class="py-4 px-6 text-right text-on-surface-variant">{{ "Rp {:,.0f}".format(item.dp) if item.dp > 0 else "-" }}</td>
+                        <td class="py-4 px-6 text-right text-on-surface-variant">{{ "Rp {:,.0f}".format(item.full) if item.full > 0 else "-" }}</td>
+                        <td class="py-4 px-6 text-center">
+                            {% if item.balance > 0 %}
+                                <span class="inline-block px-3 py-1 rounded bg-error-container text-error font-medium">Rp {{ "{:,.0f}".format(item.balance) }}</span>
+                            {% else %}
+                                <span class="font-medium text-on-surface-variant">Rp 0</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            {% if item.balance > 0 %}
+                                <button class="bg-primary text-on-primary px-4 py-1.5 rounded text-xs font-bold hover:bg-primary-container transition-colors">Record Payment</button>
+                            {% else %}
+                                <button class="border border-outline-variant text-outline-variant px-4 py-1.5 rounded text-xs font-bold cursor-default" disabled>Completed</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination Mockup -->
+        <div class="border-t border-outline-variant p-4 flex items-center justify-between text-sm">
+            <div class="text-on-surface-variant font-body-md">Showing 1 to {{ finance_orders|length }} entries</div>
+            <div class="flex items-center gap-1 border border-outline-variant rounded-lg overflow-hidden">
+                <button class="px-3 py-1.5 bg-surface text-outline-variant disabled:opacity-50" disabled>Previous</button>
+                <button class="px-3 py-1.5 bg-primary text-on-primary font-bold">1</button>
+                <button class="px-3 py-1.5 bg-surface text-on-surface hover:bg-surface-container-low">2</button>
+                <button class="px-3 py-1.5 bg-surface text-on-surface hover:bg-surface-container-low">3</button>
+                <button class="px-3 py-1.5 bg-surface text-on-surface hover:bg-surface-container-low border-l border-outline-variant">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

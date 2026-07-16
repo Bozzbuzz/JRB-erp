@@ -1,0 +1,2636 @@
+<!-- Design System -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JakartaRentBus Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#d8e2ff",
+                    "outline-variant": "#c5c6cf",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed": "#071b3b",
+                    "on-primary-container": "#8293ba",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-variant": "#d3e4fe",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad6",
+                    "inverse-surface": "#213145",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#b1f0ce",
+                    "on-primary-fixed-variant": "#364669",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-container": "#aeeecb",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "tertiary-container": "#5f0007",
+                    "on-tertiary-fixed": "#410003",
+                    "surface-tint": "#4e5e82",
+                    "primary": "#031636",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary": "#380003",
+                    "secondary": "#2c694e",
+                    "primary-container": "#1a2b4c",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#920212",
+                    "surface": "#f8f9ff",
+                    "on-secondary-container": "#316e52",
+                    "on-surface-variant": "#44474e",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fe5954",
+                    "primary-fixed-dim": "#b6c6f0",
+                    "secondary-fixed-dim": "#95d4b3",
+                    "on-secondary-fixed-variant": "#0e5138",
+                    "on-secondary-fixed": "#002114",
+                    "inverse-primary": "#b6c6f0",
+                    "outline": "#75777f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-md": "16px",
+                    "unit": "4px",
+                    "card-gap": "20px",
+                    "container-padding": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "label-md": ["Inter", "sans-serif"],
+                    "code": ["Inter", "monospace"],
+                    "display": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md h-screen w-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] z-50 border-r border-outline-variant bg-surface-container-low flex flex-col p-4 gap-2">
+<!-- Header -->
+<div class="flex items-center gap-3 px-4 py-6 mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-black text-primary">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Internal Management</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 flex flex-col gap-1">
+<!-- Active Tab: Dashboard -->
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">CRM</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">directions_bus</span>
+<span class="font-label-md text-label-md">Fleet</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Finance</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Booking
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[260px] h-full flex flex-col bg-background">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky z-40 border-b border-outline-variant flex justify-between items-center px-container-padding h-16 w-full bg-surface">
+<!-- Left: Search (Implied by search_bar: on_left) -->
+<div class="flex-1 max-w-md">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline-variant" placeholder="Search orders, fleet, or customers..." type="text"/>
+</div>
+</div>
+<!-- Right: Actions -->
+<div class="flex items-center gap-4">
+<button class="text-primary font-label-md text-label-md px-4 py-2 border border-primary rounded-lg hover:bg-surface-container-low transition-colors active:scale-95">Support</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors active:scale-95">Add New</button>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="ml-2">
+<img alt="User Profile" class="w-9 h-9 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a corporate manager in a modern office setting. The lighting is bright and clean, typical of a modern light-mode UI avatar. The mood is confident and reliable. Deep navy blue blazer over a crisp white shirt, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANvPh3TMxFYTx_9CnXQeAezuhUFfP36XWZOwviLEVtFuJAWiwXXtAxJIyXYbo4HteDp0cvec-dZH9qXL433ur7FBesj8tK-dnSXwqsyZAoj-o8VJGivdjYtJLFbzhjgQzHo0y_kmYotzy8Z8aD987fox-4GONCLt3qQLwz5ZfZ2w9Lls1Ub88G0G6jtd40mdKcwRe_pxGawcJDpCCLtyMTsiVG3c9N4lEprn76KnMgS3fw-5bkF8mYarBn2n0Quv0DDCIh3GaX-1Fc"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="flex-1 overflow-y-auto p-container-padding">
+<div class="grid grid-cols-12 gap-card-gap max-w-7xl mx-auto">
+<!-- Overview Header -->
+<div class="col-span-12 mb-2">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Dashboard Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time operational and financial metrics.</p>
+</div>
+<!-- 4 Summary Cards -->
+<!-- Card 1: Omzet -->
+<div class="col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +12%
+                        </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Omzet (Bulan Ini)</p>
+<h3 class="font-display text-display text-on-surface relative z-10">Rp 4.2B</h3>
+</div>
+<!-- Card 2: Profit -->
+<div class="col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +8.4%
+                        </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Profit Bersih</p>
+<h3 class="font-display text-display text-on-surface relative z-10">Rp 845M</h3>
+</div>
+<!-- Card 3: Total Orders -->
+<div class="col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+</div>
+<span class="bg-error-container text-on-error-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> -2%
+                        </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Total Orders</p>
+<h3 class="font-display text-display text-on-surface relative z-10">1,248</h3>
+</div>
+<!-- Card 4: Active Fleet -->
+<div class="col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary-fixed/30 rounded-full group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+<span class="bg-surface-container-high text-on-surface font-label-md text-[10px] px-2 py-1 rounded-full">
+                            92% Utili.
+                        </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Active Fleet</p>
+<h3 class="font-display text-display text-on-surface relative z-10">115 <span class="font-headline-md text-headline-md text-outline-variant">/ 125</span></h3>
+</div>
+<!-- Main Chart Section (8 cols) -->
+<div class="col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col min-h-[400px]">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Sales vs Marketing Performance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Correlation between marketing spend and booking volume over 6 months.</p>
+</div>
+<button class="p-2 text-outline hover:text-primary hover:bg-surface-container transition-colors rounded-lg">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Abstract Chart Representation for Visual Appeal -->
+<div class="flex-1 relative w-full mt-4 border-l border-b border-outline-variant flex items-end justify-between px-4 pb-0 pt-8 gap-4">
+<!-- Y-axis markers -->
+<div class="absolute left-[-30px] top-0 bottom-0 flex flex-col justify-between text-[10px] font-label-md text-outline-variant">
+<span>100k</span><span>75k</span><span>50k</span><span>25k</span><span>0</span>
+</div>
+<!-- Data Bars (Mock) -->
+<div class="w-full flex justify-between items-end h-full">
+<div class="w-[12%] h-[40%] bg-primary-fixed rounded-t-sm relative group cursor-pointer hover:bg-primary transition-colors">
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface font-label-md text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Jan: 40k</div>
+</div>
+<div class="w-[12%] h-[55%] bg-primary-fixed rounded-t-sm relative group cursor-pointer hover:bg-primary transition-colors"></div>
+<div class="w-[12%] h-[35%] bg-primary-fixed rounded-t-sm relative group cursor-pointer hover:bg-primary transition-colors"></div>
+<div class="w-[12%] h-[70%] bg-primary-fixed rounded-t-sm relative group cursor-pointer hover:bg-primary transition-colors"></div>
+<div class="w-[12%] h-[85%] bg-primary rounded-t-sm relative group cursor-pointer">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-2 h-2 bg-secondary rounded-full ring-2 ring-surface-container-lowest"></div>
+</div>
+<div class="w-[12%] h-[60%] bg-primary-fixed rounded-t-sm relative group cursor-pointer hover:bg-primary transition-colors"></div>
+</div>
+<!-- Trend Line Mock (SVG overlay) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M 5 65 L 23 50 L 41 70 L 59 35 L 77 20 L 95 45" fill="none" stroke="#2c694e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- X-axis labels -->
+<div class="absolute -bottom-6 left-0 right-0 flex justify-between px-4 text-[11px] font-label-md text-outline-variant">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+</div>
+</div>
+</div>
+<!-- Side Section: Reminder Piutang (4 cols) -->
+<div class="col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col min-h-[400px]">
+<div class="flex justify-between items-center mb-5">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-error">warning</span>
+                            Reminder Piutang
+                        </h3>
+<span class="bg-error-container text-on-error-container font-label-md text-[11px] px-2 py-1 rounded-full">4 Overdue</span>
+</div>
+<div class="flex-1 flex flex-col gap-3 overflow-y-auto pr-2">
+<!-- List Item 1 -->
+<div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">PT. Lintas Nusantara</span>
+<span class="font-label-md text-label-md text-error">Rp 12.5M</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-[12px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">route</span> JKT - BDG
+                                </span>
+<span class="font-body-md text-[11px] text-outline">Due: 2 Days ago</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">CV. Makmur Jaya</span>
+<span class="font-label-md text-label-md text-error">Rp 8.2M</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-[12px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">route</span> JKT - SBY
+                                </span>
+<span class="font-body-md text-[11px] text-outline">Due: 5 Days ago</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Kementrian Pendidikan</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Rp 24.0M</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-[12px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">route</span> JKT Tour
+                                </span>
+<span class="font-body-md text-[11px] text-outline">Due: Today</span>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright transition-colors cursor-pointer group mt-auto">
+<button class="w-full text-center font-label-md text-label-md text-primary py-1">View All Receivables</button>
+</div>
+</div>
+</div>
+<!-- Recent Activities (12 cols) -->
+<div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-0 shadow-sm overflow-hidden mt-2">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent Orders</h3>
+<button class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline">
+                            View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Order ID</th>
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Customer</th>
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Route / Destination</th>
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Departure Date</th>
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Amount</th>
+<th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+<td class="py-4 px-6 font-code text-code text-outline-variant">#ORD-2023-1042</td>
+<td class="py-4 px-6 font-medium">Budi Santoso Group</td>
+<td class="py-4 px-6 text-on-surface-variant">Jakarta - Yogyakarta (3 Days)</td>
+<td class="py-4 px-6">24 Oct 2023</td>
+<td class="py-4 px-6">Rp 15.400.000</td>
+<td class="py-4 px-6 text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container">Confirmed</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+<td class="py-4 px-6 font-code text-code text-outline-variant">#ORD-2023-1041</td>
+<td class="py-4 px-6 font-medium">SMA Negeri 1 Bandung</td>
+<td class="py-4 px-6 text-on-surface-variant">Bandung - Bali (7 Days)</td>
+<td class="py-4 px-6">28 Oct 2023</td>
+<td class="py-4 px-6">Rp 42.000.000</td>
+<td class="py-4 px-6 text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-variant text-primary">Pending Payment</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors">
+<td class="py-4 px-6 font-code text-code text-outline-variant">#ORD-2023-1040</td>
+<td class="py-4 px-6 font-medium">PT. Maju Mundur</td>
+<td class="py-4 px-6 text-on-surface-variant">Jakarta City Tour (1 Day)</td>
+<td class="py-4 px-6">15 Oct 2023</td>
+<td class="py-4 px-6">Rp 3.500.000</td>
+<td class="py-4 px-6 text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-high text-outline">Completed</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
+
+<!-- Dashboard Utama -->
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daftar Pesanan - JakartaRentBus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "outline-variant": "#c5c6cf",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed": "#071b3b",
+                      "on-primary-container": "#8293ba",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-variant": "#d3e4fe",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad6",
+                      "inverse-surface": "#213145",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#b1f0ce",
+                      "on-primary-fixed-variant": "#364669",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#aeeecb",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary-container": "#5f0007",
+                      "on-tertiary-fixed": "#410003",
+                      "surface-tint": "#4e5e82",
+                      "primary": "#031636",
+                      "inverse-on-surface": "#eaf1ff",
+                      "tertiary": "#380003",
+                      "secondary": "#2c694e",
+                      "primary-container": "#1a2b4c",
+                      "on-surface": "#0b1c30",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#920212",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#316e52",
+                      "on-surface-variant": "#44474e",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#e5eeff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#fe5954",
+                      "primary-fixed-dim": "#b6c6f0",
+                      "secondary-fixed-dim": "#95d4b3",
+                      "on-secondary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#002114",
+                      "inverse-primary": "#b6c6f0",
+                      "outline": "#75777f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px",
+                      "card-gap": "20px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "code": [
+                              "Inter"
+                      ],
+                      "display": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "code": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar (Hidden on Mobile, Visible on Desktop) -->
+<nav class="hidden md:flex flex-col p-4 gap-2 h-full bg-surface-container-low dark:bg-primary-container text-primary dark:text-primary-fixed font-label-md text-label-md font-headline-sm text-headline-sm font-black text-primary dark:text-primary-fixed fixed left-0 top-0 h-full w-[260px] z-50 border-r border-outline-variant dark:border-outline shadow-none">
+<div class="mb-8 px-4 mt-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant font-normal">Internal Management</p>
+</div>
+<button class="bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-colors duration-200 rounded-lg py-3 px-4 flex items-center justify-center gap-2 mb-6 font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+            New Booking
+        </button>
+<div class="flex-1 overflow-y-auto space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">CRM</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">directions_bus</span>
+<span class="font-label-md text-label-md">Fleet</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Finance</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim/10 transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<div class="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-surface-container-high rounded-lg transition-colors">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
+                    A
+                </div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Admin User</p>
+<p class="text-xs text-on-surface-variant">admin@jakartarentbus.com</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar (Visible on Mobile, Hidden on Desktop in this specific context as SideNav handles main nav, but using it as Header as requested) -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full bg-surface dark:bg-surface text-primary dark:text-primary-fixed font-body-md text-body-md docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline flat no shadows hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform md:hidden">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">JakartaRentBus</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar placeholder for a user profile in a modern web application dashboard. The image should be a generic but professional looking user icon or abstract avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzh-bnHSk-WUxkqSL-zNcC3cB8eEA0Pce-TPG3DaMYqskFTc2Gsl4dMvwAFtbMPLpkPUpD65AOlh-gYxcH_JGXmkD_A8Jm6FLJ8c-y-501P1Ly7VuWixOLXmwxKZllmGhds0XJXYThvQsoMaoHcEOLlwYiPc5RJPLQxS9eOBYS9qaxCAcoD6F22tWJgv-jdg7oBOqIHF30XDqqRXyAxxl9pjQRc2o1Nzt4lzI4VUp_CqEbyoi3Zqj8xxI6B71g-ByQOFt27g9iOlWd"/>
+</div>
+</div>
+</header>
+<!-- Page Header & Actions -->
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Daftar Pesanan</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage and track all bus rental orders.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-2 w-full sm:w-auto justify-center">
+<span class="material-symbols-outlined text-sm">add</span>
+                Add New Order
+            </button>
+</div>
+<!-- Content Canvas -->
+<div class="p-container-padding flex-1 bg-background flex flex-col gap-6">
+<!-- Filters & Search -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex flex-col md:flex-row gap-4 items-end">
+<div class="flex-1 w-full relative">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Search Orders</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md" placeholder="Search by ID or Customer Name..." type="text"/>
+</div>
+</div>
+<div class="w-full md:w-48">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Date Range</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_month</span>
+<select class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md cursor-pointer">
+<option>Last 7 Days</option>
+<option>Last 30 Days</option>
+<option>This Month</option>
+<option>Custom Range</option>
+</select>
+</div>
+</div>
+<div class="w-full md:w-48">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Status</label>
+<select class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md cursor-pointer">
+<option>All Statuses</option>
+<option>DP (Down Payment)</option>
+<option>Lunas (Paid)</option>
+<option>Cancel</option>
+</select>
+</div>
+<button class="w-full md:w-auto px-4 py-2 border border-outline-variant text-on-surface bg-surface hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-colors flex items-center justify-center gap-2 h-10">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                    More Filters
+                </button>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex-1 flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Order ID</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Date</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Customer</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Route</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Fleet / PO Bus</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Total Price</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Balance</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+<th class="py-3 px-4 w-10"></th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3 px-4 font-medium text-primary">#ORD-2023-0801</td>
+<td class="py-3 px-4 text-on-surface">12 Oct 2023</td>
+<td class="py-3 px-4">
+<div class="font-medium text-on-surface">Budi Santoso</div>
+<div class="text-xs text-on-surface-variant">08123456789</div>
+</td>
+<td class="py-3 px-4 text-on-surface truncate max-w-[150px]" title="Jakarta - Bandung">Jakarta - Bandung</td>
+<td class="py-3 px-4">
+<div class="text-on-surface">Big Bus (59s)</div>
+<div class="text-xs text-on-surface-variant">PO. Haryanto</div>
+</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 3.500.000</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 1.500.000</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container">
+                                        DP
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3 px-4 font-medium text-primary">#ORD-2023-0802</td>
+<td class="py-3 px-4 text-on-surface">14 Oct 2023</td>
+<td class="py-3 px-4">
+<div class="font-medium text-on-surface">PT Maju Jaya</div>
+<div class="text-xs text-on-surface-variant">Corporate</div>
+</td>
+<td class="py-3 px-4 text-on-surface truncate max-w-[150px]" title="Jakarta - Jogja (3 Days)">Jakarta - Jogja (3 Days)</td>
+<td class="py-3 px-4">
+<div class="text-on-surface">Medium Bus (31s)</div>
+<div class="text-xs text-on-surface-variant">PO. Sinar Jaya</div>
+</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 8.200.000</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 0</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-primary-container text-on-primary-container">
+                                        LUNAS
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3 px-4 font-medium text-primary">#ORD-2023-0805</td>
+<td class="py-3 px-4 text-on-surface">15 Oct 2023</td>
+<td class="py-3 px-4">
+<div class="font-medium text-on-surface">Siti Aminah</div>
+<div class="text-xs text-on-surface-variant">08987654321</div>
+</td>
+<td class="py-3 px-4 text-on-surface truncate max-w-[150px]" title="Jakarta City Tour">Jakarta City Tour</td>
+<td class="py-3 px-4">
+<div class="text-on-surface">Hiace (14s)</div>
+<div class="text-xs text-on-surface-variant">PO. White Horse</div>
+</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 1.200.000</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 1.200.000</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-error-container text-on-error-container">
+                                        CANCEL
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3 px-4 font-medium text-primary">#ORD-2023-0806</td>
+<td class="py-3 px-4 text-on-surface">18 Oct 2023</td>
+<td class="py-3 px-4">
+<div class="font-medium text-on-surface">SMA Negeri 1</div>
+<div class="text-xs text-on-surface-variant">Study Tour</div>
+</td>
+<td class="py-3 px-4 text-on-surface truncate max-w-[150px]" title="Jakarta - Bali (5 Days)">Jakarta - Bali (5 Days)</td>
+<td class="py-3 px-4">
+<div class="text-on-surface">3x Big Bus (59s)</div>
+<div class="text-xs text-on-surface-variant">PO. Gunung Harta</div>
+</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 45.000.000</td>
+<td class="py-3 px-4 text-right text-on-surface">Rp 20.000.000</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container">
+                                        DP
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="mt-auto border-t border-outline-variant p-4 bg-surface flex items-center justify-between text-sm">
+<div class="text-on-surface-variant font-body-md text-body-md">
+                        Showing <span class="font-medium text-on-surface">1</span> to <span class="font-medium text-on-surface">4</span> of <span class="font-medium text-on-surface">128</span> results
+                    </div>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-surface-container-low text-outline-variant disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-medium flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low text-on-surface font-medium flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low text-on-surface font-medium flex items-center justify-center">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low text-on-surface font-medium flex items-center justify-center">12</button>
+<button class="p-1 rounded hover:bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
+
+<!-- Manajemen Pesanan -->
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Order - JakartaRentBus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "outline-variant": "#c5c6cf",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed": "#071b3b",
+                      "on-primary-container": "#8293ba",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-variant": "#d3e4fe",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad6",
+                      "inverse-surface": "#213145",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#b1f0ce",
+                      "on-primary-fixed-variant": "#364669",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#aeeecb",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary-container": "#5f0007",
+                      "on-tertiary-fixed": "#410003",
+                      "surface-tint": "#4e5e82",
+                      "primary": "#031636",
+                      "inverse-on-surface": "#eaf1ff",
+                      "tertiary": "#380003",
+                      "secondary": "#2c694e",
+                      "primary-container": "#1a2b4c",
+                      "on-surface": "#0b1c30",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#920212",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#316e52",
+                      "on-surface-variant": "#44474e",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#e5eeff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#fe5954",
+                      "primary-fixed-dim": "#b6c6f0",
+                      "secondary-fixed-dim": "#95d4b3",
+                      "on-secondary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#002114",
+                      "inverse-primary": "#b6c6f0",
+                      "outline": "#75777f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px",
+                      "card-gap": "20px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "code": [
+                              "Inter"
+                      ],
+                      "display": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "code": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body { background-color: #F8FAFC; } /* Level 0 Background */
+      </style>
+</head>
+<body class="text-on-background flex h-screen overflow-hidden">
+<!-- SideNavBar (Web Only) -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full w-[260px] z-50 border-r border-outline-variant dark:border-outline bg-surface-container-low dark:bg-primary-container flex-col p-4 gap-2">
+<div class="mb-8 px-4">
+<h1 class="font-headline-sm text-headline-sm font-black text-primary dark:text-primary-fixed">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Internal Management</p>
+</div>
+<button class="bg-primary text-on-primary rounded-lg py-3 px-4 font-label-md text-label-md mb-6 w-full flex items-center justify-center gap-2 hover:bg-surface-tint transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+            New Booking
+        </button>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                Orders
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                CRM
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+                Fleet
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Finance
+            </a>
+<div class="mt-auto">
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[260px] h-full overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline bg-surface dark:bg-surface flex justify-between items-center px-container-padding h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant p-2 -ml-2 rounded-full hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed md:hidden">JakartaRentBus</h2>
+<div class="hidden md:flex text-on-surface-variant font-medium">
+<span class="text-primary font-bold border-b-2 border-primary pb-1">New Order</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-full text-body-md font-body-md bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Search orders..." type="text"/>
+</div>
+<button class="text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover ml-2 border border-outline-variant" data-alt="A small, circular profile picture of an administrative user in a modern office environment, warm professional lighting, corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9zULtcwtgK9rvk7IgkxG5F3_nGIw7pKrKooKrsjM10BtXGWHh2ZCx7XTMDcpY5_qZrs4YK2eze69wYPf0Q5iVGM_WZ36OszKeWCuiITtaLu2NrSRVrmBSEbmz-hnel9VbJmlpZKfLZtD6Ij8dOvqVzHconILkSVXOBNK1vM3RikkkOb9QuL1HsLgYy7sq9ro1df37ib8xMdf37arGpjPBceoUXnS8ohUpKNhDYsc6l8cUGEdVSWlj6Esqh1HwtNHTchQSQMdTod8U"/>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-4 md:p-container-padding pb-32">
+<div class="max-w-5xl mx-auto space-y-card-gap">
+<div class="mb-6">
+<h1 class="font-headline-lg text-headline-lg text-primary">Create New Order</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Fill in the details below to log a new rental booking.</p>
+</div>
+<form class="space-y-card-gap">
+<!-- 1. Informasi Keberangkatan -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2 border-b border-outline-variant pb-3">
+<span class="material-symbols-outlined text-surface-tint">calendar_month</span>
+                            Informasi Keberangkatan
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Departure Date</label>
+<input class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright" type="date"/>
+</div>
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Return Date</label>
+<input class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright" type="date"/>
+</div>
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Origin (Kota Asal)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">my_location</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright" placeholder="e.g. Jakarta" type="text"/>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Destination (Kota Tujuan)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">location_on</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright" placeholder="e.g. Bandung" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Data Pelanggan -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<div class="flex justify-between items-center mb-6 border-b border-outline-variant pb-3">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">person</span>
+                                Data Pelanggan
+                            </h3>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" type="button">
+<span class="material-symbols-outlined text-sm">person_add</span> Add New
+                            </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
+<div class="col-span-12">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Select Customer from CRM</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright" placeholder="Search by name or phone number..." type="text"/>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Customer Name</label>
+<input class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md bg-surface-container-low text-on-surface-variant cursor-not-allowed" readonly="" type="text" value="Budi Santoso"/>
+</div>
+<div class="col-span-12 md:col-span-6">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Contact Number</label>
+<input class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md bg-surface-container-low text-on-surface-variant cursor-not-allowed" readonly="" type="text" value="+62 812-3456-7890"/>
+</div>
+</div>
+</section>
+<!-- 3. Detail Armada -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2 border-b border-outline-variant pb-3">
+<span class="material-symbols-outlined text-surface-tint">directions_bus</span>
+                            Detail Armada
+                        </h3>
+<!-- List of Vehicles -->
+<div class="space-y-4 mb-4">
+<!-- Vehicle Item -->
+<div class="border border-outline-variant rounded-lg p-4 bg-surface-bright flex flex-col md:flex-row gap-4 items-start md:items-center">
+<div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">PO Bus / Mitra</label>
+<select class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest appearance-none">
+<option>Sinar Jaya</option>
+<option>Lorena</option>
+<option>Pahala Kencana</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Vehicle Type</label>
+<select class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest appearance-none">
+<option>Big Bus (50-59 Seats)</option>
+<option>Medium Bus (31-39 Seats)</option>
+<option>Elf / Hiace (15-19 Seats)</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Quantity</label>
+<input class="w-full border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest" min="1" type="number" value="1"/>
+</div>
+</div>
+<button class="text-error hover:bg-error-container p-2 rounded-full transition-colors self-end md:self-auto mt-2 md:mt-0" type="button">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary flex items-center gap-2 hover:bg-surface-container-low px-4 py-2 rounded-lg transition-colors border border-dashed border-primary w-full justify-center" type="button">
+<span class="material-symbols-outlined text-sm">add</span> Add Another Vehicle
+                        </button>
+</section>
+<!-- 4. Rincian Biaya -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2 border-b border-outline-variant pb-3">
+<span class="material-symbols-outlined text-surface-tint">payments</span>
+                            Rincian Biaya
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
+<div class="col-span-12 md:col-span-4">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Buy Price (Harga Modal)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant font-body-md">Rp</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright text-right" placeholder="0" type="text"/>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Sell Price (Harga Jual)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant font-body-md">Rp</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright text-right" placeholder="0" type="text"/>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">DP Amount (Uang Muka)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant font-body-md">Rp</span>
+<input class="w-full border border-outline-variant rounded-lg pl-10 pr-3 py-2 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-bright text-right" placeholder="0" type="text"/>
+</div>
+</div>
+<div class="col-span-12 mt-4 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-on-surface-variant">Estimated Margin:</span>
+<span class="font-headline-md text-headline-md text-secondary">Rp 0</span>
+</div>
+</div>
+</section>
+</form>
+</div>
+</main>
+<!-- Sticky Footer Actions -->
+<div class="absolute bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant p-4 flex justify-end gap-4 z-40 shadow-[0_-4px_6px_-1px_rgb(0,0,0,0.05)]">
+<button class="px-6 py-2 rounded-lg font-label-md text-label-md border border-primary text-primary hover:bg-surface-container-low transition-colors bg-transparent">
+                Save Draft
+            </button>
+<button class="px-6 py-2 rounded-lg font-label-md text-label-md bg-primary text-on-primary hover:bg-surface-tint transition-colors shadow-sm">
+                Submit Order
+            </button>
+</div>
+</div>
+</body></html>
+
+<!-- Input Pesanan Baru -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JakartaRentBus - Finance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "outline-variant": "#c5c6cf",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed": "#071b3b",
+                      "on-primary-container": "#8293ba",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-variant": "#d3e4fe",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad6",
+                      "inverse-surface": "#213145",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#b1f0ce",
+                      "on-primary-fixed-variant": "#364669",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#aeeecb",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary-container": "#5f0007",
+                      "on-tertiary-fixed": "#410003",
+                      "surface-tint": "#4e5e82",
+                      "primary": "#031636",
+                      "inverse-on-surface": "#eaf1ff",
+                      "tertiary": "#380003",
+                      "secondary": "#2c694e",
+                      "primary-container": "#1a2b4c",
+                      "on-surface": "#0b1c30",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#920212",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#316e52",
+                      "on-surface-variant": "#44474e",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#e5eeff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#fe5954",
+                      "primary-fixed-dim": "#b6c6f0",
+                      "secondary-fixed-dim": "#95d4b3",
+                      "on-secondary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#002114",
+                      "inverse-primary": "#b6c6f0",
+                      "outline": "#75777f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px",
+                      "card-gap": "20px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "code": [
+                              "Inter"
+                      ],
+                      "display": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "code": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface bg-background">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col p-4 gap-2 h-full fixed left-0 top-0 w-[260px] z-50 bg-surface-container-low dark:bg-primary-container border-r border-outline-variant dark:border-outline">
+<div class="flex flex-col mb-8 px-4 py-2">
+<h1 class="font-headline-sm text-headline-sm font-black text-primary dark:text-primary-fixed mb-1">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Internal Management</p>
+</div>
+<button class="bg-primary text-on-primary w-full py-3 rounded-lg font-label-md text-label-md mb-6 hover:bg-surface-tint transition-colors">
+            New Booking
+        </button>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            Dashboard
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+            Orders
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+            CRM
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+            Fleet
+        </a>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm font-label-md text-label-md active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+            Finance
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+            Settings
+        </a>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full bg-surface dark:bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<span class="md:hidden font-headline-md text-headline-md font-bold text-primary">JakartaRentBus</span>
+<div class="hidden md:flex relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-md text-body-md w-64" placeholder="Search finance..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<button class="text-primary border border-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+                    Support
+                </button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-colors">
+                    Add New
+                </button>
+<img alt="User Profile" class="w-8 h-8 rounded-full ml-2 border border-outline-variant object-cover" data-alt="A small circular user profile placeholder image with a generic avatar icon in a light, corporate blue tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCejQt-ayaA4nXyhBkMmrGkJyy0lckKRimU5duE-1vk1mkdYvOle8qgoc24XPl8p6LTG-aUjMSo0m_QMkJ6JJlVcQwpiP06rwmAUBkT9JATEctmozl_EMCxJyrs4tTtk91Z0dm_muVL14A2SnNmbDiDeYK_F68ln5fGXrTiyUppu0lPboic_z8jX8TTVp7143PTZzZUifDLlO_vXz2k6Tmm9FS5jNx6QcJKG-NyRnsvvP6qxOEMfIUMARK5oIINLZWL9HXg2G0WUU4r"/>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-4 md:p-6 lg:p-8 flex-1 grid grid-cols-12 gap-card-gap auto-rows-max">
+<!-- Page Header -->
+<div class="col-span-12 mb-2 flex justify-between items-end">
+<div>
+<h2 class="font-display text-display text-primary">Finance &amp; Receivables</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Real-time overview of outstanding balances and cash flow.</p>
+</div>
+<div class="flex gap-3">
+<select class="border border-outline-variant rounded-lg px-4 py-2 bg-surface-container-lowest font-body-md text-body-md focus:ring-1 focus:ring-primary">
+<option>This Month (Oct 2023)</option>
+<option>Last Month (Sep 2023)</option>
+<option>Year to Date</option>
+</select>
+<button class="flex items-center gap-2 border border-outline-variant rounded-lg px-4 py-2 bg-surface-container-lowest font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span> Export CSV
+                    </button>
+</div>
+</div>
+<!-- Financial Overview Widgets -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:bg-surface-container-low transition-colors flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Total Receivables (Piutang)</span>
+<span class="material-symbols-outlined text-error bg-error-container p-2 rounded-full">account_balance_wallet</span>
+</div>
+<div class="font-display text-display text-error">Rp 145.500.000</div>
+<div class="flex items-center gap-1 mt-4 text-error font-body-md text-body-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+12% from last month</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:bg-surface-container-low transition-colors flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Total DP Received</span>
+<span class="material-symbols-outlined text-secondary bg-secondary-container p-2 rounded-full">payments</span>
+</div>
+<div class="font-display text-display text-on-surface">Rp 82.000.000</div>
+<div class="flex items-center gap-1 mt-4 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>Pending full payment</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:bg-surface-container-low transition-colors flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Total Full Payments</span>
+<span class="material-symbols-outlined text-secondary bg-secondary-container p-2 rounded-full">check_circle</span>
+</div>
+<div class="font-display text-display text-secondary">Rp 320.000.000</div>
+<div class="flex items-center gap-1 mt-4 text-secondary font-body-md text-body-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+5% from last month</span>
+</div>
+</div>
+<!-- Table Container -->
+<div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm mt-4">
+<!-- Table Header Actions -->
+<div class="flex justify-between items-center p-6 border-b border-outline-variant bg-surface-bright rounded-t-xl">
+<h3 class="font-headline-md text-headline-md text-primary">Laporan Piutang / Saldo Minus</h3>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-md text-body-md w-64" placeholder="Search customer or ID..." type="text"/>
+</div>
+<select class="border border-outline-variant rounded-lg px-4 py-2 bg-surface-container-lowest font-body-md text-body-md focus:ring-1 focus:ring-primary">
+<option>All Balances</option>
+<option>Saldo Minus (&gt; 0)</option>
+<option>Fully Paid (0)</option>
+</select>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4 font-semibold">Date</th>
+<th class="px-6 py-4 font-semibold">Customer / Order ID</th>
+<th class="px-6 py-4 font-semibold text-right">Total Amount</th>
+<th class="px-6 py-4 font-semibold text-right">Amount DP</th>
+<th class="px-6 py-4 font-semibold text-right">Amount Full</th>
+<th class="px-6 py-4 font-semibold text-right">Balance</th>
+<th class="px-6 py-4 font-semibold text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md text-body-md">
+<!-- Row 1: Unpaid Balance -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">24 Oct 2023</td>
+<td class="px-6 py-4">
+<div class="font-semibold text-primary">PT. Abadi Jaya</div>
+<div class="text-on-surface-variant text-[12px]">ORD-2023-10-045</div>
+</td>
+<td class="px-6 py-4 text-right tabular-nums">Rp 15.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">Rp 5.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">-</td>
+<td class="px-6 py-4 text-right tabular-nums">
+<span class="inline-flex items-center gap-1 bg-error-container text-error px-2 py-1 rounded font-semibold">
+                                        Rp 10.000.000
+                                    </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded text-[13px] font-medium hover:bg-surface-tint transition-colors whitespace-nowrap">
+                                        Record Payment
+                                    </button>
+</td>
+</tr>
+<!-- Row 2: Unpaid Balance -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">22 Oct 2023</td>
+<td class="px-6 py-4">
+<div class="font-semibold text-primary">SMAN 1 Jakarta</div>
+<div class="text-on-surface-variant text-[12px]">ORD-2023-10-038</div>
+</td>
+<td class="px-6 py-4 text-right tabular-nums">Rp 8.500.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">Rp 2.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">-</td>
+<td class="px-6 py-4 text-right tabular-nums">
+<span class="inline-flex items-center gap-1 bg-error-container text-error px-2 py-1 rounded font-semibold">
+                                        Rp 6.500.000
+                                    </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded text-[13px] font-medium hover:bg-surface-tint transition-colors whitespace-nowrap">
+                                        Record Payment
+                                    </button>
+</td>
+</tr>
+<!-- Row 3: Fully Paid -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">20 Oct 2023</td>
+<td class="px-6 py-4">
+<div class="font-semibold text-primary">Budi Santoso</div>
+<div class="text-on-surface-variant text-[12px]">ORD-2023-10-022</div>
+</td>
+<td class="px-6 py-4 text-right tabular-nums">Rp 4.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">Rp 1.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">Rp 3.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums">
+<span class="inline-flex items-center gap-1 text-secondary font-semibold">
+                                        Rp 0
+                                    </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="border border-outline-variant text-on-surface-variant px-3 py-1.5 rounded text-[13px] font-medium hover:bg-surface-container-high transition-colors whitespace-nowrap" disabled="">
+                                        Completed
+                                    </button>
+</td>
+</tr>
+<!-- Row 4: Unpaid Balance -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">18 Oct 2023</td>
+<td class="px-6 py-4">
+<div class="font-semibold text-primary">CV. Mega Mandiri</div>
+<div class="text-on-surface-variant text-[12px]">ORD-2023-10-015</div>
+</td>
+<td class="px-6 py-4 text-right tabular-nums">Rp 22.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">Rp 5.000.000</td>
+<td class="px-6 py-4 text-right tabular-nums text-on-surface-variant">-</td>
+<td class="px-6 py-4 text-right tabular-nums">
+<span class="inline-flex items-center gap-1 bg-error-container text-error px-2 py-1 rounded font-semibold">
+                                        Rp 17.000.000
+                                    </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded text-[13px] font-medium hover:bg-surface-tint transition-colors whitespace-nowrap">
+                                        Record Payment
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between px-6 py-4 border-t border-outline-variant bg-surface-container-lowest rounded-b-xl">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 1 to 4 of 45 entries</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low font-body-md text-body-md disabled:opacity-50" disabled="">Previous</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded font-body-md text-body-md">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low font-body-md text-body-md">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low font-body-md text-body-md">3</button>
+<button class="px-3 py-1 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low font-body-md text-body-md">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
+
+<!-- Modul Keuangan & Piutang -->
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fleet &amp; Vendor Management - JakartaRentBus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "outline-variant": "#c5c6cf",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed": "#071b3b",
+                      "on-primary-container": "#8293ba",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-variant": "#d3e4fe",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad6",
+                      "inverse-surface": "#213145",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#b1f0ce",
+                      "on-primary-fixed-variant": "#364669",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#aeeecb",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary-container": "#5f0007",
+                      "on-tertiary-fixed": "#410003",
+                      "surface-tint": "#4e5e82",
+                      "primary": "#031636",
+                      "inverse-on-surface": "#eaf1ff",
+                      "tertiary": "#380003",
+                      "secondary": "#2c694e",
+                      "primary-container": "#1a2b4c",
+                      "on-surface": "#0b1c30",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#920212",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#316e52",
+                      "on-surface-variant": "#44474e",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#e5eeff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#fe5954",
+                      "primary-fixed-dim": "#b6c6f0",
+                      "secondary-fixed-dim": "#95d4b3",
+                      "on-secondary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#002114",
+                      "inverse-primary": "#b6c6f0",
+                      "outline": "#75777f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px",
+                      "card-gap": "20px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "code": ["Inter"],
+                      "display": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "code": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                      "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] z-50 border-r border-outline-variant bg-surface-container-low hidden md:flex flex-col p-4 gap-2 h-full">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">directions_bus</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-black text-primary">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Internal Management</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-md text-label-md">CRM</span>
+</a>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+<span class="font-label-md text-label-md">Fleet</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Finance</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-surface-container-high transition-all active:opacity-80 transition-opacity mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<button class="mt-4 w-full bg-primary text-on-primary py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity shadow-sm flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+             New Booking
+        </button>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="flex-1 ml-0 md:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky z-40 border-b border-outline-variant flex justify-between items-center px-container-padding h-16 w-full bg-surface">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md font-bold text-primary hidden md:block">Fleet &amp; Vendor Management</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors duration-200">Support</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:opacity-90 transition-opacity">Add New</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden ml-2 border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small, professional avatar portrait of a corporate employee in a light mode office setting. Clear, neutral lighting, professional aesthetic, focused on a stylized, generic user silhouette to match a modern dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFntaHUqKn_pPPxbLk3-0SZmuuWIcEgMKu72r3jizCmOGu4FkdCVy0LyBV258b-Rjt6roG-hHr7OFaU2RZCnNif305Nmog28kpigRAi8G-GaO2xp2o1Hmq-aCYYq-Iy7-4SfNhfJ2ul5XysVRpfyngSoYuXJfi6YLNxAaTBLhJj8oLGZUVakS4OMWoH7bUZDNUIk3qpinIwwsKQsccw0R2v7EQZrA_PAJ6SDxmk0hYTBsySNpk40UsrusRtMM9ADCExsLV3UWApru0"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-container-padding flex flex-col gap-6 w-full max-w-[1440px] mx-auto">
+<!-- Section 1: Daftar Mitra/PO Bus -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface">
+<h3 class="font-headline-md text-headline-md text-primary">Daftar Mitra / PO Bus</h3>
+<button class="text-primary font-label-md text-label-md hover:underline flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase">
+<th class="p-4 border-b border-outline-variant">Mitra Name</th>
+<th class="p-4 border-b border-outline-variant">Contact</th>
+<th class="p-4 border-b border-outline-variant text-right">Active Units</th>
+<th class="p-4 border-b border-outline-variant">Rating</th>
+<th class="p-4 border-b border-outline-variant">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-background">
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-4 font-medium">PO. Sinar Jaya</td>
+<td class="p-4 text-on-surface-variant">Bpk. Agus (0812-3456-7890)</td>
+<td class="p-4 text-right">42</td>
+<td class="p-4 flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.8</td>
+<td class="p-4"><span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-md text-[10px] uppercase">Active</span></td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-4 font-medium">PO. Haryanto</td>
+<td class="p-4 text-on-surface-variant">Ibu Siti (0813-9876-5432)</td>
+<td class="p-4 text-right">28</td>
+<td class="p-4 flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.9</td>
+<td class="p-4"><span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-md text-[10px] uppercase">Active</span></td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-4 font-medium">PO. Rosalia Indah</td>
+<td class="p-4 text-on-surface-variant">Bpk. Budi (0856-1122-3344)</td>
+<td class="p-4 text-right">15</td>
+<td class="p-4 flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[16px]" data-weight="fill">star</span> 4.5</td>
+<td class="p-4"><span class="px-2 py-1 rounded bg-error-container text-on-error-container font-label-md text-[10px] uppercase">Review</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Section 2: Jenis Kendaraan -->
+<section class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-surface">
+<h3 class="font-headline-md text-headline-md text-primary">Jenis Kendaraan</h3>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-4">
+<div class="border border-outline-variant rounded-lg p-4 flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">directions_bus</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-background">Big Bus</h4>
+<p class="font-body-md text-[12px] text-on-surface-variant">Capacity: 45 - 59 Seats</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase text-[10px]">Base Price</p>
+<p class="font-headline-md text-[16px] text-primary">Rp 2.5M <span class="font-body-md text-[12px] text-on-surface-variant font-normal">/day</span></p>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg p-4 flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">airport_shuttle</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-background">Medium Bus</h4>
+<p class="font-body-md text-[12px] text-on-surface-variant">Capacity: 29 - 33 Seats</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase text-[10px]">Base Price</p>
+<p class="font-headline-md text-[16px] text-primary">Rp 1.8M <span class="font-body-md text-[12px] text-on-surface-variant font-normal">/day</span></p>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg p-4 flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">commute</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-background">Hiace / Elf</h4>
+<p class="font-body-md text-[12px] text-on-surface-variant">Capacity: 14 - 19 Seats</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase text-[10px]">Base Price</p>
+<p class="font-headline-md text-[16px] text-primary">Rp 1.2M <span class="font-body-md text-[12px] text-on-surface-variant font-normal">/day</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: History Modal/Qty Buy -->
+<section class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface">
+<h3 class="font-headline-md text-headline-md text-primary">History Modal / Qty Buy</h3>
+<div class="flex gap-2">
+<button class="p-1 border border-outline-variant rounded hover:bg-surface-container-low text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">filter_list</span></button>
+<button class="p-1 border border-outline-variant rounded hover:bg-surface-container-low text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase">
+<th class="p-3 border-b border-outline-variant">Date</th>
+<th class="p-3 border-b border-outline-variant">Vendor</th>
+<th class="p-3 border-b border-outline-variant">Vehicle Type</th>
+<th class="p-3 border-b border-outline-variant text-right">QTY</th>
+<th class="p-3 border-b border-outline-variant text-right">Price/Unit</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-background">
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-3 whitespace-nowrap text-on-surface-variant text-[13px]">12 Oct 2023</td>
+<td class="p-3 font-medium">PO. Sinar Jaya</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded-full border border-outline-variant text-[11px]">Big Bus</span></td>
+<td class="p-3 text-right font-medium">5</td>
+<td class="p-3 text-right">Rp 2.2M</td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-3 whitespace-nowrap text-on-surface-variant text-[13px]">08 Oct 2023</td>
+<td class="p-3 font-medium">PO. Haryanto</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded-full border border-outline-variant text-[11px]">Medium Bus</span></td>
+<td class="p-3 text-right font-medium">10</td>
+<td class="p-3 text-right">Rp 1.5M</td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-3 whitespace-nowrap text-on-surface-variant text-[13px]">01 Oct 2023</td>
+<td class="p-3 font-medium">Rental Makmur</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded-full border border-outline-variant text-[11px]">Hiace</span></td>
+<td class="p-3 text-right font-medium">3</td>
+<td class="p-3 text-right">Rp 1.0M</td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-3 whitespace-nowrap text-on-surface-variant text-[13px]">25 Sep 2023</td>
+<td class="p-3 font-medium">PO. Sinar Jaya</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded-full border border-outline-variant text-[11px]">Medium Bus</span></td>
+<td class="p-3 text-right font-medium">8</td>
+<td class="p-3 text-right">Rp 1.6M</td>
+</tr>
+<tr class="hover:bg-surface transition-colors border-b border-outline-variant">
+<td class="p-3 whitespace-nowrap text-on-surface-variant text-[13px]">15 Sep 2023</td>
+<td class="p-3 font-medium">Trans Jakarta</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded-full border border-outline-variant text-[11px]">Big Bus</span></td>
+<td class="p-3 text-right font-medium">2</td>
+<td class="p-3 text-right">Rp 2.4M</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>
+
+<!-- Manajemen Armada & Mitra -->
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JakartaRentBus - CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#d8e2ff",
+                    "outline-variant": "#c5c6cf",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed": "#071b3b",
+                    "on-primary-container": "#8293ba",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-variant": "#d3e4fe",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad6",
+                    "inverse-surface": "#213145",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#b1f0ce",
+                    "on-primary-fixed-variant": "#364669",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-container": "#aeeecb",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "tertiary-container": "#5f0007",
+                    "on-tertiary-fixed": "#410003",
+                    "surface-tint": "#4e5e82",
+                    "primary": "#031636",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary": "#380003",
+                    "secondary": "#2c694e",
+                    "primary-container": "#1a2b4c",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#920212",
+                    "surface": "#f8f9ff",
+                    "on-secondary-container": "#316e52",
+                    "on-surface-variant": "#44474e",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#e5eeff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fe5954",
+                    "primary-fixed-dim": "#b6c6f0",
+                    "secondary-fixed-dim": "#95d4b3",
+                    "on-secondary-fixed-variant": "#0e5138",
+                    "on-secondary-fixed": "#002114",
+                    "inverse-primary": "#b6c6f0",
+                    "outline": "#75777f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-md": "16px",
+                    "unit": "4px",
+                    "card-gap": "20px",
+                    "container-padding": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "code": ["Inter"],
+                    "display": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "code": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .tab-active { border-bottom-color: #031636; color: #031636; }
+        .tab-inactive { border-bottom-color: transparent; color: #44474e; }
+        .table-row-hover:hover { background-color: #F1F5F9; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col bg-surface-container-low border-r border-outline-variant flat no shadows fixed left-0 top-0 h-full w-[260px] z-50 p-4 gap-2">
+<div class="mb-8 px-2 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">JR</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-black text-primary">JakartaRentBus</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Internal Management</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg mb-6 shadow-sm hover:opacity-90 transition-opacity">New Booking</button>
+<ul class="flex flex-col gap-1 w-full">
+<li>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span> Orders
+                </a>
+</li>
+<li>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span> CRM
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span> Fleet
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span> Finance
+                </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-label-md text-label-md mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span> Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[260px] h-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant flat no shadows">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-surface" placeholder="Search customers, companies..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="font-label-md text-label-md text-primary bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-lg transition-colors">Support</button>
+<button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="add" style="font-size: 18px;">add</span> Add New
+                </button>
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant ml-2" data-alt="A professional corporate headshot of a person looking at the camera against a neutral background. The lighting is soft and even, suitable for a business profile picture in a modern application interface. The image is a tight crop on the face and shoulders, conveying trust and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdCF2aioo59MS6DYIgkwnxucr-lU8c3zm7TltF6Ef5uiI5PuihYe3tyDIvlSYQ42R2f82JXFRBnMDYAD7rH61Tha81uVuI7pXwC8_Q68QLo3hFwWTgpkG8gtzJoW9j6dSpjWeEYuxr709RK_nFigte16PwF-KBMhoktX_JggS4ax_FJi6NM_kbApWtmwlvYLedtWpxR9hFtUtotZz15vly78fb8OSjpM8xeEcbuKOJNmvyiD7HoGV4dht_-A4mH8Qn7iM_pSYBl3lB"/>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-container-padding bg-[#F8FAFC]">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-1">Customer Relationship Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage individual travelers and corporate accounts.</p>
+</div>
+<div class="flex gap-2">
+<button class="font-label-md text-label-md bg-surface-container-lowest border border-primary text-primary px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors">Export CSV</button>
+<button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg shadow-sm hover:opacity-90 transition-opacity">Add Customer</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant mb-6">
+<button class="font-label-md text-label-md px-6 py-3 border-b-2 tab-active transition-colors" id="tab-individual">Pelanggan Individu</button>
+<button class="font-label-md text-label-md px-6 py-3 border-b-2 tab-inactive hover:bg-surface-container-low transition-colors" id="tab-corporate">Pelanggan Korporat</button>
+</div>
+<!-- Individual Customer Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm" id="view-individual">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#F1F5F9] border-b border-outline-variant font-label-md text-label-md text-on-surface-variant uppercase">
+<th class="py-3 px-4">Name</th>
+<th class="py-3 px-4">Contact</th>
+<th class="py-3 px-4">Status</th>
+<th class="py-3 px-4 text-right">Last Order</th>
+<th class="py-3 px-4 text-right">Total Orders</th>
+<th class="py-3 px-4 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-background">
+<tr class="border-b border-outline-variant table-row-hover transition-colors h-12">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center font-label-md text-label-md">BS</div>
+<span class="font-medium">Budi Santoso</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span>+62 812-3456-7890</span>
+<span class="text-xs text-on-surface-variant">budi.s@example.com</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#dcfce7] text-[#166534]">Active</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant">12 Oct 2023</td>
+<td class="py-3 px-4 text-right font-medium">14</td>
+<td class="py-3 px-4 text-center">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md transition-colors">View History</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant table-row-hover transition-colors h-12">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container text-primary flex items-center justify-center font-label-md text-label-md">SW</div>
+<span class="font-medium">Siti Wahyuni</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span>+62 856-1122-3344</span>
+<span class="text-xs text-on-surface-variant">siti.w@example.com</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#fef08a] text-[#854d0e]">Inactive</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant">05 Jan 2023</td>
+<td class="py-3 px-4 text-right font-medium">3</td>
+<td class="py-3 px-4 text-center">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md transition-colors">View History</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant flex justify-between items-center text-sm text-on-surface-variant bg-surface-container-lowest">
+<span>Showing 1 to 2 of 245 entries</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded bg-surface hover:bg-surface-container-low disabled:opacity-50" disabled="">Prev</button>
+<button class="px-3 py-1 border border-outline-variant rounded bg-surface hover:bg-surface-container-low">Next</button>
+</div>
+</div>
+</div>
+<!-- Corporate Customer Table Container (Hidden by default) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hidden" id="view-corporate">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#F1F5F9] border-b border-outline-variant font-label-md text-label-md text-on-surface-variant uppercase">
+<th class="py-3 px-4">Company Name</th>
+<th class="py-3 px-4">Contact Person</th>
+<th class="py-3 px-4">Industry</th>
+<th class="py-3 px-4 text-right">Total Revenue</th>
+<th class="py-3 px-4 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-background">
+<tr class="border-b border-outline-variant table-row-hover transition-colors h-12">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="domain" style="font-size: 16px;">domain</span>
+</div>
+<span class="font-medium">PT Maju Mundur</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<div class="flex flex-col">
+<span>Andi Kusuma</span>
+<span class="text-xs text-on-surface-variant">+62 21-555-0192</span>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">Manufacturing</td>
+<td class="py-3 px-4 text-right font-medium">Rp 125.000.000</td>
+<td class="py-3 px-4 text-center">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md transition-colors">View History</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<script>
+        document.getElementById('tab-individual').addEventListener('click', function() {
+            this.classList.replace('tab-inactive', 'tab-active');
+            document.getElementById('tab-corporate').classList.replace('tab-active', 'tab-inactive');
+            document.getElementById('view-individual').classList.remove('hidden');
+            document.getElementById('view-corporate').classList.add('hidden');
+        });
+
+        document.getElementById('tab-corporate').addEventListener('click', function() {
+            this.classList.replace('tab-inactive', 'tab-active');
+            document.getElementById('tab-individual').classList.replace('tab-active', 'tab-inactive');
+            document.getElementById('view-corporate').classList.remove('hidden');
+            document.getElementById('view-individual').classList.add('hidden');
+        });
+    </script>
+</body></html>
+
+<!-- Database Pelanggan (CRM) -->
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings &amp; User Management - JakartaRentBus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e2ff",
+                        "outline-variant": "#c5c6cf",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-primary-fixed": "#071b3b",
+                        "on-primary-container": "#8293ba",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-variant": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdad6",
+                        "inverse-surface": "#213145",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#b1f0ce",
+                        "on-primary-fixed-variant": "#364669",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-container": "#aeeecb",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "tertiary-container": "#5f0007",
+                        "on-tertiary-fixed": "#410003",
+                        "surface-tint": "#4e5e82",
+                        "primary": "#031636",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary": "#380003",
+                        "secondary": "#2c694e",
+                        "primary-container": "#1a2b4c",
+                        "on-surface": "#0b1c30",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#920212",
+                        "surface": "#f8f9ff",
+                        "on-secondary-container": "#316e52",
+                        "on-surface-variant": "#44474e",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#e5eeff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#fe5954",
+                        "primary-fixed-dim": "#b6c6f0",
+                        "secondary-fixed-dim": "#95d4b3",
+                        "on-secondary-fixed-variant": "#0e5138",
+                        "on-secondary-fixed": "#002114",
+                        "inverse-primary": "#b6c6f0",
+                        "outline": "#75777f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "unit": "4px",
+                        "card-gap": "20px",
+                        "container-padding": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "code": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "code": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col p-4 gap-2 h-full fixed left-0 top-0 w-[260px] z-50 bg-surface-container-low border-r border-outline-variant">
+<div class="px-4 py-4 mb-4 flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<img alt="JakartaRentBus Logo" class="w-8 h-8 rounded" data-alt="A clean, minimalist logo for a transportation company featuring a stylized bus icon in deep navy blue on a crisp white background. The aesthetic is corporate and modern, conveying reliability and efficiency in fleet management. High contrast, sharp edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCed8HKJzxo-GsI24Rt44_PZb_0yEMvE5XC2k1F_cwDlXV3VoMGItIZK-D39gDY0vBjA43EJjpQzXxfxhX1SZ9TqjgZU-a_imOIIolUyBUO-e2Hjk1RxajoV2fXrJ-q_gf-l0s4o3ehyileys3MyNi1apRtTF-IhC6tQs24nW7-U7eQnvokxo0VJxyOUjw_QrItcVeKR3BAq-CfJUY7XXfVGvcZbKQfRVW456ZaiSOOD8ePrSV50xFPG48HeKrkMGcWquQ9rs8x8Ofs"/>
+<span class="font-headline-sm text-headline-sm font-black text-primary">JakartaRentBus</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Internal Management</span>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                Dashboard
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+                Orders
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">groups</span>
+                CRM
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">directions_bus</span>
+                Fleet
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+                Finance
+            </a>
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 px-4 py-3 shadow-sm font-label-md text-label-md transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+                Settings
+            </a>
+</nav>
+<button class="mt-auto bg-primary text-on-primary px-4 py-3 rounded-lg font-label-md text-label-md w-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined">add</span>
+            New Booking
+        </button>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-[260px] flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full bg-surface border-b border-outline-variant docked full-width top-0 sticky z-40">
+<div class="flex-1 flex items-center">
+<div class="relative w-full max-w-md hidden md:flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined absolute left-3">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full focus:ring-2 focus:ring-primary font-body-md text-body-md" placeholder="Search settings..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="bg-transparent text-primary border border-primary px-4 py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors hidden sm:block">
+                    Support
+                </button>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors hidden sm:block">
+                    Add New
+                </button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a corporate user, neutral lighting, solid gray background, focused and reliable expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANrlm2_eUfS-oXhJJ0wMNfclDyMRg5ijhaN5kgpAIUoEIYaUZ7X1N6KZVhNLlLraqRaMEczCkf90PZMeYJTKar1vaDZY-yngk3UZxjG_TOyq8rHnlHnQh7VpJd_Yxsk2L3ak6Ojf6EvvlkQbG3Q0TGLPltDPB-q0dG39GLEFRLbHh2AjH7icn8cM2jpuCA06W4GXmMP95tnOFqvNc_7ZByUbF58DaZWSRqwfeP-3_yZo4uwVHXR_yxR4Jte2n3wcnGEYLtkUTXiRTJ"/>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-container-padding space-y-card-gap">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-background">Manajemen Sistem</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Kelola akun karyawan, role, dan hak akses operasional.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap">
+<!-- Employee Account Management Card -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-primary">Manajemen Akun Karyawan</h2>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary/90">
+<span class="material-symbols-outlined text-sm">person_add</span> Tambah
+                        </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant font-label-md text-label-md text-on-surface-variant uppercase">
+<th class="p-4 whitespace-nowrap">Nama &amp; Email</th>
+<th class="p-4 whitespace-nowrap">Role</th>
+<th class="p-4 whitespace-nowrap">Status</th>
+<th class="p-4 whitespace-nowrap text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">BD</div>
+<div>
+<div class="font-semibold text-on-background">Budi Darmawan</div>
+<div class="text-on-surface-variant text-xs">budi.d@jakartarentbus.com</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded bg-surface-variant text-primary font-code text-code text-xs">Admin Sistem</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded-full bg-secondary-container/30 text-secondary-container-on font-label-md text-label-md text-[10px] text-on-secondary-container">Aktif</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold">SA</div>
+<div>
+<div class="font-semibold text-on-background">Siti Aminah</div>
+<div class="text-on-surface-variant text-xs">siti.a@jakartarentbus.com</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded bg-surface-variant text-primary font-code text-code text-xs">Dispatcher</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded-full bg-secondary-container/30 text-secondary-container-on font-label-md text-label-md text-[10px] text-on-secondary-container">Aktif</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold">AR</div>
+<div>
+<div class="font-semibold text-on-background">Agus Riyanto</div>
+<div class="text-on-surface-variant text-xs">agus.r@jakartarentbus.com</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded bg-surface-variant text-primary font-code text-code text-xs">Marketing</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 rounded-full bg-error-container/30 text-on-error-container font-label-md text-label-md text-[10px]">Nonaktif</span>
+</td>
+<td class="p-4 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant flex justify-center">
+<button class="text-primary font-label-md text-label-md hover:underline">Lihat Semua Karyawan</button>
+</div>
+</div>
+<!-- Roles & Permissions Card -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col">
+<div class="p-6 border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-primary">Role &amp; Hak Akses</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Pilih role untuk melihat detail akses.</p>
+</div>
+<div class="p-4">
+<select class="w-full bg-surface border border-outline-variant rounded-lg px-3 py-2 font-body-md text-body-md focus:ring-1 focus:ring-primary focus:border-primary">
+<option>Dispatcher</option>
+<option>Admin Sistem</option>
+<option>Marketing</option>
+<option>Finance</option>
+</select>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-body-md text-body-md font-medium text-on-background">Kelola Jadwal Fleet</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-xs">Tambah, ubah, dan hapus jadwal.</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="font-body-md text-body-md font-medium text-on-background">Akses Laporan Keuangan</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-xs">Lihat data pendapatan harian.</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="font-body-md text-body-md font-medium text-on-background">Manajemen Klien (CRM)</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-xs">Akses data kontak pelanggan.</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="font-body-md text-body-md font-medium text-on-background">Ubah Status Armada</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-xs">Set bus ke perbaikan/aktif.</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full bg-surface text-primary border border-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+                            Simpan Perubahan Role
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

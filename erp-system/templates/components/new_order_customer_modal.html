@@ -1,0 +1,217 @@
+<!-- Modal Overlay -->
+<div id="newOrderCustomerModal" class="fixed inset-0 z-[999] hidden">
+    <!-- Dim Background -->
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeNewOrderModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+        <div class="relative bg-white rounded-xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] w-full max-w-2xl text-left overflow-hidden transform transition-all sm:my-8 align-middle">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-outline-variant bg-surface">
+                <h3 class="text-lg font-bold text-on-surface font-headline-md">Pendaftaran Pelanggan Baru</h3>
+                <button type="button" onclick="closeNewOrderModal()" class="text-on-surface-variant hover:text-on-surface focus:outline-none transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <!-- Body / Form -->
+            <form id="newOrderCustomerForm" onsubmit="submitNewOrderCustomer(event)" class="px-6 py-5 max-h-[70vh] overflow-y-auto">
+                
+                <!-- Section 1: Informasi Pelanggan Baru -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-on-surface mb-3 uppercase tracking-wider">Informasi Pelanggan Baru</h4>
+                    
+                    <!-- Row 1 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Nama Lengkap <span class="text-error">*</span></label>
+                            <input type="text" id="custName" required class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface" placeholder="Masukkan nama lengkap">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-on-surface-variant mb-1">Nomor Telepon <span class="text-error">*</span></label>
+                            <input type="tel" id="custPhone" required pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface" placeholder="Contoh: 08123456789">
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-on-surface-variant mb-1">Email (optional)</label>
+                        <input type="email" id="custEmail" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface" placeholder="email@contoh.com">
+                    </div>
+                    
+                    <!-- Row: Alamat & NIK -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-on-surface-variant mb-1">Alamat Lengkap</label>
+                        <textarea id="custAddress" rows="2" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface resize-none" placeholder="Masukkan alamat lengkap"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-on-surface-variant mb-1">NIK / No. KTP</label>
+                        <input type="text" id="custNIK" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface" placeholder="Masukkan NIK">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-on-surface-variant mb-1">Foto Pelanggan / KTP (opsional)</label>
+                        <input type="file" id="custPhoto" accept="image/*" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
+                    </div>
+                    
+                    <!-- Row 3: Corporate Checkbox -->
+                    <div class="mb-2">
+                        <label class="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" id="isCorporate" onchange="toggleCorporateField()" class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer">
+                            <span class="text-sm font-medium text-on-surface group-hover:text-primary transition-colors">Pelanggan Korporat?</span>
+                        </label>
+                    </div>
+                    
+                    <!-- Conditional Field -->
+                    <div id="corporateField" class="hidden mt-3 transition-all">
+                        <label class="block text-sm font-medium text-on-surface-variant mb-1">Nama Perusahaan <span class="text-error">*</span></label>
+                        <input type="text" id="companyName" class="w-full px-3 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm text-on-surface" placeholder="Masukkan nama perusahaan">
+                    </div>
+                </div>
+                
+
+            </form>
+            
+            <!-- Footer / Action Buttons -->
+            <div class="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-3">
+                <button type="button" onclick="closeNewOrderModal()" class="px-5 py-2 rounded-lg text-sm font-bold text-on-surface-variant bg-transparent border border-outline-variant hover:bg-surface-container hover:text-on-surface transition-all focus:outline-none">
+                    Batal
+                </button>
+                <button type="submit" form="newOrderCustomerForm" class="px-5 py-2 rounded-lg text-sm font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] shadow-md hover:shadow-lg transition-all focus:outline-none">
+                    Simpan Pelanggan
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    function openNewOrderModal() {
+        const modal = document.getElementById('newOrderCustomerModal');
+        modal.classList.remove('hidden');
+        // Add a slight delay to allow display block to apply before animating opacity
+        setTimeout(() => {
+            modal.querySelector('.bg-black\\/50').classList.add('opacity-100');
+            modal.querySelector('.transform').classList.add('scale-100', 'opacity-100');
+            modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
+        }, 10);
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeNewOrderModal() {
+        const modal = document.getElementById('newOrderCustomerModal');
+        modal.querySelector('.bg-black\\/50').classList.remove('opacity-100');
+        modal.querySelector('.transform').classList.remove('scale-100', 'opacity-100');
+        modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }, 300); // Wait for transition
+    }
+
+    function toggleCorporateField() {
+        const isCorporate = document.getElementById('isCorporate').checked;
+        const corpField = document.getElementById('corporateField');
+        const companyInput = document.getElementById('companyName');
+        
+        if (isCorporate) {
+            corpField.classList.remove('hidden');
+            companyInput.setAttribute('required', 'true');
+        } else {
+            corpField.classList.add('hidden');
+            companyInput.removeAttribute('required');
+            companyInput.value = ''; // clear when unchecked
+        }
+    }
+
+    function formatRupiahInput(input) {
+        // Remove non-digit characters
+        let val = input.value.replace(/[^0-9]/g, '');
+        if (val) {
+            // Format with dot thousand separator
+            input.value = new Intl.NumberFormat('id-ID').format(val);
+        } else {
+            input.value = '';
+        }
+    }
+
+    function submitNewOrderCustomer(e) {
+        e.preventDefault();
+        
+        // Form Validation logic is already handled by HTML5 'required' attributes
+        // Add your custom backend saving logic here
+        
+        // Mocking save -> close -> refresh
+        const submitBtn = document.querySelector('button[form="newOrderCustomerForm"]');
+        let originalText = "Simpan Pelanggan";
+        if (submitBtn) {
+            originalText = submitBtn.innerText;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm align-middle mr-2">autorenew</span>Menyimpan...';
+            submitBtn.disabled = true;
+        }
+
+        const formData = new FormData();
+        formData.append('name', document.getElementById('custName').value);
+        formData.append('phone', document.getElementById('custPhone').value);
+        formData.append('email', document.getElementById('custEmail').value || '');
+        formData.append('address', document.getElementById('custAddress').value || '');
+        formData.append('nik', document.getElementById('custNIK').value || '');
+        
+        if (document.getElementById('isCorporate').checked) {
+            formData.append('company', document.getElementById('companyName').value || '');
+        }
+        
+        const photoFile = document.getElementById('custPhoto').files[0];
+        if (photoFile) {
+            formData.append('photo', photoFile);
+        }
+
+        fetch('/api/customers/new', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                closeNewOrderModal();
+                e.target.reset();
+                toggleCorporateField();
+                
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+                
+                // Autofill the customer fields in the main order_new.html form
+                const nameDisplay = document.getElementById('customer-name-display');
+                const phoneDisplay = document.getElementById('customer-phone-display');
+                const idInput = document.getElementById('customer-id-input');
+                const searchInput = document.getElementById('customer-search-input');
+                
+                if (nameDisplay && phoneDisplay) {
+                    nameDisplay.value = data.customer.name;
+                    phoneDisplay.value = data.customer.phone;
+                    idInput.value = data.customer.id;
+                    if (searchInput) searchInput.value = data.customer.name;
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                alert("Gagal menyimpan data pelanggan");
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+</script>

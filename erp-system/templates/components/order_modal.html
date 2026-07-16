@@ -1,0 +1,221 @@
+<!-- Order Detail Modal -->
+<div id="orderDetailModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-on-background/50 backdrop-blur-sm transition-opacity cursor-pointer" onclick="closeOrderDetailModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-xl w-full max-w-lg mx-4 z-10 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface">
+            <h3 class="font-headline-md font-bold text-on-surface">Order Details</h3>
+            <button onclick="closeOrderDetailModal()" class="text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface p-1 rounded-full transition-colors flex items-center justify-center focus:outline-none">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="px-6 py-4 overflow-y-auto flex-1">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <p class="text-xs text-on-surface-variant font-label-md uppercase">Order ID</p>
+                    <p id="modalOrderId" class="font-code font-bold text-primary text-lg mt-1">-</p>
+                </div>
+                <div id="modalOrderStatusBadge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold">
+                    -
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Customer</p>
+                        <p id="modalOrderCustomer" class="font-body-md text-on-surface font-bold mt-1">-</p>
+                        <p id="modalOrderCustomerPhone" class="text-sm text-on-surface-variant">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Agent (Marketing)</p>
+                        <p id="modalOrderAgent" class="font-body-md text-on-surface font-medium mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Booking Date</p>
+                        <p id="modalOrderDate" class="font-body-md text-on-surface font-medium mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Route</p>
+                        <p id="modalOrderRoute" class="font-body-md text-on-surface font-medium mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Departure Date</p>
+                        <p id="modalOrderDepart" class="font-body-md text-on-surface font-medium mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-on-surface-variant font-label-md">Arrival Date</p>
+                        <p id="modalOrderReturn" class="font-body-md text-on-surface font-medium mt-1">-</p>
+                    </div>
+                </div>
+
+                <div id="modalFleetsContainer" class="space-y-4 mt-4">
+                    <!-- Dynamic fleets will be injected here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-outline-variant bg-surface flex justify-end">
+            <button onclick="closeOrderDetailModal()" class="px-4 py-2 border border-outline-variant text-on-surface bg-surface hover:bg-surface-container-low rounded-lg font-label-md transition-colors focus:outline-none">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleFleetAccordion(headerElement) {
+        const content = headerElement.nextElementSibling;
+        const icon = headerElement.querySelector('.material-symbols-outlined');
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.textContent = 'expand_less';
+        } else {
+            content.classList.add('hidden');
+            icon.textContent = 'expand_more';
+        }
+    }
+
+    function openOrderDetailModal(btn) {
+        // Populate modal data
+        document.getElementById('modalOrderId').textContent = btn.getAttribute('data-id');
+        document.getElementById('modalOrderDate').textContent = btn.getAttribute('data-date') || '-';
+        document.getElementById('modalOrderDepart').textContent = btn.getAttribute('data-depart') || '-';
+        document.getElementById('modalOrderReturn').textContent = btn.getAttribute('data-return') || '-';
+        document.getElementById('modalOrderRoute').textContent = btn.getAttribute('data-route') || '-';
+        
+        const status = btn.getAttribute('data-status');
+        const badgeEl = document.getElementById('modalOrderStatusBadge');
+        badgeEl.textContent = status;
+        
+        // Reset classes
+        badgeEl.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold';
+        if (status === 'LUNAS') {
+            badgeEl.classList.add('bg-primary', 'text-on-primary');
+        } else if (status === 'CANCEL') {
+            badgeEl.classList.add('bg-error-container', 'text-error');
+        } else {
+            badgeEl.classList.add('bg-secondary-container', 'text-on-secondary-container');
+        }
+        
+        const container = document.getElementById('modalFleetsContainer');
+        container.innerHTML = '';
+        
+        // Check if consolidated or single
+        const fleetsAttr = btn.getAttribute('data-fleets');
+        let fleets = [];
+        
+        if (fleetsAttr) {
+            fleets = JSON.parse(fleetsAttr);
+        } else {
+            // Single fleet fallback
+            fleets.push({
+                id: btn.getAttribute('data-id'),
+                fleet: btn.getAttribute('data-fleet'),
+                vendor: btn.getAttribute('data-vendor'),
+                buyPrice: btn.getAttribute('data-buy-price'),
+                profit: btn.getAttribute('data-profit'),
+                dpDate: btn.getAttribute('data-dp-date'),
+                dpVal: btn.getAttribute('data-dp-val'),
+                fullDate: btn.getAttribute('data-full-date'),
+                fullVal: btn.getAttribute('data-full-val'),
+                total: btn.getAttribute('data-total'),
+                balance: btn.getAttribute('data-balance'),
+                status: btn.getAttribute('data-status'),
+                customer: btn.getAttribute('data-customer'),
+                phone: btn.getAttribute('data-phone'),
+                agent: btn.getAttribute('data-agent')
+            });
+        }
+        
+        const sharedCustomer = btn.getAttribute('data-customer');
+        const sharedPhone = btn.getAttribute('data-phone');
+        const sharedAgent = btn.getAttribute('data-agent');
+
+        // Resolve global customer/agent from button attributes or first fleet
+        const globalCustomer = sharedCustomer || (fleets.length > 0 ? fleets[0].customer : '') || '-';
+        const globalPhone = sharedPhone || (fleets.length > 0 ? fleets[0].phone : '') || '-';
+        const globalAgent = sharedAgent || (fleets.length > 0 ? fleets[0].agent : '') || '-';
+
+        document.getElementById('modalOrderCustomer').textContent = globalCustomer;
+        const phoneEl = document.getElementById('modalOrderCustomerPhone');
+        if (globalPhone && globalPhone !== '-') {
+            phoneEl.textContent = globalPhone;
+            phoneEl.classList.remove('hidden');
+        } else {
+            phoneEl.textContent = '';
+            phoneEl.classList.add('hidden');
+        }
+        document.getElementById('modalOrderAgent').textContent = globalAgent;
+
+        fleets.forEach((f, index) => {
+            const isBalanceZero = f.balance === 'Rp 0' || f.balance === 'Rp 0,00';
+            
+            const html = `
+                <div class="border border-outline-variant rounded-lg overflow-hidden bg-surface">
+                    <div class="px-4 py-3 bg-surface-container-low flex justify-between items-center cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFleetAccordion(this)">
+                        <div>
+                            <p class="font-bold text-on-surface">${f.id}</p>
+                            <p class="text-xs text-on-surface-variant">${f.fleet || '-'} - ${f.vendor || '-'}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant transition-transform">
+                            ${index === 0 ? 'expand_less' : 'expand_more'}
+                        </span>
+                    </div>
+                    <div class="px-4 py-4 ${index === 0 ? '' : 'hidden'} border-t border-outline-variant">
+                        
+                        <div class="bg-surface-container-lowest p-3 rounded-lg space-y-2 border border-outline-variant/50">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm text-on-surface-variant">Total Price (Harga Jual)</p>
+                                <p class="font-bold text-on-surface">${f.total || '-'}</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm text-on-surface-variant">Cost (Harga Beli)</p>
+                                <p class="font-bold text-on-surface">${f.buyPrice || '-'}</p>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-outline-variant/30">
+                                <p class="text-sm text-on-surface-variant font-bold">Profit</p>
+                                <p class="font-bold text-primary">${f.profit || '-'}</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2">
+                                <div>
+                                    <p class="text-sm text-on-surface-variant">Down Payment (DP)</p>
+                                    <p class="text-xs text-on-surface-variant">${f.dpDate || '-'}</p>
+                                </div>
+                                <p class="font-bold text-on-surface">${f.dpVal || '-'}</p>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-outline-variant/30">
+                                <div>
+                                    <p class="text-sm text-on-surface-variant">Final Payment (Pelunasan)</p>
+                                    <p class="text-xs text-on-surface-variant">${f.fullDate || '-'}</p>
+                                </div>
+                                <p class="font-bold text-on-surface">${f.fullVal || '-'}</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2">
+                                <p class="text-sm text-on-surface-variant font-bold">Balance Due</p>
+                                <p class="font-bold ${isBalanceZero ? 'text-primary' : 'text-error'}">${f.balance || '-'}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+        
+        // Show modal
+        const modal = document.getElementById('orderDetailModal');
+        modal.classList.remove('hidden');
+    }
+    
+    function closeOrderDetailModal() {
+        const modal = document.getElementById('orderDetailModal');
+        modal.classList.add('hidden');
+    }
+</script>

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}KPI Dashboard - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div>
+        <h2 class="font-headline-lg text-on-surface">KPI Performance Dashboard</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Analisis visual performa penjualan, profitabilitas, dan pemasaran dari database SQLite.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Loading Overlay scoped to content -->
+<div id="kpi-loading" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center gap-4 transition-opacity duration-300">
+    <div class="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+    <p class="font-headline-md text-on-surface font-semibold">Memuat & Memproses Data...</p>
+    <p class="font-body-md text-on-surface-variant">Mengambil data transaksi terbaru langsung dari database.</p>
+</div>
+
+<div class="grid grid-cols-12 gap-card-gap w-full relative">
+    
+    <!-- Sidebar Filters (3 cols on lg, 12 on mobile) -->
+    <aside class="col-span-12 lg:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm h-fit">
+        <div class="flex items-center gap-2 mb-4 border-b border-outline-variant pb-3">
+            <span class="material-symbols-outlined text-primary font-bold">filter_alt</span>
+            <h3 class="font-headline-md text-on-surface font-bold text-base">Filter Data</h3>
+        </div>
+        
+        <div class="flex flex-col gap-4">
+            <div class="mb-2">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-2">Rentang Waktu</label>
+                {% set date_label = "Semua Waktu" %}
+                {% include 'components/date_picker.html' %}
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-2">Jenis Kendaraan</label>
+                <select id="filter-type" class="w-full bg-surface border border-outline-variant rounded-lg p-2.5 text-sm focus:outline-none focus:border-primary font-body-md cursor-pointer">
+                    <option value="">Semua Jenis</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-2">Marketing</label>
+                <select id="filter-marketing" class="w-full bg-surface border border-outline-variant rounded-lg p-2.5 text-sm focus:outline-none focus:border-primary font-body-md cursor-pointer">
+                    <option value="">Semua Marketing</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-2">Destinasi</label>
+                <select id="filter-destination" class="w-full bg-surface border border-outline-variant rounded-lg p-2.5 text-sm focus:outline-none focus:border-primary font-body-md cursor-pointer">
+                    <option value="">Semua Destinasi</option>
+                </select>
+            </div>
+
+            <button id="btn-reset" class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all py-2.5 rounded-lg font-bold flex items-center justify-center gap-2 mt-2">
+                <span class="material-symbols-outlined text-sm">refresh</span> Reset Filter
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main KPIs & Charts Content (9 cols on lg, 12 on mobile) -->
+    <div class="col-span-12 lg:col-span-9 flex flex-col gap-6">
+        
+        <!-- Header Info -->
+        <div class="flex justify-between items-center bg-surface-container-low border border-outline-variant rounded-xl px-6 py-4 shadow-sm">
+            <span class="font-body-md text-on-surface-variant font-medium flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                Status: Koneksi Database SQLite Aktif
+            </span>
+            <span id="last-updated-text" class="text-xs font-bold text-primary bg-primary-fixed px-3 py-1 rounded-full">Menampilkan seluruh data</span>
+        </div>
+
+        <!-- KPI Grid (4 cards) -->
+        <div class="grid grid-cols-12 gap-card-gap">
+            <!-- Sales -->
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+                <div class="flex justify-between items-start mb-3 relative z-10">
+                    <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">payments</span>
+                    </div>
+                </div>
+                <p class="text-xs text-on-surface-variant font-semibold uppercase tracking-wider mb-1 relative z-10">Performance Sales</p>
+                <h3 id="kpi-sales" class="font-headline-lg text-on-surface relative z-10 font-bold text-xl">Rp 0</h3>
+            </div>
+            
+            <!-- Buying -->
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-secondary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+                <div class="flex justify-between items-start mb-3 relative z-10">
+                    <div class="w-10 h-10 rounded-lg bg-secondary-container/30 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-secondary">shopping_cart</span>
+                    </div>
+                </div>
+                <p class="text-xs text-on-surface-variant font-semibold uppercase tracking-wider mb-1 relative z-10">Total Buying</p>
+                <h3 id="kpi-buying" class="font-headline-lg text-on-surface relative z-10 font-bold text-xl">Rp 0</h3>
+            </div>
+            
+            <!-- Profit -->
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-green-50 rounded-full group-hover:scale-110 transition-transform"></div>
+                <div class="flex justify-between items-start mb-3 relative z-10">
+                    <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-700">trending_up</span>
+                    </div>
+                </div>
+                <p class="text-xs text-on-surface-variant font-semibold uppercase tracking-wider mb-1 relative z-10">Profit</p>
+                <h3 id="kpi-profit" class="font-headline-lg text-green-700 relative z-10 font-bold text-xl">Rp 0</h3>
+            </div>
+            
+            <!-- Qty Orders -->
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-tertiary-fixed/20 rounded-full group-hover:scale-110 transition-transform"></div>
+                <div class="flex justify-between items-start mb-3 relative z-10">
+                    <div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-tertiary-fixed-variant">local_shipping</span>
+                    </div>
+                </div>
+                <p class="text-xs text-on-surface-variant font-semibold uppercase tracking-wider mb-1 relative z-10">Qty Orders</p>
+                <h3 id="kpi-qty" class="font-headline-lg text-on-surface relative z-10 font-bold text-xl">0</h3>
+            </div>
+        </div>
+
+        <!-- Charts Grid (2 columns on desktop) -->
+        <div class="grid grid-cols-12 gap-card-gap">
+            <!-- Line Chart: Trend -->
+            <div class="col-span-12 xl:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm min-h-[400px] flex flex-col">
+                <h3 class="font-headline-md text-on-surface font-bold text-base mb-4">Tren Penjualan (Bulanan)</h3>
+                <div class="flex-1 w-full relative">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Bar Chart: Top Marketing -->
+            <div class="col-span-12 xl:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm min-h-[400px] flex flex-col">
+                <h3 class="font-headline-md text-on-surface font-bold text-base mb-4">Top 5 Marketing</h3>
+                <div class="flex-1 w-full relative">
+                    <canvas id="marketingChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='kpi.js') }}"></script>
+{% endblock %}

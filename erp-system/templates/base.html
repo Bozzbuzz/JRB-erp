@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>{% block title %}Dashboard - JakartaRentBus{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                      "primary-fixed": "#d8e2ff",
+                      "outline-variant": "#c5c6cf",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed": "#071b3b",
+                      "on-primary-container": "#8293ba",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-variant": "#d3e4fe",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad6",
+                      "inverse-surface": "#213145",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#b1f0ce",
+                      "on-primary-fixed-variant": "#364669",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#aeeecb",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary-container": "#5f0007",
+                      "on-tertiary-fixed": "#410003",
+                      "surface-tint": "#4e5e82",
+                      "primary": "#112a46", /* Navy Blue from Logo */
+                      "on-primary": "#ffffff",
+                      "primary-container": "#1d3a5f",
+                      "accent": "#d31f2a", /* Red from Logo */
+                      "accent-hover": "#b31822",
+                      "inverse-on-surface": "#eaf1ff",
+                      "tertiary": "#380003",
+                      "secondary": "#2c694e",
+                      "primary-container": "#1a2b4c",
+                      "on-surface": "#0b1c30",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#920212",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#316e52",
+                      "on-surface-variant": "#44474e",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#e5eeff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#fe5954",
+                      "primary-fixed-dim": "#b6c6f0",
+                      "secondary-fixed-dim": "#95d4b3",
+                      "on-secondary-fixed-variant": "#0e5138",
+                      "on-secondary-fixed": "#002114",
+                      "inverse-primary": "#b6c6f0",
+                      "outline": "#75777f"
+              },
+              borderRadius: {
+                      DEFAULT: "0.125rem",
+                      lg: "0.25rem",
+                      xl: "0.5rem",
+                      full: "0.75rem"
+              },
+              spacing: {
+                      gutter: "16px",
+                      "stack-md": "16px",
+                      unit: "4px",
+                      "card-gap": "20px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px"
+              },
+              fontFamily: {
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      code: ["Inter"],
+                      display: ["Inter"]
+              },
+              fontSize: {
+                      "body-md": ["14px", {lineHeight: "20px", fontWeight: "400"}],
+                      "body-lg": ["16px", {lineHeight: "24px", fontWeight: "400"}],
+                      "headline-lg": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+                      "headline-md": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+                      "label-md": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}],
+                      code: ["13px", {lineHeight: "18px", fontWeight: "500"}],
+                      display: ["36px", {lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "700"}]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+          font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Sidebar transition styles */
+        #sidebar, #main-content {
+            transition: all 0.3s ease;
+        }
+        body.sidebar-collapsed #sidebar {
+            width: 84px;
+        }
+        body.sidebar-collapsed #main-content {
+            margin-left: 84px;
+        }
+        @media (max-width: 767px) {
+            body.sidebar-collapsed #main-content {
+                margin-left: 0;
+            }
+        }
+        body.sidebar-collapsed .sidebar-text {
+            display: none;
+        }
+        body.sidebar-collapsed #sidebar .sidebar-link {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        body.sidebar-collapsed #sidebar-header {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 2rem;
+        }
+        body.sidebar-collapsed #sidebar-toggle {
+            margin: 0 auto;
+        }
+        body.sidebar-collapsed .admin-info {
+            display: none;
+        }
+        body.sidebar-collapsed .admin-container {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        /* Global Table Header Branding */
+        thead tr {
+            background-color: #112a46 !important;
+        }
+        thead th, thead th div, thead th span {
+            color: #ffffff !important;
+        }
+        thead th:hover {
+            background-color: #1d3a5f !important; /* hover state for sortable headers */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex" id="app-body">
+    <!-- SideNavBar (Visible on Desktop) -->
+    <nav id="sidebar" class="hidden md:flex flex-col p-4 gap-2 h-full bg-primary text-on-primary font-label-md fixed left-0 top-0 w-[260px] z-50 shadow-lg overflow-x-hidden transition-all duration-300">
+        <div id="sidebar-header" class="mb-8 px-4 mt-4 flex justify-between items-center">
+            <div class="sidebar-text whitespace-nowrap overflow-hidden flex items-center justify-center">
+                <img src="{{ url_for('static', filename='assets/logo.png') }}" class="h-[40px] w-auto" alt="JakartaRentBus Logo" onerror="this.onerror=null; this.outerHTML='<h1 class=\'font-headline-md font-bold text-white\'>JAKARTARENTBUS</h1>';">
+            </div>
+            <button id="sidebar-toggle" class="text-white/70 hover:text-white hover:bg-white/10 p-1 rounded-full transition-colors flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined" id="toggle-icon">menu_open</span>
+            </button>
+        </div>
+        
+        <a href="/orders/new" class="sidebar-link bg-primary-container border border-white/10 text-white hover:bg-accent hover:border-accent hover:shadow-md transition-all duration-300 rounded-lg py-3 px-4 flex items-center justify-center gap-2 mb-6 font-label-md font-bold">
+            <span class="material-symbols-outlined filled">add</span>
+            <span class="sidebar-text whitespace-nowrap">New Booking</span>
+        </a>
+
+        <div class="flex-1 overflow-y-auto overflow-x-hidden space-y-1">
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/">
+                <span class="material-symbols-outlined {% if request.path == '/' %}filled text-accent{% endif %}">dashboard</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Dashboard</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/kanban' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/kanban">
+                <span class="material-symbols-outlined {% if request.path == '/kanban' %}filled text-accent{% endif %}">view_kanban</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Sales & Operations</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/analytics' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/analytics">
+                <span class="material-symbols-outlined {% if request.path == '/analytics' %}filled text-accent{% endif %}">analytics</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Mitra Analysis</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/kpi' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/kpi">
+                <span class="material-symbols-outlined {% if request.path == '/kpi' %}filled text-accent{% endif %}">bar_chart</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">KPI Dashboard</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/orders' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/orders">
+                <span class="material-symbols-outlined {% if request.path == '/orders' %}filled text-accent{% endif %}">receipt_long</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Orders</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/crm' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/crm">
+                <span class="material-symbols-outlined {% if request.path == '/crm' %}filled text-accent{% endif %}">groups</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">CRM</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/vendors' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/vendors">
+                <span class="material-symbols-outlined {% if request.path == '/vendors' %}filled text-accent{% endif %}">directions_bus</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Fleet</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/finance' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/finance">
+                <span class="material-symbols-outlined {% if request.path == '/finance' %}filled text-accent{% endif %}">payments</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Finance</span>
+            </a>
+            <a class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-all {% if request.path == '/settings' %}bg-white/10 text-white border-l-4 border-accent shadow-sm{% else %}text-white/70 hover:bg-white/5 hover:text-white{% endif %}" href="/settings">
+                <span class="material-symbols-outlined {% if request.path == '/settings' %}filled text-accent{% endif %}">settings</span>
+                <span class="font-label-md sidebar-text whitespace-nowrap">Settings</span>
+            </a>
+        </div>
+
+        <div class="mt-auto pt-4 border-t border-outline-variant">
+            <div class="admin-container flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-surface-container-high rounded-lg transition-colors">
+                <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold flex-shrink-0">A</div>
+                <div class="admin-info whitespace-nowrap overflow-hidden">
+                    <p class="font-label-md text-on-surface">Admin User</p>
+                    <p class="text-xs text-on-surface-variant">admin@jakartarentbus.com</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-1 md:ml-[260px] flex flex-col min-h-screen">
+        <!-- TopNavBar (Visible on Mobile) -->
+        <header class="flex md:hidden justify-between items-center px-container-padding h-16 w-full bg-surface text-primary border-b border-outline-variant">
+            <div class="flex items-center gap-4">
+                <button class="text-primary"><span class="material-symbols-outlined">menu</span></button>
+                <div class="font-headline-md font-bold text-primary">JakartaRentBus</div>
+            </div>
+        </header>
+        
+        <!-- Header Actions -->
+        {% block header %}{% endblock %}
+
+        <!-- Content Canvas -->
+        <div class="p-container-padding flex-1 bg-background flex flex-col gap-6 h-screen overflow-y-auto">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const body = document.getElementById('app-body');
+            
+            // Periksa state sidebar dari localStorage (agar persisten saat refresh halaman)
+            if (localStorage.getItem('sidebar-collapsed') === 'true') {
+                body.classList.add('sidebar-collapsed');
+                if (toggleIcon) toggleIcon.textContent = 'menu';
+            }
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    body.classList.toggle('sidebar-collapsed');
+                    const isCollapsed = body.classList.contains('sidebar-collapsed');
+                    localStorage.setItem('sidebar-collapsed', isCollapsed);
+                    
+                    if (isCollapsed) {
+                        toggleIcon.textContent = 'menu';
+                    } else {
+                        toggleIcon.textContent = 'menu_open';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

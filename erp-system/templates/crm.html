@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block title %}CRM - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div class="flex-1 w-full max-w-lg">
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+            <input type="text" id="crm-search" oninput="handleSearch()" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm" placeholder="Search customers, companies..."/>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="w-full pb-10">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 mt-2">
+        <div>
+            <h2 class="font-headline-lg text-on-surface">Customer Relationship Management</h2>
+            <p class="font-body-md text-on-surface-variant mt-1">Manage individual travelers and corporate accounts.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="px-4 py-2 border border-outline-variant rounded-lg bg-surface text-on-surface font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold shadow-sm" onclick="window.print()">
+                Print to PDF
+            </button>
+            <button onclick="openNewOrderModal()" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-sm hover:bg-[#112a4f] transition-colors font-bold shadow-sm">
+                Add Customer
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex items-center gap-6 border-b border-outline-variant mb-6 px-2 relative z-0">
+        <button class="pb-3 border-b-2 border-primary text-primary font-bold font-label-md text-sm px-2">Individual Customer</button>
+        <button title="Klik untuk Lihat Data Pelanggan Korporat" class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-md text-sm px-2 transition-colors">Pelanggan Korporat</button>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('name')" title="Sort by Name">
+                            <div class="flex items-center gap-1">Name <span id="sort-icon-name" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Contact</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('last-order')" title="Sort by Last Order">
+                            <div class="flex items-center gap-1">Last Order <span id="sort-icon-last-order" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('total-orders')" title="Sort by Total Orders">
+                            <div class="flex items-center justify-center gap-1">Total Orders <span id="sort-icon-total-orders" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('total-spent')" title="Sort by Total Spent">
+                            <div class="flex items-center justify-end gap-1">Total Spent <span id="sort-icon-total-spent" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-on-surface crm-table-body">
+                    {% for cust in customers %}
+                    {% set total_orders = cust.orders|length %}
+                    {% set last_order = cust.orders|sort(attribute='book_date', reverse=True)|first %}
+                    {% set is_active = total_orders > 0 %}
+                    {% set total_spent = cust.orders | selectattr("status", "equalto", "COMPLETE") | sum(attribute="total_sell") %}
+                    
+                    <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors crm-row"
+                        data-name="{{ cust.name or '' }}"
+                        data-phone="{{ cust.phone or '' }}"
+                        data-company="{{ cust.company or '' }}"
+                        data-last-order="{{ last_order.book_date if last_order else '0000-00-00' }}"
+                        data-total-orders="{{ total_orders }}"
+                        data-total-spent="{{ total_spent }}">
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs uppercase">
+                                    {{ cust.name[:2] if cust.name else 'UK' }}
+                                </div>
+                                <span class="font-medium text-on-surface">{{ cust.name or 'Unknown' }}</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <div class="text-sm text-on-surface">{{ cust.phone or '-' }}</div>
+                            <div class="text-xs text-on-surface-variant">{{ cust.email or 'no-email@example.com' }}</div>
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            {% if is_active %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#e6f4ea] text-[#137333] tracking-wide">ACTIVE</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fef7e0] text-[#b06000] tracking-wide">INACTIVE</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 text-on-surface-variant text-sm">
+                            {{ last_order.book_date if last_order else '-' }}
+                        </td>
+                        <td class="py-4 px-6 text-center text-sm font-medium">
+                            {{ total_orders }}
+                        </td>
+                        <td class="py-4 px-6 text-right text-sm font-medium text-on-surface">
+                            Rp {{ "{:,.0f}".format(total_spent) }}
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            <a href="/crm/{{ cust.id }}" class="text-primary font-label-md text-xs font-bold hover:underline">View History</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="border-t border-outline-variant p-4 flex items-center justify-between text-sm bg-surface">
+            <div id="pagination-info" class="text-on-surface-variant font-body-md">Showing <span class="font-bold text-on-surface">0</span> to <span class="font-bold text-on-surface">0</span> of <span class="font-bold text-on-surface">0</span> entries</div>
+            <div class="flex items-center gap-1">
+                <button id="btn-prev" onclick="prevPage()" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-outline-variant hover:bg-surface-container-low transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
+                <button id="btn-next" onclick="nextPage()" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let sortDirection = {}; 
+    const rowsPerPage = 10;
+    let currentPage = 1;
+    let filteredRows = [];
+    let allRows = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        allRows = Array.from(document.querySelectorAll('.crm-row'));
+        handleSearch(); // initialize
+    });
+
+    function sortTable(columnName) {
+        const tbody = document.querySelector('.crm-table-body');
+        
+        // Toggle direction
+        const currentDir = sortDirection[columnName] || 'desc';
+        const newDir = currentDir === 'asc' ? 'desc' : 'asc';
+        sortDirection[columnName] = newDir;
+        
+        // Update icons
+        document.querySelectorAll('.sort-icon').forEach(el => el.textContent = 'unfold_more');
+        const currentIcon = document.getElementById(`sort-icon-${columnName}`);
+        if (currentIcon) {
+            currentIcon.textContent = newDir === 'asc' ? 'arrow_upward' : 'arrow_downward';
+        }
+        
+        // Sort allRows
+        allRows.sort((a, b) => {
+            let valA = a.getAttribute(`data-${columnName}`);
+            let valB = b.getAttribute(`data-${columnName}`);
+            
+            if (columnName === 'total-orders' || columnName === 'total-spent') {
+                valA = parseFloat(valA) || 0;
+                valB = parseFloat(valB) || 0;
+            } else if (columnName === 'name') {
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+            }
+            
+            if (valA < valB) return newDir === 'asc' ? -1 : 1;
+            if (valA > valB) return newDir === 'asc' ? 1 : -1;
+            return 0;
+        });
+        
+        // Re-append sorted rows to DOM
+        allRows.forEach(row => tbody.appendChild(row));
+        
+        // Update pagination view
+        handleSearch(false);
+    }
+
+    function handleSearch(resetPage = true) {
+        const query = document.getElementById('crm-search').value.toLowerCase();
+        
+        filteredRows = allRows.filter(row => {
+            const name = (row.getAttribute('data-name') || '').toLowerCase();
+            const phone = (row.getAttribute('data-phone') || '').toLowerCase();
+            const company = (row.getAttribute('data-company') || '').toLowerCase();
+            
+            return name.includes(query) || phone.includes(query) || company.includes(query);
+        });
+        
+        if (resetPage) currentPage = 1;
+        updatePagination();
+    }
+
+    function updatePagination() {
+        allRows.forEach(row => row.style.display = 'none');
+        
+        const totalRows = filteredRows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage) || 1;
+        
+        const startIdx = (currentPage - 1) * rowsPerPage;
+        const endIdx = Math.min(startIdx + rowsPerPage, totalRows);
+        
+        for (let i = startIdx; i < endIdx; i++) {
+            filteredRows[i].style.display = '';
+        }
+        
+        const info = document.getElementById('pagination-info');
+        if (totalRows === 0) {
+            info.innerHTML = `Showing <span class="font-bold text-on-surface">0</span> to <span class="font-bold text-on-surface">0</span> of <span class="font-bold text-on-surface">0</span> entries`;
+        } else {
+            info.innerHTML = `Showing <span class="font-bold text-on-surface">${startIdx + 1}</span> to <span class="font-bold text-on-surface">${endIdx}</span> of <span class="font-bold text-on-surface">${totalRows}</span> entries`;
+        }
+        
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        
+        if (currentPage <= 1) {
+            btnPrev.disabled = true;
+            btnPrev.classList.remove('text-on-surface', 'hover:bg-surface-container-low');
+            btnPrev.classList.add('text-outline-variant');
+        } else {
+            btnPrev.disabled = false;
+            btnPrev.classList.add('text-on-surface', 'hover:bg-surface-container-low');
+            btnPrev.classList.remove('text-outline-variant');
+        }
+        
+        if (currentPage >= totalPages) {
+            btnNext.disabled = true;
+            btnNext.classList.remove('text-on-surface', 'hover:bg-surface-container-low');
+            btnNext.classList.add('text-outline-variant');
+        } else {
+            btnNext.disabled = false;
+            btnNext.classList.add('text-on-surface', 'hover:bg-surface-container-low');
+            btnNext.classList.remove('text-outline-variant');
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePagination();
+        }
+    }
+
+    function nextPage() {
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            updatePagination();
+        }
+    }
+</script>
+{% include 'components/new_order_customer_modal.html' %}
+{% endblock %}

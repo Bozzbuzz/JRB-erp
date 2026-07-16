@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% block title %}New Order - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div class="flex items-center gap-4">
+        <a href="/orders" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-low">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <div>
+            <div class="text-xs text-primary font-bold mb-1 border-b-2 border-primary inline-block pb-1">New Order</div>
+            <div class="w-full h-px bg-outline-variant/30 mt-[-2px]"></div>
+        </div>
+    </div>
+    
+
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto w-full pb-24">
+    <div class="mb-6">
+        <h2 class="font-headline-lg text-on-surface">Create New Order</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Fill in the details below to log a new rental booking.</p>
+    </div>
+
+    <form action="/orders/new" method="POST" id="orderForm" class="flex flex-col gap-6">
+        
+        <!-- Informasi Keberangkatan -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-outline-variant/50 flex items-center gap-2">
+                <span class="material-symbols-outlined text-on-surface-variant">calendar_today</span>
+                <h3 class="font-headline-md text-on-surface text-[16px] font-bold">Informasi Keberangkatan</h3>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Departure Date</label>
+                    <div class="relative">
+                        <input type="date" name="departure_date" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm text-on-surface"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Return Date</label>
+                    <div class="relative">
+                        <input type="date" name="return_date" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm text-on-surface"/>
+                    </div>
+                </div>
+                <datalist id="indonesia-cities">
+                    <option value="Jakarta"></option>
+                    <option value="Bandung"></option>
+                    <option value="Surabaya"></option>
+                    <option value="Semarang"></option>
+                    <option value="Yogyakarta"></option>
+                    <option value="Solo"></option>
+                    <option value="Malang"></option>
+                    <option value="Bali / Denpasar"></option>
+                    <option value="Medan"></option>
+                    <option value="Palembang"></option>
+                    <option value="Makassar"></option>
+                    <option value="Bogor"></option>
+                    <option value="Depok"></option>
+                    <option value="Tangerang"></option>
+                    <option value="Bekasi"></option>
+                    <option value="Cirebon"></option>
+                    <option value="Purwokerto"></option>
+                </datalist>
+                
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Origin (Kota Asal)</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[16px]">location_on</span>
+                        <input type="text" name="origin" list="indonesia-cities" placeholder="e.g. Jakarta" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Destination (Kota Tujuan)</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[16px]">location_on</span>
+                        <input type="text" name="destination" list="indonesia-cities" placeholder="e.g. Bandung" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                </div>
+                
+                <!-- NEW FIELDS -->
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Jam Standby</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[16px]">schedule</span>
+                        <input type="time" name="jam_standby" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm text-on-surface"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">PIC (Person in Charge)</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[16px]">badge</span>
+                        <input type="text" name="pic" placeholder="Name / Contact (leave blank if same as customer)" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Note (Alamat Penjemputan / Detail Rute / Link Gmaps)</label>
+                    <textarea name="note" rows="3" placeholder="Masukkan detail lokasi penjemputan, rute perjalanan, atau tautan Google Maps..." class="w-full px-4 py-3 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm text-on-surface resize-none"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Pelanggan -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-outline-variant/50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-on-surface-variant">person</span>
+                    <h3 class="font-headline-md text-on-surface text-[16px] font-bold">Data Pelanggan</h3>
+                </div>
+                <button type="button" onclick="openNewOrderModal()" class="text-primary font-label-md text-xs font-bold flex items-center gap-1 hover:underline">
+                    <span class="material-symbols-outlined text-[16px]">person_add</span> Add New
+                </button>
+            </div>
+            <div class="p-6 flex flex-col gap-6">
+                <div class="relative">
+                    <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Select Customer from CRM</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+                        <input type="text" id="customer-search-input" autocomplete="off" placeholder="Search by name or phone number..." class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                    
+                    <!-- Search Results Dropdown -->
+                    <div id="customer-search-results" class="absolute left-0 right-0 top-full mt-1 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto hidden">
+                        <!-- Results injected via JS -->
+                    </div>
+                </div>
+                
+                <input type="hidden" name="customer_id" id="customer-id-input" value="">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-surface-container-low rounded-lg border border-outline-variant/50">
+                    <div>
+                        <label class="block font-label-md text-xs text-on-surface-variant mb-1">Customer Name</label>
+                        <input type="text" id="customer-name-display" name="customer_name" placeholder="Name will appear here" readonly class="w-full px-4 py-2 border border-transparent rounded-lg bg-transparent font-body-md text-sm text-on-surface focus:outline-none"/>
+                    </div>
+                    <div>
+                        <label class="block font-label-md text-xs text-on-surface-variant mb-1">Contact Number</label>
+                        <input type="text" id="customer-phone-display" name="customer_phone" placeholder="Phone will appear here" readonly class="w-full px-4 py-2 border border-transparent rounded-lg bg-transparent font-body-md text-sm text-on-surface focus:outline-none"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Armada -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-outline-variant/50 flex items-center gap-2">
+                <span class="material-symbols-outlined text-on-surface-variant">directions_bus</span>
+                <h3 class="font-headline-md text-on-surface text-[16px] font-bold">Detail Armada</h3>
+            </div>
+            <div class="p-6 flex flex-col gap-4" id="vehicleListContainer">
+                
+                <div class="flex flex-col md:flex-row items-end gap-4 p-4 border border-outline-variant rounded-lg bg-surface vehicle-row">
+                    <div class="flex-1 w-full">
+                        <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">PO Bus / Mitra</label>
+                        <select name="vendor_id[]" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary font-body-md text-sm cursor-pointer">
+                            {% for vendor in vendors %}
+                                <option value="{{ vendor.id }}">{{ vendor.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Vehicle Type</label>
+                        <select name="vehicle_type[]" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary font-body-md text-sm cursor-pointer">
+                            {% for type in vehicle_types %}
+                                <option value="{{ type }}">{{ type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="w-full md:w-24">
+                        <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Quantity</label>
+                        <input type="number" name="qty[]" value="1" min="1" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                    <div class="w-full md:w-36">
+                        <label class="block font-label-md text-xs text-on-surface font-bold mb-1.5">Harga Jual</label>
+                        <input type="number" name="sell_price[]" value="0" min="0" class="w-full px-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary font-body-md text-sm"/>
+                    </div>
+                    <button type="button" onclick="removeVehicleRow(this)" class="p-2 text-error hover:bg-error-container rounded-lg transition-colors mb-0.5">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="px-6 pb-6">
+                <button type="button" onclick="addVehicleRow()" class="w-full py-3 border-2 border-dashed border-outline-variant text-on-surface-variant font-label-md text-xs font-bold hover:bg-surface-container-low hover:text-primary transition-colors rounded-lg flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[16px]">add</span> Add Another Vehicle
+                </button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+<!-- Sticky Footer -->
+<div class="fixed bottom-0 left-0 md:left-[260px] right-0 bg-surface border-t border-outline-variant p-4 px-container-padding flex justify-end gap-3 z-40">
+    <button type="button" class="px-6 py-2 border border-outline-variant text-on-surface rounded-lg font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold">
+        Save Draft
+    </button>
+    <button type="submit" form="orderForm" class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md text-sm hover:bg-primary-container transition-colors font-bold shadow-sm">
+        Submit Order
+    </button>
+</div>
+<script>
+    const searchInput = document.getElementById('customer-search-input');
+    const resultsContainer = document.getElementById('customer-search-results');
+    const nameDisplay = document.getElementById('customer-name-display');
+    const phoneDisplay = document.getElementById('customer-phone-display');
+    const idInput = document.getElementById('customer-id-input');
+
+    let debounceTimer;
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        const query = this.value.trim();
+        
+        if (query.length < 2) {
+            resultsContainer.classList.add('hidden');
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`/api/customers/search?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    resultsContainer.innerHTML = '';
+                    if (data.results.length === 0) {
+                        resultsContainer.innerHTML = '<div class="p-4 text-sm text-on-surface-variant">No customers found.</div>';
+                    } else {
+                        data.results.forEach(cust => {
+                            const item = document.createElement('div');
+                            item.className = 'p-3 border-b border-outline-variant/50 hover:bg-surface-bright cursor-pointer flex flex-col gap-1 transition-colors';
+                            item.innerHTML = `
+                                <div class="font-bold text-sm text-on-surface">${cust.name || 'Unknown'}</div>
+                                <div class="text-xs text-on-surface-variant">${cust.phone || 'No phone'}</div>
+                            `;
+                            item.addEventListener('click', () => {
+                                // Select customer
+                                nameDisplay.value = cust.name;
+                                phoneDisplay.value = cust.phone;
+                                idInput.value = cust.id;
+                                searchInput.value = cust.name; // optional
+                                resultsContainer.classList.add('hidden');
+                            });
+                            resultsContainer.appendChild(item);
+                        });
+                    }
+                    resultsContainer.classList.remove('hidden');
+                });
+        }, 300);
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+
+    function addVehicleRow() {
+        const container = document.getElementById('vehicleListContainer');
+        const rows = container.querySelectorAll('.vehicle-row');
+        if (rows.length === 0) return; 
+        const newRow = rows[0].cloneNode(true);
+        const inputs = newRow.querySelectorAll('input');
+        inputs.forEach(i => {
+            if (i.name === 'qty[]') i.value = '1';
+            else if (i.name === 'sell_price[]') i.value = '0';
+            else i.value = '';
+        });
+        container.appendChild(newRow);
+    }
+
+    function removeVehicleRow(btn) {
+        const container = document.getElementById('vehicleListContainer');
+        const rows = container.querySelectorAll('.vehicle-row');
+        if (rows.length > 1) {
+            btn.closest('.vehicle-row').remove();
+        } else {
+            alert('At least one vehicle row is required.');
+        }
+    }
+</script>
+
+{% include 'components/new_order_customer_modal.html' %}
+
+{% endblock %}

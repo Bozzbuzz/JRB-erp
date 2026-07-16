@@ -1,0 +1,33 @@
+# Python Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+
+# Vercel Configuration & Builds
+.vercel/
+
+# Excel sheets (as database migration is already run)
+*.xlsx
+
+# Database temporary files
+*.db-journal
+*.db-wal
+*.db-shm

@@ -1,0 +1,388 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div>
+        <h2 class="font-headline-lg text-on-surface">Dashboard Overview</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Real-time operational and financial metrics.</p>
+    </div>
+    
+    <!-- Date Range Picker -->
+    {% include 'components/date_picker.html' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-12 gap-card-gap w-full">
+    
+    <!-- Card 1: Omzet -->
+    <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+            </div>
+            <span class="bg-secondary-container text-on-secondary-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">trending_up</span> +12%
+            </span>
+        </div>
+        <p class="font-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Total Omzet Historis</p>
+        <h3 class="font-display text-on-surface relative z-10 font-bold">Rp {{ "{:,.0f}".format(total_sales) }}</h3>
+    </div>
+
+    <!-- Card 2: Profit -->
+    <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <div class="w-10 h-10 rounded-lg bg-secondary-container/30 flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">payments</span>
+            </div>
+            <span class="bg-secondary-container text-on-secondary-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">trending_up</span> +8.4%
+            </span>
+        </div>
+        <p class="font-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Profit Bersih Historis</p>
+        <h3 class="font-display text-on-surface relative z-10 font-bold">Rp {{ "{:,.0f}".format(profit) }}</h3>
+    </div>
+
+    <!-- Card 3: Total Orders -->
+    <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">receipt_long</span>
+            </div>
+            <span class="bg-error-container text-on-error-container font-label-md text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">trending_down</span> -2%
+            </span>
+        </div>
+        <p class="font-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Total Pesanan</p>
+        <h3 class="font-display text-on-surface relative z-10 font-bold">{{ "{:,.0f}".format(total_orders) }}</h3>
+    </div>
+
+    <!-- Card 4: Active Fleet -->
+    <div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm hover:bg-surface-bright transition-colors relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary-fixed/30 rounded-full group-hover:scale-110 transition-transform"></div>
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-primary-fixed filled">directions_bus</span>
+            </div>
+            <span class="bg-surface-container-high text-on-surface font-label-md text-[10px] px-2 py-1 rounded-full">
+                92% Utili.
+            </span>
+        </div>
+        <p class="font-label-md text-on-surface-variant uppercase tracking-wider mb-1 relative z-10">Active Fleet / Mitra</p>
+        <h3 class="font-display text-on-surface relative z-10 font-bold">{{ active_fleet }} <span class="font-headline-md text-outline-variant">/ {{ total_fleet }}</span></h3>
+    </div>
+
+    <!-- Main Chart Section (8 cols) -->
+    <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col min-h-[400px]">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h3 class="font-headline-md text-on-surface font-bold">Sales vs Marketing Performance</h3>
+                <p class="font-body-md text-on-surface-variant mt-1">Correlation between marketing spend and booking volume over 6 months.</p>
+            </div>
+            <button class="p-2 text-outline hover:text-primary hover:bg-surface-container transition-colors rounded-lg">
+                <span class="material-symbols-outlined">more_vert</span>
+            </button>
+        </div>
+        <!-- Chart.js Canvas -->
+        <div class="flex-1 w-full relative">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Side Section: Reminder Piutang (4 cols) -->
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col min-h-[400px]">
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="font-headline-md text-on-surface font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-error">warning</span>
+                Reminder Piutang
+            </h3>
+            <span class="bg-error-container text-on-error-container font-label-md text-[11px] px-2 py-1 rounded-full">{{ pending_orders|length }} Overdue</span>
+        </div>
+        <div class="flex-1 flex flex-col gap-3 overflow-y-auto pr-2">
+            {% for po in pending_orders %}
+            {% set dp_payments = po.payments | selectattr("payment_type", "equalto", "DP") | list %}
+            {% set full_payments = po.payments | selectattr("payment_type", "equalto", "FULL") | list %}
+            {% set dp_total = dp_payments | sum(attribute="amount") %}
+            {% set full_total = full_payments | sum(attribute="amount") %}
+            {% set balance = po.total_sell - (dp_total + full_total) %}
+            {% set dp_date = dp_payments[0].payment_date if dp_payments and dp_payments[0].payment_date else '-' %}
+            {% set full_date = full_payments[0].payment_date if full_payments and full_payments[0].payment_date else '-' %}
+            
+            <div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright hover:shadow-sm transition-all cursor-pointer group"
+                onclick="openOrderDetailModal(this)"
+                data-id="JRB-{{ (po.id_bitrix or po.id|string) | replace('ORD-', '') | replace('JRB-', '') }}"
+                data-depart="{{ po.departure_date or '-' }}"
+                data-return="{{ po.return_date or '-' }}"
+                data-date="{{ po.book_date or '-' }}"
+                data-customer="{{ po.customer.name if po.customer else '-' }}"
+                data-phone="{{ po.customer.phone if po.customer and po.customer.phone else po.marketing }}"
+                data-route="{{ po.destination }}"
+                data-fleet="{{ po.vehicle_type or '-' }}"
+                data-vendor="PO. {{ po.vendor.name if po.vendor else '-' }}"
+                data-agent="{{ po.marketing or '-' }}"
+                data-buy-price="Rp {{ '{:,.0f}'.format(po.total_buy) }}"
+                data-profit="Rp {{ '{:,.0f}'.format(po.total_sell - po.total_buy) }}"
+                data-dp-date="{{ dp_date }}"
+                data-dp-val="Rp {{ '{:,.0f}'.format(dp_total) }}"
+                data-full-date="{{ full_date }}"
+                data-full-val="Rp {{ '{:,.0f}'.format(full_total) }}"
+                data-total="Rp {{ '{:,.0f}'.format(po.total_sell) }}"
+                data-balance="{% if balance > 0 %}Rp {{ '{:,.0f}'.format(balance) }}{% else %}Rp 0{% endif %}"
+                data-status="{% if po.status == 'COMPLETE' or balance <= 0 %}LUNAS{% elif po.status == 'CANCEL' %}CANCEL{% else %}DP{% endif %}">
+                
+                <div class="flex justify-between items-start mb-1">
+                    <span class="font-label-md text-on-surface font-bold group-hover:text-primary transition-colors">{{ po.customer.name if po.customer else 'Pelanggan' }}</span>
+                    <span class="font-label-md text-error font-bold">Rp {{ "{:,.0f}".format(po.total_sell) }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-body-md text-[12px] text-on-surface-variant flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">route</span> {{ po.destination }}
+                    </span>
+                    <span class="font-body-md text-[11px] text-outline">Dept: {{ po.departure_date }}</span>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="p-3 border border-outline-variant rounded-lg hover:bg-surface-bright transition-colors cursor-pointer group mt-auto">
+                <a href="/finance" class="w-full text-center block font-label-md text-primary py-1 font-bold">View All Receivables</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities (12 cols) -->
+    <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-0 shadow-sm overflow-hidden mt-2">
+        <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+            <h3 class="font-headline-md text-on-surface font-bold">Recent Orders</h3>
+            <a href="/orders" class="font-label-md text-primary flex items-center gap-1 hover:underline font-bold">
+                View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+        </div>
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Order ID</th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Customer</th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Route / Destination</th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider">Departure Date</th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider text-right">Amount</th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-on-surface">
+                    {% for order in recent_orders %}
+                    {% set dp_payments = order.payments | selectattr("payment_type", "equalto", "DP") | list %}
+                    {% set full_payments = order.payments | selectattr("payment_type", "equalto", "FULL") | list %}
+                    {% set dp_total = dp_payments | sum(attribute="amount") %}
+                    {% set full_total = full_payments | sum(attribute="amount") %}
+                    {% set balance = order.total_sell - (dp_total + full_total) %}
+                    {% set dp_date = dp_payments[0].payment_date if dp_payments and dp_payments[0].payment_date else '-' %}
+                    {% set full_date = full_payments[0].payment_date if full_payments and full_payments[0].payment_date else '-' %}
+                    
+                    <tr class="border-b border-outline-variant/50 hover:bg-surface-bright hover:shadow-sm transition-all cursor-pointer group"
+                        onclick="openOrderDetailModal(this)"
+                        data-id="JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}"
+                        data-depart="{{ order.departure_date or '-' }}"
+                        data-return="{{ order.return_date or '-' }}"
+                        data-date="{{ order.book_date or '-' }}"
+                        data-customer="{{ order.customer.name if order.customer else '-' }}"
+                        data-phone="{{ order.customer.phone if order.customer and order.customer.phone else order.marketing }}"
+                        data-route="{{ order.destination }}"
+                        data-fleet="{{ order.vehicle_type or '-' }}"
+                        data-vendor="PO. {{ order.vendor.name if order.vendor else '-' }}"
+                        data-agent="{{ order.marketing or '-' }}"
+                        data-buy-price="Rp {{ '{:,.0f}'.format(order.total_buy) }}"
+                        data-profit="Rp {{ '{:,.0f}'.format(order.total_sell - order.total_buy) }}"
+                        data-dp-date="{{ dp_date }}"
+                        data-dp-val="Rp {{ '{:,.0f}'.format(dp_total) }}"
+                        data-full-date="{{ full_date }}"
+                        data-full-val="Rp {{ '{:,.0f}'.format(full_total) }}"
+                        data-total="Rp {{ '{:,.0f}'.format(order.total_sell) }}"
+                        data-balance="{% if balance > 0 %}Rp {{ '{:,.0f}'.format(balance) }}{% else %}Rp 0{% endif %}"
+                        data-status="{% if order.status == 'COMPLETE' or balance <= 0 %}LUNAS{% elif order.status == 'CANCEL' %}CANCEL{% else %}DP{% endif %}">
+                        
+                        <td class="py-4 px-6 font-code text-primary group-hover:underline font-bold transition-all">#JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}</td>
+                        <td class="py-4 px-6 font-medium">{{ order.customer.name if order.customer else '-' }}</td>
+                        <td class="py-4 px-6 text-on-surface-variant">{{ order.destination }}</td>
+                        <td class="py-4 px-6">{{ order.departure_date }}</td>
+                        <td class="py-4 px-6 text-right font-medium">Rp {{ "{:,.0f}".format(order.total_sell) }}</td>
+                        <td class="py-4 px-6 text-center">
+                            {% if order.status == 'COMPLETE' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container">Completed</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-variant text-primary">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Consolidate Recent Orders Table
+    const tbody = document.querySelector("table tbody");
+    if (tbody) {
+        const rows = Array.from(tbody.querySelectorAll("tr.group"));
+        const orderMap = {};
+        
+        rows.forEach(row => {
+            const fullId = row.getAttribute("data-id");
+            if (!fullId) return;
+            
+            let baseId = fullId;
+            if (fullId.includes('.')) {
+                baseId = fullId.split('.')[0];
+            }
+            
+            const fleetData = {
+                id: fullId,
+                fleet: row.getAttribute("data-fleet"),
+                vendor: row.getAttribute("data-vendor"),
+                buyPrice: row.getAttribute("data-buy-price"),
+                profit: row.getAttribute("data-profit"),
+                dpDate: row.getAttribute("data-dp-date"),
+                dpVal: row.getAttribute("data-dp-val"),
+                fullDate: row.getAttribute("data-full-date"),
+                fullVal: row.getAttribute("data-full-val"),
+                total: row.getAttribute("data-total"),
+                balance: row.getAttribute("data-balance"),
+                status: row.getAttribute("data-status"),
+            };
+            
+            // Function to parse Rupiah string to number
+            const parseRp = (str) => {
+                if (!str) return 0;
+                return parseFloat(str.replace(/[^0-9.-]+/g,"")) || 0;
+            };
+            
+            const rawTotalSell = parseRp(row.getAttribute("data-total"));
+            const rawBalance = parseRp(row.getAttribute("data-balance"));
+            
+            if (!orderMap[baseId]) {
+                orderMap[baseId] = {
+                    baseRow: row,
+                    fleets: [fleetData],
+                    totalSell: rawTotalSell,
+                    totalBalance: rawBalance
+                };
+            } else {
+                row.style.display = 'none'; // hide duplicate row
+                orderMap[baseId].fleets.push(fleetData);
+                orderMap[baseId].totalSell += rawTotalSell;
+                orderMap[baseId].totalBalance += rawBalance;
+            }
+        });
+        
+        // Update the base rows
+        Object.keys(orderMap).forEach(baseId => {
+            const item = orderMap[baseId];
+            const row = item.baseRow;
+            
+            row.setAttribute("data-fleets", JSON.stringify(item.fleets));
+            row.setAttribute("data-is-consolidated", "true");
+            row.setAttribute("data-id", baseId);
+            
+            // Format numbers back to Rp
+            const formatRp = (num) => "Rp " + num.toLocaleString('id-ID');
+            
+            if (row.cells[0]) {
+                row.cells[0].textContent = "#" + baseId;
+            }
+            if (row.cells[4]) {
+                row.cells[4].textContent = formatRp(item.totalSell);
+                row.setAttribute("data-total", formatRp(item.totalSell));
+            }
+        });
+    }
+});
+</script>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Booking Volume Trend',
+                        data: [25, 38, 22, 45, 60, 42],
+                        borderColor: '#2c694e', // secondary color
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2c694e',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Marketing Spend (k)',
+                        data: [40, 55, 35, 70, 85, 60],
+                        backgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Make May (index 4) primary, others primary-fixed
+                            return index === 4 ? '#031636' : '#d8e2ff';
+                        },
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { family: 'Inter', size: 12 },
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: '#e5eeff',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + 'k';
+                            },
+                            font: { family: 'Inter', size: 11 },
+                            color: '#75777f'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 },
+                            color: '#75777f'
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+</script>
+
+{% include 'components/order_modal.html' %}
+{% endblock %}

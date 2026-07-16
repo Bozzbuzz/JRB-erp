@@ -1,0 +1,398 @@
+<div class="relative" id="customDateRangePicker">
+    <button type="button" id="customDatePickerBtn" onclick="toggleDatePicker()" class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-sm hover:shadow-md hover:border-primary transition-all text-sm font-medium text-on-surface focus:outline-none">
+        <span class="material-symbols-outlined text-on-surface-variant text-[18px]">calendar_today</span>
+        <span id="customDateText">{{ date_label }}</span>
+        <span class="material-symbols-outlined text-on-surface-variant text-[18px] ml-2">arrow_drop_down</span>
+    </button>
+    
+    <!-- Popover -->
+    <div id="customDatePopover" class="absolute mt-2 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-200 opacity-0 invisible transition-all flex flex-col" style="width: 600px; transform: translateY(-10px); z-index: 9999;">
+        <!-- Header -->
+        <div class="bg-[#1e293b] text-white p-3 rounded-t-xl flex justify-between items-center">
+            <span class="font-medium text-sm px-2">Select Date Range</span>
+            <div class="relative">
+                <select id="shortcutSelect" onchange="handleShortcut(this.value)" class="bg-white/10 border border-white/20 text-white text-sm rounded-lg block w-40 p-2 pl-3 focus:ring-white/30 focus:border-white/30 hover:bg-white/20 transition-colors cursor-pointer appearance-none outline-none">
+                    <option value="custom" class="text-black">Custom Range</option>
+                    <option value="all_time" class="text-black">All Time</option>
+                    <option value="today" class="text-black">Today</option>
+                    <option value="yesterday" class="text-black">Yesterday</option>
+                    <optgroup label="This month" class="text-black">
+                        <option value="this_week" class="text-black">This week</option>
+                        <option value="this_month" class="text-black">This month</option>
+                        <option value="this_year" class="text-black">This year</option>
+                    </optgroup>
+                    <optgroup label="Last 7 days" class="text-black">
+                        <option value="last_7_days" class="text-black">Last 7 days</option>
+                        <option value="last_14_days" class="text-black">Last 14 days</option>
+                        <option value="last_30_days" class="text-black">Last 30 days</option>
+                        <option value="last_month" class="text-black">Last month</option>
+                    </optgroup>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                    <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calendars -->
+        <div class="flex p-5 gap-6 bg-white rounded-b-xl">
+            <!-- Start Date Calendar -->
+            <div class="flex-1">
+                <div class="text-center font-bold mb-4 text-sm text-gray-800">Start Date</div>
+                <div class="flex justify-between items-center mb-4">
+                    <div class="font-bold text-gray-800 text-sm" id="startMonthLabel">JUL 2026</div>
+                    <div class="flex gap-1">
+                        <button type="button" onclick="changeStartMonth(-1)" class="p-1 hover:bg-gray-100 rounded-full text-gray-600 focus:outline-none flex"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+                        <button type="button" onclick="changeStartMonth(1)" class="p-1 hover:bg-gray-100 rounded-full text-gray-600 focus:outline-none flex"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-medium text-gray-400 mb-2 border-b pb-2">
+                    <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+                </div>
+                <div id="startCalendarDays" class="grid grid-cols-7 gap-y-1 gap-x-1 text-center text-sm">
+                    <!-- Days injected here -->
+                </div>
+            </div>
+            
+            <!-- End Date Calendar -->
+            <div class="flex-1">
+                <div class="text-center font-bold mb-4 text-sm text-gray-800">End Date</div>
+                <div class="flex justify-between items-center mb-4">
+                    <div class="font-bold text-gray-800 text-sm" id="endMonthLabel">JUL 2026</div>
+                    <div class="flex gap-1">
+                        <button type="button" onclick="changeEndMonth(-1)" class="p-1 hover:bg-gray-100 rounded-full text-gray-600 focus:outline-none flex"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+                        <button type="button" onclick="changeEndMonth(1)" class="p-1 hover:bg-gray-100 rounded-full text-gray-600 focus:outline-none flex"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-medium text-gray-400 mb-2 border-b pb-2">
+                    <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+                </div>
+                <div id="endCalendarDays" class="grid grid-cols-7 gap-y-1 gap-x-1 text-center text-sm">
+                    <!-- Days injected here -->
+                </div>
+                
+                <div class="flex justify-end mt-5">
+                    <button type="button" onclick="applyDateRange()" class="bg-[#1e293b] text-white px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition-colors text-sm shadow-md">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cal-day {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border-radius: 50%;
+        cursor: pointer;
+        color: #374151;
+        transition: all 0.2s;
+    }
+    .cal-day:hover:not(.cal-empty):not(.cal-selected) {
+        background-color: #f3f4f6;
+    }
+    .cal-today {
+        border: 1px solid #9ca3af;
+    }
+    .cal-selected {
+        background-color: #2563eb;
+        color: white;
+        font-weight: bold;
+    }
+    .cal-selected.cal-today {
+        border-color: #2563eb;
+    }
+    
+    #customDatePopover.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    const serverStartDateStr = "{{ start_date }}";
+    const serverEndDateStr = "{{ end_date }}";
+    const dbFirstDateStr = "{{ db_first_date }}";
+    const dbLastDateStr = "{{ db_last_date }}";
+    
+    let state = {
+        isOpen: false,
+        activeStart: new Date(),
+        activeEnd: new Date(),
+        viewStartMonth: new Date(),
+        viewEndMonth: new Date()
+    };
+    
+    const monthsStr = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+    function initDatePicker() {
+        if (serverStartDateStr) {
+            state.activeStart = new Date(serverStartDateStr);
+            state.viewStartMonth = new Date(serverStartDateStr);
+        }
+        if (serverEndDateStr) {
+            state.activeEnd = new Date(serverEndDateStr);
+            state.viewEndMonth = new Date(serverEndDateStr);
+        }
+        
+        // Ensure month views are distinct if they are the same month
+        if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+            state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + 1);
+        }
+        
+        renderCalendars();
+    }
+
+    function toggleDatePicker() {
+        state.isOpen = !state.isOpen;
+        const popover = document.getElementById('customDatePopover');
+        const btn = document.getElementById('customDatePickerBtn');
+        
+        if (state.isOpen) {
+            // Dynamic positioning
+            const rect = btn.getBoundingClientRect();
+            if (rect.left < window.innerWidth / 2) {
+                popover.classList.remove('right-0');
+                popover.classList.add('left-0');
+            } else {
+                popover.classList.remove('left-0');
+                popover.classList.add('right-0');
+            }
+
+            popover.classList.add('show');
+            document.getElementById('shortcutSelect').value = 'custom';
+            
+            // Re-sync with actual values when opening
+            if (serverStartDateStr) state.activeStart = new Date(serverStartDateStr);
+            if (serverEndDateStr) state.activeEnd = new Date(serverEndDateStr);
+            state.viewStartMonth = new Date(state.activeStart);
+            state.viewEndMonth = new Date(state.activeEnd);
+            
+            if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+                state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + 1);
+            }
+            
+            renderCalendars();
+        } else {
+            popover.classList.remove('show');
+        }
+    }
+    
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+        const container = document.getElementById('customDateRangePicker');
+        if (state.isOpen && container && !container.contains(e.target)) {
+            toggleDatePicker();
+        }
+    });
+
+    function changeStartMonth(delta) {
+        state.viewStartMonth.setMonth(state.viewStartMonth.getMonth() + delta);
+        renderStartCalendar();
+    }
+    
+    function changeEndMonth(delta) {
+        state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + delta);
+        renderEndCalendar();
+    }
+
+    function renderStartCalendar() {
+        document.getElementById('startMonthLabel').innerText = `${monthsStr[state.viewStartMonth.getMonth()]} ${state.viewStartMonth.getFullYear()}`;
+        document.getElementById('startCalendarDays').innerHTML = generateMonthHTML(state.viewStartMonth, state.activeStart, 'start');
+    }
+    
+    function renderEndCalendar() {
+        document.getElementById('endMonthLabel').innerText = `${monthsStr[state.viewEndMonth.getMonth()]} ${state.viewEndMonth.getFullYear()}`;
+        document.getElementById('endCalendarDays').innerHTML = generateMonthHTML(state.viewEndMonth, state.activeEnd, 'end');
+    }
+    
+    function renderCalendars() {
+        renderStartCalendar();
+        renderEndCalendar();
+    }
+
+    function generateMonthHTML(viewDate, activeDate, type) {
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+        
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+        let html = '';
+        
+        const today = new Date();
+        const isTodayMonth = today.getFullYear() === year && today.getMonth() === month;
+        const isActiveMonth = activeDate.getFullYear() === year && activeDate.getMonth() === month;
+        
+        for (let i = 0; i < firstDay; i++) {
+            html += `<div class="cal-day cal-empty"></div>`;
+        }
+        
+        for (let d = 1; d <= daysInMonth; d++) {
+            let classes = "cal-day";
+            if (isTodayMonth && today.getDate() === d) classes += " cal-today";
+            if (isActiveMonth && activeDate.getDate() === d) classes += " cal-selected";
+            
+            html += `<div class="${classes}" onclick="selectDate(event, '${type}', ${year}, ${month}, ${d})">${d}</div>`;
+        }
+        
+        return html;
+    }
+
+    function selectDate(event, type, year, month, day) {
+        if (event) event.stopPropagation();
+        document.getElementById('shortcutSelect').value = 'custom';
+        const d = new Date(year, month, day);
+        if (type === 'start') {
+            state.activeStart = d;
+            // if start > end, set end = start
+            if (state.activeStart > state.activeEnd) {
+                state.activeEnd = new Date(state.activeStart);
+                state.viewEndMonth = new Date(state.activeEnd);
+                if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+                    state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + 1);
+                }
+                renderEndCalendar();
+            }
+            renderStartCalendar();
+        } else {
+            state.activeEnd = d;
+            // if end < start, set start = end
+            if (state.activeEnd < state.activeStart) {
+                state.activeStart = new Date(state.activeEnd);
+                state.viewStartMonth = new Date(state.activeStart);
+                if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+                    state.viewStartMonth.setMonth(state.viewStartMonth.getMonth() - 1);
+                }
+                renderStartCalendar();
+            }
+            renderEndCalendar();
+        }
+    }
+    
+    const formatDateObj = (d) => {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    function handleShortcut(val) {
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        let s = new Date(today);
+        let e = new Date(today);
+        
+        if (val === 'custom') return;
+        
+        if (val === 'all_time') {
+            s = dbFirstDateStr ? new Date(dbFirstDateStr) : new Date(2020, 0, 1);
+            e = dbLastDateStr ? new Date(dbLastDateStr) : new Date();
+            
+            state.activeStart = s;
+            state.activeEnd = e;
+            state.viewStartMonth = new Date(s);
+            state.viewEndMonth = new Date(e);
+            
+            if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+                state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + 1);
+            }
+            
+            renderCalendars();
+            
+            // Auto-apply for All Time to save user from manual apply
+            applyDateRange();
+            return;
+        } else if (val === 'today') {
+            // s and e already today
+        } else if (val === 'yesterday') {
+            s.setDate(s.getDate() - 1);
+            e = new Date(s);
+        } else if (val === 'this_week') {
+            const day = s.getDay() || 7; 
+            s.setDate(s.getDate() - day + 1); // Monday
+            e = new Date(s);
+            e.setDate(e.getDate() + 6); // Sunday
+        } else if (val === 'this_month') {
+            s.setDate(1);
+            e = new Date(s.getFullYear(), s.getMonth() + 1, 0);
+        } else if (val === 'this_year') {
+            s = new Date(s.getFullYear(), 0, 1);
+            e = new Date(s.getFullYear(), 11, 31);
+        } else if (val === 'last_7_days') {
+            s.setDate(s.getDate() - 6);
+        } else if (val === 'last_14_days') {
+            s.setDate(s.getDate() - 13);
+        } else if (val === 'last_30_days') {
+            s.setDate(s.getDate() - 29);
+        } else if (val === 'last_month') {
+            s = new Date(s.getFullYear(), s.getMonth() - 1, 1);
+            e = new Date(s.getFullYear(), s.getMonth() + 1, 0);
+        }
+        
+        state.activeStart = s;
+        state.activeEnd = e;
+        state.viewStartMonth = new Date(s);
+        state.viewEndMonth = new Date(e);
+        
+        if (state.viewStartMonth.getTime() === state.viewEndMonth.getTime()) {
+            state.viewEndMonth.setMonth(state.viewEndMonth.getMonth() + 1);
+        }
+        
+        renderCalendars();
+    }
+
+    function applyDateRange() {
+        const start = formatDateObj(state.activeStart);
+        const end = formatDateObj(state.activeEnd);
+
+        // 1. KPI Page Logic (Client-side)
+        if (typeof window.applyClientDateFilter === 'function') {
+            window.applyClientDateFilter(start, end);
+            toggleDatePicker();
+            document.getElementById('customDateText').innerText = 
+                `${state.activeStart.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})} - ` +
+                `${state.activeEnd.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}`;
+            return;
+        }
+
+        // 2. Form Submit Logic (Analytics / other pages with filter forms)
+        const filterForm = document.getElementById('filterForm');
+        if (filterForm) {
+            let startInput = filterForm.querySelector('input[name="start_date"]');
+            let endInput = filterForm.querySelector('input[name="end_date"]');
+            
+            if (!startInput) {
+                startInput = document.createElement('input');
+                startInput.type = 'hidden';
+                startInput.name = 'start_date';
+                filterForm.appendChild(startInput);
+            }
+            if (!endInput) {
+                endInput = document.createElement('input');
+                endInput.type = 'hidden';
+                endInput.name = 'end_date';
+                filterForm.appendChild(endInput);
+            }
+            
+            startInput.value = start;
+            endInput.value = end;
+            filterForm.submit();
+            return;
+        }
+
+        // 3. Fallback / Dashboard Logic (Reload current path with params)
+        const currentPath = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('start_date', start);
+        urlParams.set('end_date', end);
+        window.location.href = `${currentPath}?${urlParams.toString()}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', initDatePicker);
+</script>

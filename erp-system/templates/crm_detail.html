@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% block title %}Customer Detail - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div class="flex-1 w-full max-w-lg">
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+            <input type="text" class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-primary font-body-md text-sm" placeholder="Search..."/>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="w-full pb-10">
+    <!-- Breadcrumbs -->
+    <div class="flex items-center gap-2 text-sm font-label-md mb-6 mt-2 text-on-surface-variant">
+        <a href="/crm" class="hover:text-primary transition-colors">CRM</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <span class="text-on-surface font-bold">{{ customer.name or 'Unknown Customer' }}</span>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <span>View History</span>
+    </div>
+
+    <!-- Top Section (Profile & Metrics) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        
+        <!-- Left: Customer Profile -->
+        <div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col relative">
+            <button class="absolute top-6 right-6 px-4 py-1.5 border border-outline-variant rounded-lg text-on-surface-variant font-label-md text-xs font-bold hover:bg-surface-container-low transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">edit</span> Edit
+            </button>
+            
+            <div class="flex items-center gap-6 mb-8">
+                <div class="w-20 h-20 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-2xl uppercase">
+                    {{ customer.name[:2] if customer.name else 'UK' }}
+                </div>
+                <div>
+                    <h2 class="font-headline-lg text-on-surface font-bold">{{ customer.name or 'Unknown Customer' }}</h2>
+                    <span class="inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#e6f4ea] text-[#137333]">
+                        <span class="material-symbols-outlined text-[12px]">verified</span>
+                        {{ 'Corporate Client' if customer.company else 'Individual Client' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-body-md">
+                <div>
+                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Email</div>
+                    <div class="flex items-center gap-2 text-on-surface text-sm">
+                        <span class="material-symbols-outlined text-outline-variant text-[16px]">mail</span> {{ customer.email or '-' }}
+                    </div>
+                </div>
+                <div>
+                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Phone</div>
+                    <div class="flex items-center gap-2 text-on-surface text-sm">
+                        <span class="material-symbols-outlined text-outline-variant text-[16px]">call</span> {{ customer.phone or '-' }}
+                    </div>
+                </div>
+                <div>
+                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Company</div>
+                    <div class="flex items-center gap-2 text-on-surface text-sm">
+                        <span class="material-symbols-outlined text-outline-variant text-[16px]">domain</span> {{ customer.company or '-' }}
+                    </div>
+                </div>
+                <div>
+                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Date of Birth</div>
+                    <div class="flex items-center gap-2 text-on-surface text-sm">
+                        <span class="material-symbols-outlined text-outline-variant text-[16px]">calendar_today</span> -
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Address</div>
+                    <div class="flex items-start gap-2 text-on-surface text-sm">
+                        <span class="material-symbols-outlined text-outline-variant text-[16px] mt-0.5">location_on</span> Jakarta, Indonesia
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Metrics Cards -->
+        <div class="lg:col-span-1 flex flex-col gap-4">
+            
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-primary-fixed/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                </div>
+                <div>
+                    <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider mb-0.5">Total Sales</div>
+                    <div class="font-display text-on-surface text-xl font-bold">Rp {{ "{:,.0f}".format(total_sales) }}</div>
+                </div>
+            </div>
+            
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-[#e6f4ea] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#137333]">trending_up</span>
+                </div>
+                <div>
+                    <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider mb-0.5">Total Profit</div>
+                    <div class="font-display text-on-surface text-xl font-bold">Rp {{ "{:,.0f}".format(total_profit) }}</div>
+                </div>
+            </div>
+
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-surface">directions_bus</span>
+                </div>
+                <div>
+                    <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider mb-0.5">Qty Units Rented</div>
+                    <div class="font-display text-on-surface text-xl font-bold">{{ total_units | int }} Units</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Section (Transaction History Table) -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+            <h3 class="font-headline-md text-on-surface font-bold text-[18px]">Transaction History</h3>
+            <div class="flex gap-2">
+                <button class="px-3 py-1.5 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-xs font-bold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                </button>
+                <button class="px-3 py-1.5 border border-outline-variant rounded text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-xs font-bold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">download</span> Export
+                </button>
+            </div>
+        </div>
+        
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('date')" title="Sort by Date">
+                            <div class="flex items-center gap-1">Date <span id="sort-icon-date" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('order-id')" title="Sort by Order ID">
+                            <div class="flex items-center gap-1">Order ID <span id="sort-icon-order-id" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('route')" title="Sort by Route">
+                            <div class="flex items-center gap-1">Route <span id="sort-icon-route" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('vehicle-type')" title="Sort by Vehicle Type">
+                            <div class="flex items-center gap-1">Vehicle Type <span id="sort-icon-vehicle-type" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider text-right cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('total-price')" title="Sort by Total Price">
+                            <div class="flex items-center justify-end gap-1">Total Price <span id="sort-icon-total-price" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                        <th class="py-3 px-6 font-label-md text-[11px] text-on-surface-variant uppercase tracking-wider text-center cursor-pointer hover:bg-surface-bright transition-colors select-none" onclick="sortTable('status')" title="Sort by Status">
+                            <div class="flex items-center justify-center gap-1">Status <span id="sort-icon-status" class="sort-icon material-symbols-outlined text-[14px]">unfold_more</span></div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-on-surface crm-detail-table-body">
+                    {% for order in customer.orders|sort(attribute='book_date', reverse=True) %}
+                    {% set dp_payments = order.payments | selectattr("payment_type", "equalto", "DP") | list %}
+                    {% set full_payments = order.payments | selectattr("payment_type", "equalto", "FULL") | list %}
+                    {% set dp_total = dp_payments | sum(attribute="amount") %}
+                    {% set full_total = full_payments | sum(attribute="amount") %}
+                    {% set balance = order.total_sell - (dp_total + full_total) %}
+                    {% set dp_date = dp_payments[0].payment_date if dp_payments and dp_payments[0].payment_date else '-' %}
+                    {% set full_date = full_payments[0].payment_date if full_payments and full_payments[0].payment_date else '-' %}
+
+                    <tr class="border-b border-outline-variant/50 hover:bg-surface-bright hover:shadow-sm transition-all cursor-pointer group crm-detail-row"
+                        onclick="openOrderDetailModal(this)"
+                        data-id="JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}"
+                        data-depart="{{ order.departure_date or '-' }}"
+                        data-return="{{ order.return_date or '-' }}"
+                        data-date="{{ order.book_date or '-' }}"
+                        data-customer="{{ customer.name or '-' }}"
+                        data-phone="{{ customer.phone or order.marketing }}"
+                        data-route="{{ order.destination }}"
+                        data-fleet="{{ order.vehicle_type or '-' }}"
+                        data-vendor="PO. {{ order.vendor.name if order.vendor else '-' }}"
+                        data-agent="{{ order.marketing or '-' }}"
+                        data-buy-price="Rp {{ '{:,.0f}'.format(order.total_buy) }}"
+                        data-profit="Rp {{ '{:,.0f}'.format(order.total_sell - order.total_buy) }}"
+                        data-dp-date="{{ dp_date }}"
+                        data-dp-val="Rp {{ '{:,.0f}'.format(dp_total) }}"
+                        data-full-date="{{ full_date }}"
+                        data-full-val="Rp {{ '{:,.0f}'.format(full_total) }}"
+                        data-total="Rp {{ '{:,.0f}'.format(order.total_sell) }}"
+                        data-balance="{% if balance > 0 %}Rp {{ '{:,.0f}'.format(balance) }}{% else %}Rp 0{% endif %}"
+                        data-status="{% if order.status == 'COMPLETE' or balance <= 0 %}LUNAS{% elif order.status == 'CANCEL' %}CANCEL{% else %}DP{% endif %}">
+                        
+                        <td class="py-4 px-6 text-sm">{{ order.book_date }}</td>
+                        <td class="py-4 px-6 font-code text-primary group-hover:underline font-bold transition-all text-sm">#JRB-{{ (order.id_bitrix or order.id|string) | replace('ORD-', '') | replace('JRB-', '') }}</td>
+                        <td class="py-4 px-6 text-on-surface-variant text-sm">{{ order.destination }}</td>
+                        <td class="py-4 px-6 text-sm">{{ order.vehicle_type or '-' }}</td>
+                        <td class="py-4 px-6 text-right font-medium text-sm">Rp {{ "{:,.0f}".format(order.total_sell) }}</td>
+                        <td class="py-4 px-6 text-center">
+                            {% if order.status == 'COMPLETE' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#e6f4ea] text-[#137333]">LUNAS</span>
+                            {% elif order.status == 'CANCEL' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-error">CANCEL</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fef7e0] text-[#b06000]">DP</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not customer.orders %}
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-on-surface-variant font-body-md">Tidak ada riwayat transaksi.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let sortDirection = {}; 
+    
+    function sortTable(columnName) {
+        const tbody = document.querySelector('.crm-detail-table-body');
+        const rows = Array.from(tbody.querySelectorAll('.crm-detail-row'));
+        
+        // Toggle direction
+        const currentDir = sortDirection[columnName] || 'desc';
+        const newDir = currentDir === 'asc' ? 'desc' : 'asc';
+        sortDirection[columnName] = newDir;
+        
+        // Update icons
+        document.querySelectorAll('.sort-icon').forEach(el => el.textContent = 'unfold_more');
+        const currentIcon = document.getElementById(`sort-icon-${columnName}`);
+        if (currentIcon) {
+            currentIcon.textContent = newDir === 'asc' ? 'arrow_upward' : 'arrow_downward';
+        }
+        
+        // Map header column name to the data attribute used by the row (due to modal reuse)
+        let attrName = columnName;
+        if (columnName === 'vehicle-type') attrName = 'fleet';
+        if (columnName === 'total-price') attrName = 'total';
+        if (columnName === 'order-id') attrName = 'id';
+        
+        // Sort logic
+        rows.sort((a, b) => {
+            let valA = a.getAttribute(`data-${attrName}`) || '';
+            let valB = b.getAttribute(`data-${attrName}`) || '';
+            
+            if (columnName === 'total-price') {
+                // Clean formatted currency or float to pure number
+                valA = parseFloat(valA.replace(/[^0-9.-]+/g, "")) || 0;
+                valB = parseFloat(valB.replace(/[^0-9.-]+/g, "")) || 0;
+            } else if (columnName === 'order-id') {
+                // Clean 'JRB-1234' to pure number for sorting
+                valA = parseFloat(valA.replace(/[^0-9.]+/g, "")) || 0;
+                valB = parseFloat(valB.replace(/[^0-9.]+/g, "")) || 0;
+            } else {
+                valA = valA.toString().toLowerCase();
+                valB = valB.toString().toLowerCase();
+            }
+            
+            if (valA < valB) return newDir === 'asc' ? -1 : 1;
+            if (valA > valB) return newDir === 'asc' ? 1 : -1;
+            return 0;
+        });
+        
+        // Re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+    }
+</script>
+
+{% include 'components/order_modal.html' %}
+{% endblock %}

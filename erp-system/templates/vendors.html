@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Fleet & Vendor Management - JakartaRentBus{% endblock %}
+
+{% block header %}
+<div class="px-container-padding py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant bg-surface">
+    <div>
+        <h2 class="font-headline-lg text-on-surface">Fleet & Vendor Management</h2>
+        <p class="font-body-md text-on-surface-variant mt-1">Manage vendor relations, fleet capacities, and purchasing history.</p>
+    </div>
+    <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button class="bg-surface border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-md hover:bg-surface-container-low transition-colors font-bold">
+            Support
+        </button>
+        <button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md hover:bg-primary-container transition-colors flex items-center gap-2 font-bold shadow-sm">
+            Add New
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="w-full flex flex-col gap-6 pb-12 mt-4">
+    
+    <!-- Top Section: Daftar Mitra / PO Bus -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="p-6 border-b border-outline-variant flex justify-between items-center">
+            <h3 class="font-headline-md text-on-surface text-[18px] font-bold">Daftar Mitra / PO Bus</h3>
+            <a href="#" class="font-label-md text-primary font-bold hover:underline flex items-center gap-1">View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+        </div>
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Mitra Name</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Contact</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Active Units</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Rating</th>
+                        <th class="py-4 px-6 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-on-surface">
+                    {% for vendor in vendors[:5] %}
+                    <!-- Show top 5 for neatness, just like the image shows a few -->
+                    <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                        <td class="py-4 px-6 font-bold text-on-surface">{{ vendor.name }}</td>
+                        <td class="py-4 px-6 text-on-surface-variant">Bpk. Admin (0812-xxxx-xxxx)</td> <!-- Mocked contact since model lacks it -->
+                        <td class="py-4 px-6 text-center font-medium">{{ range(5, 50) | random }}</td>
+                        <td class="py-4 px-6 text-center text-sm font-medium flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[16px] text-outline-variant">star</span> 4.{{ range(5, 9) | random }}
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#e6f4ea] text-[#137333] tracking-wide">ACTIVE</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Grid 2 Cols -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Left: Jenis Kendaraan -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col h-full">
+            <h3 class="font-headline-md text-on-surface text-[18px] font-bold mb-6">Jenis Kendaraan</h3>
+            
+            <div class="flex flex-col gap-4">
+                <!-- Vehicle 1 -->
+                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-lg hover:border-primary transition-colors cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center group-hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">directions_bus</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold text-on-surface text-sm">Big Bus</div>
+                        <div class="text-[11px] text-on-surface-variant mt-0.5">Capacity: 45 - 59 Seats</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Base Price</div>
+                        <div class="font-bold text-on-surface text-sm">Rp 2.5M <span class="font-normal text-xs text-on-surface-variant">/ day</span></div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 2 -->
+                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-lg hover:border-primary transition-colors cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center group-hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">airport_shuttle</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold text-on-surface text-sm">Medium Bus</div>
+                        <div class="text-[11px] text-on-surface-variant mt-0.5">Capacity: 29 - 33 Seats</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Base Price</div>
+                        <div class="font-bold text-on-surface text-sm">Rp 1.8M <span class="font-normal text-xs text-on-surface-variant">/ day</span></div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 3 -->
+                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-lg hover:border-primary transition-colors cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center group-hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">commute</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold text-on-surface text-sm">Hiace / Elf</div>
+                        <div class="text-[11px] text-on-surface-variant mt-0.5">Capacity: 14 - 19 Seats</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Base Price</div>
+                        <div class="font-bold text-on-surface text-sm">Rp 1.2M <span class="font-normal text-xs text-on-surface-variant">/ day</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: History Modal / Qty Buy -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col h-full">
+            <div class="p-6 flex items-center justify-between border-b border-outline-variant">
+                <h3 class="font-headline-md text-on-surface text-[18px] font-bold">History Modal / Qty Buy</h3>
+                <div class="flex items-center gap-2">
+                    <button class="p-1.5 border border-outline-variant rounded text-outline-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[16px]">filter_list</span></button>
+                    <button class="p-1.5 border border-outline-variant rounded text-outline-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[16px]">download</span></button>
+                </div>
+            </div>
+            
+            <div class="w-full overflow-x-auto flex-1">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-low border-b border-outline-variant">
+                            <th class="py-3 px-4 font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Date</th>
+                            <th class="py-3 px-4 font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Vendor</th>
+                            <th class="py-3 px-4 font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Vehicle Type</th>
+                            <th class="py-3 px-4 font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider text-center">Qty</th>
+                            <th class="py-3 px-4 font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider text-right">Price/Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-body-md text-on-surface">
+                        {% for hist in buy_history %}
+                        <tr class="border-b border-outline-variant/50 hover:bg-surface-bright transition-colors">
+                            <td class="py-3 px-4 text-xs text-on-surface-variant">{{ hist.book_date }}</td>
+                            <td class="py-3 px-4 text-xs font-bold text-on-surface">{{ hist.vendor.name if hist.vendor else 'Unknown' }}</td>
+                            <td class="py-3 px-4 text-xs">
+                                <span class="px-2 py-0.5 border border-outline-variant rounded text-on-surface-variant text-[10px]">{{ hist.vehicle_type or 'Big Bus' }}</span>
+                            </td>
+                            <td class="py-3 px-4 text-xs font-medium text-center">{{ hist.qty_buy | int if hist.qty_buy > 0 else 1 }}</td>
+                            <td class="py-3 px-4 text-xs font-medium text-right text-on-surface">Rp {{ "{:,.0f}".format(hist.buy_price) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
