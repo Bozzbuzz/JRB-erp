@@ -38,23 +38,36 @@ def get_database_uri():
                     except Exception as e:
                         print(f"Failed to copy {src}: {e}")
             if not copied:
-                print("No candidate DB found, creating fresh SQLite DB in /tmp")
+                print("DEBUG: No candidate DB found, creating fresh SQLite DB in /tmp")
                 conn = sqlite3.connect(tmp_db_path)
                 conn.close()
-        print(f"DEBUG: Vercel serverless mode detected. DB URI: sqlite:///{tmp_db_path}")
+        
+        # Ensure database is openable and set memory journal mode for serverless
+        try:
+            conn = sqlite3.connect(tmp_db_path)
+            conn.execute("PRAGMA journal_mode=MEMORY;")
+            conn.close()
+        except Exception as e:
+            print("DEBUG: Error setting sqlite3 pragma:", e)
+            
         return 'sqlite:///' + tmp_db_path
     else:
         instance_dir = os.path.join(basedir, 'instance')
         os.makedirs(instance_dir, exist_ok=True)
         db_path = os.path.join(instance_dir, 'erp.db')
-        print(f"DEBUG: Local mode detected. DB URI: sqlite:///{db_path}")
         return 'sqlite:///' + db_path
-
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')
     SQLALCHEMY_DATABASE_URI = get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'connect_args': {
+            'check_same_thread': False,
+            'timeout': 30
+        }
+    }
+
 
 
 
