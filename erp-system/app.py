@@ -26,6 +26,10 @@ def create_app(config_class=Config):
     db.init_app(app)
     csrf.init_app(app)
     
+    with app.app_context():
+        db.create_all()
+
+    
     # Register blueprints
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(orders_bp)
