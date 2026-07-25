@@ -21,45 +21,39 @@ def get_database_uri():
     )
     
     if is_serverless:
-
         tmp_db_path = '/tmp/erp.db'
+        os.makedirs('/tmp', exist_ok=True)
         if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
-            os.makedirs('/tmp', exist_ok=True)
-            candidates = [
-                os.path.join(basedir, 'instance', 'erp.db'),
-                os.path.join(os.path.dirname(basedir), 'instance', 'erp.db'),
-                '/var/task/erp-system/instance/erp.db',
-                '/var/task/instance/erp.db'
-            ]
-            copied = False
-            for src in candidates:
-                if os.path.exists(src) and os.path.getsize(src) > 0:
-                    try:
-                        shutil.copyfile(src, tmp_db_path)
-                        copied = True
-                        print(f"Successfully copied DB from {src} to {tmp_db_path}")
+            found_src = None
+            search_roots = [basedir, os.path.dirname(basedir), '/var/task']
+            for sroot in search_roots:
+                if os.path.exists(sroot):
+                    for root, dirs, files in os.walk(sroot):
+                        if 'erp.db' in files:
+                            found_src = os.path.join(root, 'erp.db')
+                            break
+                    if found_src:
                         break
-                    except Exception as e:
-                        print(f"Failed to copy {src}: {e}")
-            if not copied:
-                print("DEBUG: No candidate DB found, creating fresh SQLite DB in /tmp")
+            if found_src:
+                try:
+                    shutil.copyfile(found_src, tmp_db_path)
+                    os.chmod(tmp_db_path, 0o666)
+                    print(f"DEBUG: Successfully copied {found_src} -> {tmp_db_path}")
+                except Exception as e:
+                    print("DEBUG: Copy failed:", e)
+            if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
+                print("DEBUG: No erp.db found, creating fresh SQLite DB at /tmp/erp.db")
                 conn = sqlite3.connect(tmp_db_path)
                 conn.close()
-        
-        # Ensure database is openable and set memory journal mode for serverless
-        try:
-            conn = sqlite3.connect(tmp_db_path)
-            conn.execute("PRAGMA journal_mode=MEMORY;")
-            conn.close()
-        except Exception as e:
-            print("DEBUG: Error setting sqlite3 pragma:", e)
-            
+                os.chmod(tmp_db_path, 0o666)
+                
         return 'sqlite:///' + tmp_db_path
     else:
         instance_dir = os.path.join(basedir, 'instance')
         os.makedirs(instance_dir, exist_ok=True)
         db_path = os.path.join(instance_dir, 'erp.db')
         return 'sqlite:///' + db_path
+
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')
