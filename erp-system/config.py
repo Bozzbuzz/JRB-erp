@@ -41,12 +41,15 @@ def get_database_uri():
                 print("No candidate DB found, creating fresh SQLite DB in /tmp")
                 conn = sqlite3.connect(tmp_db_path)
                 conn.close()
+        print(f"DEBUG: Vercel serverless mode detected. DB URI: sqlite:///{tmp_db_path}")
         return 'sqlite:///' + tmp_db_path
     else:
         instance_dir = os.path.join(basedir, 'instance')
         os.makedirs(instance_dir, exist_ok=True)
         db_path = os.path.join(instance_dir, 'erp.db')
+        print(f"DEBUG: Local mode detected. DB URI: sqlite:///{db_path}")
         return 'sqlite:///' + db_path
+
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')

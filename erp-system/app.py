@@ -27,7 +27,11 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except Exception as e:
+            print("DB init exception:", e)
+
 
     
     # Register blueprints
