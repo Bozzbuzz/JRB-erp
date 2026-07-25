@@ -1,5 +1,7 @@
 import os
 import sys
+import shutil
+import sqlite3
 
 os.environ['TMPDIR'] = '/tmp'
 os.environ['SQLITE_TMPDIR'] = '/tmp'
@@ -7,17 +9,17 @@ os.environ['SQLITE_TMPDIR'] = '/tmp'
 # Ensure erp-system directory is in Python path for Vercel/local execution
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-
 try:
     from dotenv import load_dotenv
     load_dotenv(os.path.join(os.path.abspath(os.path.dirname(__file__)), '.env'))
 except ImportError:
     pass
 
-
-
-import shutil
-import sqlite3
+from flask import Flask
+from config import Config
+from core.extensions import db, csrf
+from core.models import Order
+from routes import dashboard_bp, orders_bp, crm_bp, finance_bp, analytics_bp
 
 def ensure_database_file():
     basedir = os.path.abspath(os.path.dirname(__file__))
@@ -72,9 +74,6 @@ def create_app(config_class=Config):
         except Exception as e:
             print("DB init exception:", e)
 
-
-
-    
     # Register blueprints
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(orders_bp)
