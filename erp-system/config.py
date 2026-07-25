@@ -58,16 +58,20 @@ def get_database_uri():
 
 
 
+from sqlalchemy.pool import NullPool
+
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')
     SQLALCHEMY_DATABASE_URI = get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
+        'poolclass': NullPool,
         'connect_args': {
             'check_same_thread': False,
             'timeout': 30
         }
     }
+
 
 
 
