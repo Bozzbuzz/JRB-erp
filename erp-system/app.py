@@ -1,8 +1,12 @@
 import os
 import sys
 
+os.environ['TMPDIR'] = '/tmp'
+os.environ['SQLITE_TMPDIR'] = '/tmp'
+
 # Ensure erp-system directory is in Python path for Vercel/local execution
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 
 try:
     from dotenv import load_dotenv

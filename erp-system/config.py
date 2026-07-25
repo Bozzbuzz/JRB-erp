@@ -2,7 +2,11 @@ import os
 import shutil
 import sqlite3
 
+os.environ['TMPDIR'] = '/tmp'
+os.environ['SQLITE_TMPDIR'] = '/tmp'
+
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 def get_database_uri():
     if os.environ.get('DATABASE_URL'):
