@@ -22,47 +22,40 @@ def get_database_uri():
     
     if is_serverless:
         tmp_db_path = '/tmp/erp.db'
-        os.makedirs('/tmp', exist_ok=True)
-        if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
-            found_src = None
-            search_roots = [basedir, os.path.dirname(basedir), '/var/task']
-            for sroot in search_roots:
-                if os.path.exists(sroot):
-                    for root, dirs, files in os.walk(sroot):
-                        if 'erp.db' in files:
-                            found_src = os.path.join(root, 'erp.db')
-                            break
+        try:
+            os.makedirs('/tmp', exist_ok=True)
+            if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
+                found_src = None
+                for search_root in ['/var/task', basedir, os.path.dirname(basedir)]:
+                    if os.path.exists(search_root):
+                        for root, dirs, files in os.walk(search_root):
+                            for f in files:
+                                if f == 'erp.db':
+                                    found_src = os.path.join(root, f)
+                                    break
+                            if found_src:
+                                break
                     if found_src:
                         break
-            if found_src:
-                try:
+                if found_src:
                     shutil.copyfile(found_src, tmp_db_path)
                     os.chmod(tmp_db_path, 0o666)
-                    print(f"DEBUG: Successfully copied {found_src} -> {tmp_db_path}")
-                except Exception as e:
-                    print("DEBUG: Copy failed:", e)
-            if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
-                print("DEBUG: No erp.db found, creating fresh SQLite DB at /tmp/erp.db")
-                conn = sqlite3.connect(tmp_db_path)
-                conn.close()
-                os.chmod(tmp_db_path, 0o666)
-        
-        try:
-            conn = sqlite3.connect(tmp_db_path)
-            conn.execute("CREATE TABLE IF NOT EXISTS _healthcheck (id INT);")
-            conn.commit()
-            conn.close()
-            os.chmod(tmp_db_path, 0o666)
+                    print(f"DEBUG: COPIED SEED DB {found_src} -> {tmp_db_path} ({os.path.getsize(tmp_db_path)} bytes)")
+                else:
+                    print("DEBUG: NO SEED DB FOUND, CREATING NEW BLANK DB")
+                    conn = sqlite3.connect(tmp_db_path)
+                    conn.close()
+                    os.chmod(tmp_db_path, 0o666)
         except Exception as e:
-            print("DEBUG: SQLite healthcheck failed:", e)
-
+            print("DEBUG ERROR SETUP SERVERLESS DB:", e)
+            
         return 'sqlite:///' + tmp_db_path
-
     else:
         instance_dir = os.path.join(basedir, 'instance')
         os.makedirs(instance_dir, exist_ok=True)
         db_path = os.path.join(instance_dir, 'erp.db')
         return 'sqlite:///' + db_path
+
 
 
 class Config:
