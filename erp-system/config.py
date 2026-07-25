@@ -38,14 +38,18 @@ def get_database_uri():
                     if found_src:
                         break
                 if found_src:
-                    shutil.copyfile(found_src, tmp_db_path)
-                    os.chmod(tmp_db_path, 0o666)
-                    print(f"DEBUG: COPIED SEED DB {found_src} -> {tmp_db_path} ({os.path.getsize(tmp_db_path)} bytes)")
+                    with open(found_src, 'rb') as f_in:
+                        db_data = f_in.read()
+                    with open(tmp_db_path, 'wb') as f_out:
+                        f_out.write(db_data)
+                    os.chmod(tmp_db_path, 0o777)
+                    print(f"DEBUG: COPIED SEED DB {found_src} -> {tmp_db_path} ({len(db_data)} bytes)")
                 else:
                     print("DEBUG: NO SEED DB FOUND, CREATING NEW BLANK DB")
                     conn = sqlite3.connect(tmp_db_path)
                     conn.close()
-                    os.chmod(tmp_db_path, 0o666)
+                    os.chmod(tmp_db_path, 0o777)
+
         except Exception as e:
             print("DEBUG ERROR SETUP SERVERLESS DB:", e)
             

@@ -46,12 +46,16 @@ def ensure_database_file():
                     if found_src:
                         break
                 if found_src:
-                    shutil.copyfile(found_src, tmp_db_path)
-                    os.chmod(tmp_db_path, 0o666)
+                    with open(found_src, 'rb') as f_in:
+                        db_data = f_in.read()
+                    with open(tmp_db_path, 'wb') as f_out:
+                        f_out.write(db_data)
+                    os.chmod(tmp_db_path, 0o777)
                 else:
                     conn = sqlite3.connect(tmp_db_path)
                     conn.close()
-                    os.chmod(tmp_db_path, 0o666)
+                    os.chmod(tmp_db_path, 0o777)
+
         except Exception as e:
             print("ensure_database_file exception:", e)
 
