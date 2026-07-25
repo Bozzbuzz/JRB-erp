@@ -64,17 +64,29 @@ def get_database_uri():
 
 from sqlalchemy.pool import NullPool
 
+def sqlite_creator():
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    is_serverless = (
+        'VERCEL' in os.environ
+        or 'VERCEL_ENV' in os.environ
+        or 'AWS_LAMBDA_FUNCTION_NAME' in os.environ
+        or '/var/task' in basedir
+    )
+    if is_serverless:
+        return sqlite3.connect('/tmp/erp.db', timeout=30, check_same_thread=False)
+    else:
+        db_path = os.path.join(basedir, 'instance', 'erp.db')
+        return sqlite3.connect(db_path, timeout=30, check_same_thread=False)
+
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')
     SQLALCHEMY_DATABASE_URI = get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
-        'poolclass': NullPool,
-        'connect_args': {
-            'check_same_thread': False,
-            'timeout': 30
-        }
+        'creator': sqlite_creator,
+        'poolclass': NullPool
     }
+
 
 
 
