@@ -46,8 +46,18 @@ def get_database_uri():
                 conn = sqlite3.connect(tmp_db_path)
                 conn.close()
                 os.chmod(tmp_db_path, 0o666)
-                
+        
+        try:
+            conn = sqlite3.connect(tmp_db_path)
+            conn.execute("CREATE TABLE IF NOT EXISTS _healthcheck (id INT);")
+            conn.commit()
+            conn.close()
+            os.chmod(tmp_db_path, 0o666)
+        except Exception as e:
+            print("DEBUG: SQLite healthcheck failed:", e)
+
         return 'sqlite:///' + tmp_db_path
+
     else:
         instance_dir = os.path.join(basedir, 'instance')
         os.makedirs(instance_dir, exist_ok=True)
