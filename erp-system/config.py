@@ -1,11 +1,12 @@
 import os
 import shutil
+import sqlite3
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 if os.environ.get('VERCEL') == '1':
     tmp_db_path = '/tmp/erp.db'
-    if not os.path.exists(tmp_db_path):
+    if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
         os.makedirs('/tmp', exist_ok=True)
         candidates = [
             os.path.join(basedir, 'instance', 'erp.db'),
@@ -15,16 +16,16 @@ if os.environ.get('VERCEL') == '1':
         ]
         copied = False
         for src in candidates:
-            if os.path.exists(src):
+            if os.path.exists(src) and os.path.getsize(src) > 0:
                 try:
                     shutil.copyfile(src, tmp_db_path)
                     copied = True
                     break
-                except Exception as e:
+                except Exception:
                     pass
         if not copied:
-            with open(tmp_db_path, 'w') as f:
-                pass
+            conn = sqlite3.connect(tmp_db_path)
+            conn.close()
     db_uri = 'sqlite:///' + tmp_db_path
 else:
     instance_dir = os.path.join(basedir, 'instance')
@@ -36,5 +37,6 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'super-secret-key-jakarta-rent-bus-2026')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', db_uri)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 
