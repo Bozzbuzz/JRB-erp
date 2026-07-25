@@ -1,12 +1,16 @@
 import os
 import sys
-from dotenv import load_dotenv
 
 # Ensure erp-system directory is in Python path for Vercel/local execution
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-# Load variables from .env if it exists
-load_dotenv(os.path.join(os.path.abspath(os.path.dirname(__file__)), '.env'))
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.abspath(os.path.dirname(__file__)), '.env'))
+except ImportError:
+    pass
+
+
 
 from flask import Flask
 from config import Config
