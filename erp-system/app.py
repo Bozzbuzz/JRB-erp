@@ -16,16 +16,52 @@ except ImportError:
 
 
 
-from flask import Flask
-from config import Config
-from core.extensions import db, csrf
-from core.models import Order
-from routes import dashboard_bp, orders_bp, crm_bp, finance_bp, analytics_bp
+import shutil
+import sqlite3
+
+def ensure_database_file():
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    is_serverless = (
+        'VERCEL' in os.environ
+        or 'VERCEL_ENV' in os.environ
+        or 'AWS_LAMBDA_FUNCTION_NAME' in os.environ
+        or '/var/task' in basedir
+    )
+    if is_serverless:
+        tmp_db_path = '/tmp/erp.db'
+        try:
+            os.makedirs('/tmp', exist_ok=True)
+            if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
+                found_src = None
+                for sroot in ['/var/task', basedir, os.path.dirname(basedir)]:
+                    if os.path.exists(sroot):
+                        for root, dirs, files in os.walk(sroot):
+                            if 'erp.db' in files and os.path.join(root, 'erp.db') != tmp_db_path:
+                                found_src = os.path.join(root, 'erp.db')
+                                break
+                        if found_src:
+                            break
+                    if found_src:
+                        break
+                if found_src:
+                    shutil.copyfile(found_src, tmp_db_path)
+                    os.chmod(tmp_db_path, 0o666)
+                else:
+                    conn = sqlite3.connect(tmp_db_path)
+                    conn.close()
+                    os.chmod(tmp_db_path, 0o666)
+        except Exception as e:
+            print("ensure_database_file exception:", e)
 
 def create_app(config_class=Config):
+    ensure_database_file()
     app = Flask(__name__)
     app.config.from_object(config_class)
     
+    @app.before_request
+    def before_request_db_check():
+        ensure_database_file()
+
     # Initialize extensions
     db.init_app(app)
     csrf.init_app(app)
@@ -35,6 +71,7 @@ def create_app(config_class=Config):
             db.create_all()
         except Exception as e:
             print("DB init exception:", e)
+
 
 
     
