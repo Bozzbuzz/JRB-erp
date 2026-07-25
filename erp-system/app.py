@@ -97,37 +97,8 @@ def create_app(config_class=Config):
             )
         except Exception as e:
             print("inject_global_dates exception:", e)
-            return dict(db_first_date="2020-01-01", db_last_date="")
-
-
-    @app.route('/test-db')
-    def test_db():
-        import sqlite3
-        db_path = '/tmp/erp.db'
-        results = {
-            'exists': os.path.exists(db_path),
-            'size': os.path.getsize(db_path) if os.path.exists(db_path) else -1,
-            'var_task_files': []
-        }
-        try:
-            for root, dirs, files in os.walk('/var/task'):
-                for f in files:
-                    if f.endswith('.db') or f == 'app.py':
-                        results['var_task_files'].append(os.path.join(root, f))
-        except Exception as e:
-            results['walk_error'] = str(e)
-            
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            tables = cursor.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
-            conn.close()
-            results['tables'] = tables
-        except Exception as e:
-            results['sqlite_error'] = str(e)
-        return results
-
     return app
+
 
 
 app = create_app()
