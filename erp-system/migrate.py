@@ -2,7 +2,8 @@ import os
 import pandas as pd
 from datetime import datetime
 from flask import Flask
-from models import db, Customer, Vendor, Order, Payment
+from core.extensions import db
+from core.models import Customer, Vendor, Order, Payment
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))

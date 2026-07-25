@@ -27,9 +27,14 @@ Thumbs.db
 # Excel sheets (as database migration is already run)
 *.xlsx
 
-# Database temporary files
+# Database & Environment files
 *.db-journal
 *.db-wal
 *.db-shm
+instance/
+*.db
+.env
+.env.*
+!.env.example
 
 .vercel

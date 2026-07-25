@@ -14,7 +14,7 @@
 <div class="w-full pb-10 space-y-6">
     <!-- Filter Bar -->
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-        <form id="filterForm" class="w-full flex flex-wrap gap-4 items-end" method="GET" action="{{ url_for('analytics') }}">
+        <form id="filterForm" class="w-full flex flex-wrap gap-4 items-end" method="GET" action="{{ url_for('analytics.analytics') }}">
             <input type="hidden" name="start_date" id="hidden_start_date" value="{{ filters.start_date }}">
             <input type="hidden" name="end_date" id="hidden_end_date" value="{{ filters.end_date }}">
             <div class="flex-1 min-w-[200px]">
@@ -49,7 +49,7 @@
                 </select>
             </div>
             <div class="flex flex-shrink-0 gap-2">
-                <a href="{{ url_for('analytics') }}" class="px-4 py-2 border border-outline-variant rounded-lg bg-surface text-on-surface font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold shadow-sm flex items-center justify-center">Reset</a>
+                <a href="{{ url_for('analytics.analytics') }}" class="px-4 py-2 border border-outline-variant rounded-lg bg-surface text-on-surface font-label-md text-sm hover:bg-surface-container-low transition-colors font-bold shadow-sm flex items-center justify-center">Reset</a>
                 <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg font-label-md text-sm hover:bg-primary-container hover:shadow-md transition-all font-bold flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">filter_list</span> Apply
                 </button>
@@ -185,14 +185,14 @@
                         
                         {% if orders_page.has_prev %}
                             {% set _ = url_args.update({'page': orders_page.prev_num}) %}
-                            <a href="{{ url_for('analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&lt;</a>
+                            <a href="{{ url_for('analytics.analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&lt;</a>
                         {% else %}
                             <button disabled class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-outline-variant opacity-50 cursor-not-allowed font-bold">&lt;</button>
                         {% endif %}
                         
                         {% if orders_page.has_next %}
                             {% set _ = url_args.update({'page': orders_page.next_num}) %}
-                            <a href="{{ url_for('analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&gt;</a>
+                            <a href="{{ url_for('analytics.analytics', **url_args) }}" class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-on-surface hover:bg-surface-container-low transition-colors font-bold">&gt;</a>
                         {% else %}
                             <button disabled class="px-3 py-1.5 border border-outline-variant rounded bg-surface text-outline-variant opacity-50 cursor-not-allowed font-bold">&gt;</button>
                         {% endif %}

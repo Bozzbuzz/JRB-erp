@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from core.extensions import db
 
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -14,11 +12,17 @@ class Customer(db.Model):
     photo = db.Column(db.String(255), nullable=True)
     orders = db.relationship('Order', backref='customer', lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class Vendor(db.Model):
     __tablename__ = 'vendors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     orders = db.relationship('Order', backref='vendor', lazy=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -47,6 +51,9 @@ class Order(db.Model):
     
     payments = db.relationship('Payment', backref='order', lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class Payment(db.Model):
     __tablename__ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
@@ -54,3 +61,6 @@ class Payment(db.Model):
     payment_type = db.Column(db.String(50), nullable=False) # 'DP' or 'FULL'
     amount = db.Column(db.Float, default=0)
     payment_date = db.Column(db.Date, nullable=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)

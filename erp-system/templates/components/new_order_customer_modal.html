@@ -167,6 +167,7 @@
         if (photoFile) {
             formData.append('photo', photoFile);
         }
+        formData.append('csrf_token', '{{ csrf_token() }}');
 
         fetch('/api/customers/new', {
             method: 'POST',
