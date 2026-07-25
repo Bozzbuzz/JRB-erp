@@ -9,13 +9,15 @@ def get_database_uri():
         return os.environ['DATABASE_URL']
     
     # Check if running in Vercel / Lambda / Read-only environment
-    is_vercel = (
-        os.environ.get('VERCEL') == '1'
+    is_serverless = (
+        'VERCEL' in os.environ
+        or 'VERCEL_ENV' in os.environ
         or 'AWS_LAMBDA_FUNCTION_NAME' in os.environ
-        or not os.access(basedir, os.W_OK)
+        or '/var/task' in basedir
     )
     
-    if is_vercel:
+    if is_serverless:
+
         tmp_db_path = '/tmp/erp.db'
         if not os.path.exists(tmp_db_path) or os.path.getsize(tmp_db_path) == 0:
             os.makedirs('/tmp', exist_ok=True)
